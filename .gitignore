@@ -21,3 +21,6 @@ __pycache__/
 
 # Drafts in flight (uncomment when needed)
 # docs/drafts/
+
+# Intermediate render artifacts (only the auto-cropped final is tracked)
+figs/*.full.png

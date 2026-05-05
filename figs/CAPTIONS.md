@@ -26,17 +26,13 @@ This file documents intended figures + caption stubs. Figures themselves are not
 **Type:** flow diagram, 5 boxes (one per audit script) → 1 outcome box (`typed_gapfill` mitigation)
 **Caption:** "The 2026-05-05 audit cascade. Five independent audit producers (`audit_unattributed_clicks`, `audit_dd_right`, `audit_cascade_contamination`, `audit_calibration_bias`, `audit_screenshot_alignment`) jointly establish: 22.7 % silent contamination of approached-and-clicked records under the legacy Y-band attribution (Q1); the gate does not filter contamination out (Q3); the calibration-bias hypothesis is refuted (opposite-direction click vs fixation bias). The mitigation — `typed_gapfill` — combines midpoint-split bbox extension, X+Y bbox-aware click attribution, and an `is_main_axis_click` trial filter."
 
-## Fig 4 — Replay viewer screenshots (4-panel grid)
+## Fig 4 — Replay viewer single trial (full SERP height with sparklines)
 
-**File:** `fig4_replay_examples.pdf`
-**Source data:** `approach-retreat/site/replay/trials/{p005-b2-t2, p008-b3-t7, p009-b5-t2, p041-b5-t2}.html`
-**Type:** 4-panel screenshot grid
-**Panels:**
-  1. `p005-b2-t2`: in-column-edge gap click between organics 5 and 6 — *how `typed_gapfill` resolves it*
-  2. `p008-b3-t7`: right-rail dd_right click — *how `is_main_axis_click` filters it out*
-  3. `p009-b5-t2`: page-chrome (search tools) click — *how trial-level filter handles non-result clicks*
-  4. `p041-b5-t2`: right-rail click without shipped dd_right rect — *the dd_right blind spot named in §6*
-**Caption:** "Four representative trials from the AR replay viewer (147-trial curated subset). Each panel shows the source SERP screenshot with `typed_gapfill` AOI bboxes overlaid as colored rectangles, gaze fixations as numbered circles (size proportional to dwell), cursor trajectory as a path, and the final click as a distinct marker. Panel (a) shows a click in the inter-result Y gap that the legacy tight bboxes would have lost; under `typed_gapfill` the click attributes correctly. Panels (b–d) show the three categories of off-axis click that `is_main_axis_click` flags at trial level: shipped right-rail dd_right ad (b), page-chrome click on search tools (c), and a right-rail surface without a shipped dd_right rectangle (d, the unnamed-blind-spot case)."
+**File:** `fig4_replay_p005-b2-t2.png` (rendered, auto-cropped)
+**Source data:** `approach-retreat/site/replay/trials/p005-b2-t2.html` rendered via headless Chromium at 2× device-scale
+**Type:** single full-height screenshot, cropped to last non-empty content row + 10 px margin
+**Production:** `figs/render_replay.js` (Playwright capture) → `figs/crop_replay.py` (PIL auto-crop). Both reproducible from the upstream replay viewer + this paper's repo.
+**Caption:** "An AR replay viewer trial (p005-b2-t2) rendered at full SERP height with the trial's behavioral sparklines below. The SERP screenshot (top) carries `typed_gapfill` AOI bboxes as colored overlays — outline color encodes the four-class behavioral taxonomy outcome per AOI (clicked / deferred / evaluated-rejected / not-approached). Numbered circles show gaze fixations sized by dwell duration; the orange path shows the cursor trajectory; a distinct marker indicates the trial-terminating click. The compact timeline below the SERP carries seven sparkline tracks: cursor speed, XY delta, pupil diameter, LF/HF ratio, gaze X, gaze Y, and AOI presence. The replay viewer renders 147 such trials from the curated subset; this single example lets the reader see what one trial of the AdSERP corpus looks like under the AllSERP enrichment."
 
 ## Fig 5 — Above-fold geometry by element type (stacked bar)
 
