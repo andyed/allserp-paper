@@ -1,0 +1,23 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# LaTeX
+*.aux
+*.bbl
+*.blg
+*.brf
+*.log
+*.out
+*.synctex.gz
+*.toc
+
+# OS
+.DS_Store
+
+# Agent workspace
+.claude/
+
+# Drafts in flight (uncomment when needed)
+# docs/drafts/
