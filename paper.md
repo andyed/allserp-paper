@@ -8,59 +8,50 @@
 
 ## Abstract
 
-The AdSERP dataset \cite{latifzadeh2025adserp} pairs full-page screenshots, 150 Hz Gazepoint eye tracking, evtrack mouse telemetry, scroll signals, and pupil diameter across 2,776 commercial-intent trials and 47 participants under a **forced-choice task with up to one minute of examination time**. The dataset ships ad bounding boxes but no organic-result bboxes, no per-cell carousel subdivision, and no semantic typing of widgets — gaps that block any per-element analysis without significant reanalysis effort.
+The AdSERP dataset \cite{latifzadeh2025adserp} pairs full-page screenshots, 150 Hz Gazepoint eye tracking, evtrack mouse telemetry, scroll signals, and pupil diameter across 2,776 commercial-intent trials and 47 participants conducted between 2022-12-16 and 2023-03-13, before Google's introduction of AI Overviews. Participants were provided with a query phrase and were asked to act with purchase intent within a 1 minute time limit, extended to up to 2 minutes after a reminder prompt.  The dataset includes ad bounding boxes but no organic-result bboxes, no per-cell carousel subdivision, and no semantic typing of widgets. 
 
-This paper contributes a typed AOI enrichment pipeline that closes those gaps: CV row-projection on the original screenshots recovers pixel-accurate bbox geometry; an 8-tier HTML parse provides semantic labels across thirteen element types; a midpoint-split post-processor (`typed_gapfill`) fills inter-result Y gaps so fixations and clicks landing in those gaps are attributable. We validate the ad-vs-non-ad partition against the shipped ad rectangles with **0 disagreements across 38,250 classifications** (F1 = 1.000), and use those same rectangles as alignment ground truth for an independent screenshot-alignment audit that refutes a corpus-wide coordinate-drift hypothesis. Honest final-click attribution under `typed_gapfill` reaches **91.7 %** of the corpus, with the remaining 8.3 % flagged at trial level (right-rail ads, page chrome, far-off-target) rather than silently mis-attributed — closing a 22.7 % silent-contamination gap in the legacy attribution helper.
+This paper contributes a typed AOI enrichment pipeline that closes those gaps: computer vision row-projection on the original screenshots recovers pixel-accurate bbox geometry; an 8-tier HTML parser provides semantic labels across thirteen element types; a midpoint-split post-processor (`typed_gapfill`) fills inter-result Y gaps so fixations and clicks landing in those gaps are attributable. We validate the ad-vs-non-ad partition against the shipped ad rectangles with **0 disagreements across 38,250 classifications** (F1 = 1.000), and use those same rectangles as alignment ground truth for an independent screenshot-alignment audit. A reaches **91.7 %** of the corpus, with the remaining 8.3 % flagged at trial level (right-rail ads, page chrome, far-off-target) rather than silently mis-attributed.
 
-We release the pipeline as a single-script public API and report descriptive observed-behavior tables for nine main-axis SERP element types: click share, fixation coverage, regression rate, and above-fold incidence. The paper does not propose new models; it documents what the enriched dataset enables, and points to sibling tracks that use the enrichment for click-prediction modeling [CITE: cikm-paper], cognitive task modeling [CITE: chi-task-model-paper], and pupillometric cognitive load analysis [CITE: ettac-paper].
+We release the pipeline as a single-script public API and report descriptive observed-behavior tables for nine main-axis SERP element types: click share, fixation coverage, regression rate, and above-fold incidence. The enriched dataset opens per-element behavioral analysis at finer granularity than the shipped-ads-vs-organic split previously allowed, on a multimodal substrate (eye + cursor + scroll + pupil) for commercial-intent SERPs in a clean pre-AI-Overviews window. We are honest about what AdSERP's task design does *not* sample: query refinement and reformulation, pagination, abandonment, and any decision arc longer than the 1-to-2-minute forced-choice envelope. These are real limits on generalization, named here so consumers can scope their use of the enrichment accordingly.
 
 ---
 
 ## §1. Introduction
 
-The AdSERP dataset \cite{latifzadeh2025adserp} occupies a distinctive position in the multimodal IR resource landscape: simultaneous eye gaze, cursor, scroll, pupil, and click telemetry against ground-truth screenshots, on real Google search-result pages with realistic commercial-intent task framing. The 2,776-trial corpus is large enough for cross-participant LOSO validation and small enough that per-trial visual inspection is tractable.
+The AdSERP dataset \cite{latifzadeh2025adserp} occupies a distinctive position in the multimodal IR resource landscape: simultaneous eye gaze, cursor, scroll, pupil, and click telemetry against ground-truth screenshots, on real Google search-result pages with realistic commercial-intent task framing. The dataset's authors framed their contribution as the first publicly available large-scale resource combining (1) eye-tracking, (2) mouse trajectories, and (3) SERP HTML amenable to programmatic AOI segmentation at thousands-of-trials scale, with eye fixations on programmatically extracted AOIs intended as ground-truth labels for inferring visual attention from mouse movements at high granularity. AdSERP supplies the substrate; the per-element AOI extraction implied by that framing was left for downstream work. This paper realizes that extraction.
 
-### 1.1 Task design (frame for everything that follows)
+The shipped ad rectangles cover only the surfaces directly relevant to AdSERP's original ad-attention focus. In the released corpus, ad surfaces (`dd_top` + `native_ad` + `dd_right`) receive roughly **15.5 % of attributable clicks** — meaning the ~84.5 % of click behavior that landed on organics, knowledge panels, image packs, People-Also-Ask widgets, and other non-ad surfaces sits outside the shipped per-element labels. Three opportunities follow for studying that broader behavior:
 
-The behavioral statistics reported in this paper are conditioned on AdSERP's specific task design, which differs in important ways from natural search browsing. Per \cite{latifzadeh2025adserp}, after each query was presented, participants examined the SERP for **up to one minute** to make a decision by clicking the result they would *typically* choose in the given scenario. After clicking, participants were prompted to **confirm** the choice; if they did not confirm, examination continued for **up to one additional minute** before the trial ended.
+1. **Organic-result bounding boxes.** Ad rectangles ship with the dataset; organic-result rectangles do not. Adding them lets per-rank analyses operate on pixel-accurate organic geometry rather than estimating from h3 heading counts (which assume uniform result heights — actual layouts vary by 80–320 px per result) or pooling ads with organics under "absolute rank."
 
-Three implications carry through every observed-behavior reading in §4:
+2. **Semantic typing of every result.** A "rank-1 result" might be a top-of-page ad, a knowledge panel, an image pack, an organic result, or a People-Also-Ask widget. Each receives a different click rate and triggers different cognitive operations. Adding per-card type labels lets per-rank claims disambiguate which surface they refer to.
 
-1. **Time pressure is a key driver.** Users are racing a one-minute clock. Empirically, trial durations under typed_gapfill: median **19.7 s**, p75 **30.1 s**, p95 **46.3 s**, p99 **57.7 s** — the corpus is concentrated in the second half of the first minute. Behavior late in trials reflects time-running-out dynamics (rapid commit, reduced exploration), not steady-state browsing.
-
-2. **The 1-minute interruption changes regime.** Trials that hit the 60 s boundary are interrupted by a confirmation prompt and continue under different conditions. **0.5 %** of trials (n = 12) exceed 60 s in our corpus; **0 %** exceed 90 s. These post-prompt trials are a behavioral edge case and should be flagged separately in any model that conditions on within-trial time. Below 60 s — the 99.5 % of trials — behavior is one continuous examination episode.
-
-3. **Forced-choice removes abandonment.** Participants must click *something* — there is no "abandon" or "refine" option that a natural searcher might exercise. Reported click distributions, click-fixation dissociations, and four-class taxonomy proportions in §4 are therefore properties of *the constrained task*, not of natural Google use. The dissociation between high-fixation low-click for ads (e.g., dd_top 99.7 % fixated, 9.6 % clicked, §4.2) survives this constraint as a within-task observation, but does not directly extrapolate to free browsing where users could abandon a query rather than commit to a low-quality match.
-
-The pipeline contributions in §2 (typed AOI extraction, gap-fill, X+Y bbox-aware click attribution) are task-design-agnostic — they recover per-element geometry and labels independent of how the trial behavior was elicited. The descriptive observed-behavior tables in §4 are not. We name the constraint here so it propagates through every reading.
-
-But the shipped data leaves three structural gaps for any per-element analysis:
-
-1. **No organic-result bounding boxes.** Ad rectangles ship with the dataset; organic-result rectangles do not. Consumers either estimate from h3 heading counts (assuming uniform result heights, which the actual layout violates by 80–320 px per result), or pool ads with organics under "absolute rank" (mixing surfaces with very different click policies).
-
-2. **No semantic typing of results.** A "rank-1 result" might be a top-of-page ad, a knowledge panel, an image pack, an organic result, or a People-Also-Ask widget. Each receives a different click rate and triggers different cognitive operations. Per-rank claims that don't disambiguate are uninterpretable.
-
-3. **No carousel / composite subdivision.** Top-stories carousels, image packs, and product-list ads ship as single-rectangle parents; the per-product cells inside them are not enumerated, blocking per-cell click and fixation attribution.
+3. **Carousel / composite subdivision.** Top-stories carousels, image packs, and product-list ads ship as single-rectangle parents; the per-product cells inside them are not enumerated. Adding cell-level rectangles enables per-product click and fixation attribution.
 
 This paper releases a pipeline that recovers all three: pixel-accurate organic and widget bounding boxes from CV row-projection on the screenshots, HTML-anchored semantic labels via spatial join, and per-cell carousel subdivision via vertical-edge peak detection. We validate the ad-vs-non-ad partition against the shipped ad rectangles (0 disagreements across 38,250 classifications) and report descriptive observed-behavior tables for the nine main-axis element types the pipeline produces.
 
-A 2026-05-05 audit during preparation of this paper revealed that the legacy click-attribution helper used in pre-existing work on this dataset (Y-band-only assignment with no X check) silently mis-attributes 22.7 % of approached-and-clicked records — right-rail `dd_right` ad clicks, page-chrome clicks, and far-off-target clicks roll into adjacent organic positions sharing their Y coordinate. The right-rail ad clicks alone account for 67 records (2.41 %); page-chrome accounts for another 91 (3.3 %); the remainder are clicks landing in inter-result Y gaps where the row-projection bbox does not extend. This paper introduces the `typed_gapfill` flavor as the response: midpoint-split bbox extension fills the inter-result Y gaps, X+Y bbox-aware click attribution catches off-axis clicks at the X dimension the legacy rule ignored, and a trial-level filter (`is_main_axis_click`) drops trials with off-axis final clicks rather than allowing silent mis-attribution. Honest click attribution rises from 75.1 % under tight typed bboxes to 91.7 % under `typed_gapfill`; the residue is flagged at trial level.
+### Utility and limits
 
-The pipeline is not principled. The midpoint-split is a heuristic choice for inter-result boundaries, not a DOM-derived ground truth — re-rendering the saved 2022 SERP HTML in 2026 produces 13–45 px layout drift due to font, CSS, and external-asset changes [CITE: plan-demo-fix-doc], and the original screenshots therefore remain the single truth source for geometry. We document the heuristic explicitly, ship both legacy `typed` and new `typed_gapfill` outputs side-by-side, and name DOM-anchored extraction as future work blocked on the same lossiness ceiling.
+The enrichment opens four classes of analysis on the existing AdSERP corpus:
+
+- **Per-element behavioral statistics** — click share, fixation coverage, regression rate, and above-fold incidence stratified by SERP element type (organic, dd_top, native_ad, dd_right, paa, image_pack, knowledge_panel, top_places, related_searches, pagination). §4 reports these for the full 2,776-trial corpus.
+- **Per-element conditioning of existing signals** — cursor approach features, pupil and LF/HF cognitive-load signals, and saccade orientation can now be sliced by element type rather than pooled across surfaces.
+- **Geometry-aware attribution** — fixations and clicks landing in inter-result gaps are now attributable instead of silently dropped, and clicks on off-axis surfaces (right-rail, page chrome) are flagged at trial level rather than rolled into adjacent organics.
+- **Pre-AI-Overviews snapshot** — the data-collection window (2022-12-16 to 2023-03-13, §6) sits cleanly before Google's AI Overviews / SGE rollout, providing a baseline for "classic" Google SERP composition that future work can compare against.
+
+The dataset's task design also limits what the enrichment can speak to. AdSERP elicits a **forced choice within a 1-minute time limit (extended to 2 minutes after a confirmation prompt)** on a single query phrase per trial. This means the corpus does not sample query refinement, query reformulation, pagination, abandonment, multi-query sessions, or decision arcs longer than the forced-choice envelope. The behavioral statistics in §4 are therefore properties of *constrained-choice* SERP evaluation, not of free Google search; analyses that need session-level dynamics or long-horizon decisions will need other data. We name these gaps explicitly in §6 and surface them throughout the paper so consumers can scope their use of the enrichment accordingly.
 
 ### Contributions
 
 1. **Screenshot-anchored typed AOI extraction** with per-trial JSON output covering organic, dd_top, native_ad, dd_right, top_places, knowledge_panel, paa, image_pack, related_searches, pagination, other_widget, unknown_widget, and chrome surfaces.
 
-2. **`typed_gapfill` flavor** — pragmatic post-processing that fills inter-result Y gaps via midpoint-split, plus X+Y bbox-aware click attribution, plus an `is_main_axis_click()` trial filter.
+2. **Inter-result gap-fill and X+Y bbox-aware click attribution** — `typed_gapfill` extends adjacent organic bboxes to fill inter-result Y gaps via midpoint-split and uses X+Y containment for click attribution rather than Y-band-only assignment, with an `is_main_axis_click()` trial filter for off-axis clicks.
 
 3. **Validation against shipped ground truth** — 38,250 ad-classification comparisons, 0 disagreements, F1 = 1.000 on Phase C ad propagation, mean IoU = 1.000.
 
-4. **Refutation of a corpus-wide calibration-bias hypothesis** using shipped ad rectangles as alignment ground truth — clicks bias downward (within bbox), fixations bias upward (opposite directions), confirming the data is screenshot-aligned and the apparent click drift reflects normal "click target ≠ visual fixation target" user behavior.
+4. **Descriptive observed-behavior inventory** for nine main-axis element types: click share, fixation coverage, regression rate, above-fold incidence, on the full 2,776-trial corpus.
 
-5. **Descriptive observed-behavior inventory** for nine element types: click share, fixation coverage, regression rate, above-fold incidence, on the full 2,776-trial corpus.
-
-6. **Public API and reproducible artifacts.** Single-script entry point (`scripts/build_aois.py`) wrapping the four-phase pipeline. Five cite-ready audit producers covering the cascade. K-bbox-y-* numbered claim references in the upstream notebook key-claims aggregator [CITE: af-notebook-key-claims].
+5. **Public API and reproducible artifacts.** Single-script entry point (`scripts/build_aois.py`) wrapping the four-phase pipeline. Per-trial JSON outputs and corpus CSV released alongside the upstream code.
 
 ---
 
@@ -68,9 +59,11 @@ The pipeline is not principled. The midpoint-split is a heuristic choice for int
 
 ### 2.1 Why screenshot-anchored
 
-The fixation and cursor streams in \cite{latifzadeh2025adserp} were recorded in pixel coordinates against the original full-page screenshots. Re-rendering the saved HTML in a 2026 browser produces 13–45 px layout drift relative to the original Chrome 110 / Windows session that captured the screenshots [ATTRIBUTE: plan-demo-fix-doc: residual median <13 px, max ~45 px at page bottom from re-rendered SERP HTML]. Three failure modes contribute: external image hosts return errors or different content, font and CSS rendering heuristics differ between Chrome versions, and saved Google SERP HTML often contains anti-bot JS that detects headless renderers and rewrites the DOM. The shipped screenshots therefore remain the single truth source for geometry; HTML is used only for structural labels (semantic typing of cards) and for the spatial join, never for geometry directly.
+The AdSERP team's published methodology leveraged the DOM at collection time to extract AOIs programmatically from each SERP \cite{latifzadeh2025adserp}. That choice was correct in 2022–2023: the DOM is the structurally cleanest source of element geometry when the page is live and the rendering environment matches the capture session. The fixation and cursor streams the team released were recorded in pixel coordinates against the corresponding full-page screenshots.
 
-This is the empirical refutation of the obvious DOM-anchored alternative. Any pipeline that derives bbox geometry from re-rendering the HTML inherits 13–45 px error against the original screenshot truth — large enough to break per-AOI fixation attribution given gaze-tracker spatial slop is itself only ~30–50 px. The pragmatic path is to anchor geometry to the screenshots via CV and accept that this introduces its own heuristics (row-projection thresholds, ad-overlap arbitration) that we document and validate against shipped ground truth (§3).
+The complication is temporal. Re-rendering the saved 2022–2023 SERP HTML in a 2026 browser produces 13–45 px layout drift relative to the original screenshots [ATTRIBUTE: plan-demo-fix-doc: residual median <13 px, max ~45 px at page bottom from re-rendered SERP HTML] — well under three years of separation. Three contributing failure modes: external image hosts return errors or different content, font and CSS rendering heuristics differ between Chrome versions, and saved Google SERP HTML often contains anti-bot JS that detects headless renderers and rewrites the DOM. A downstream consumer in 2026 who repeats the AdSERP team's DOM-extraction approach against the released HTML inherits this drift and ends up with bboxes that no longer align to the released gaze and cursor coordinates.
+
+For downstream reuse, then, the shipped screenshots — not the saved HTML — are the durable truth source for geometry. AllSERP anchors bbox extraction to those screenshots via CV, with HTML used only for structural labels (semantic typing of cards) and for the spatial join, never for geometry directly. This complements rather than replaces the AdSERP team's collection-time DOM approach: at capture, the DOM is cleanest; for subsequent reuse against the released coordinate streams, screenshot-anchored extraction is what survives the drift.
 
 ### 2.2 Phase A — CV row-projection
 
@@ -111,7 +104,7 @@ Phase A bboxes are tight on visible text via row-projection. In practice, real c
 
 Phase D divides each inter-result gap at its midpoint. For sorted organic bboxes, each adjacent pair `(o[i], o[i+1])` has gap `g = o[i+1].top - o[i].bottom`; if `g > 0`, the midpoint is `o[i].bottom + g // 2`, and `o[i].bottom` extends to (midpoint − 1) while `o[i+1].top` extends to (midpoint + 1). Splits are clamped where ad/widget rectangles sit between adjacent organics, so an organic never extends across an ad. The very first organic's top and the very last organic's bottom are not extended (they would otherwise consume page chrome / pagination).
 
-Phase D is **pragmatic, not principled**. The midpoint heuristic is not the correct boundary between two adjacent results — that boundary is a DOM/CSS question we do not solve. The midpoint is a defensible, reproducible choice that recovers signal previously dropped from per-AOI attribution. Both legacy `typed` (Phase A → C) and new `typed_gapfill` (Phase A → D) flavors stay queryable side-by-side for any K-claim that needs the cleaner-attribution version vs the historical version.
+The midpoint is a heuristic boundary, not a DOM-derived ground truth. We ship both `typed` (Phase A → C) and `typed_gapfill` (Phase A → D) flavors so analyses that prefer tight visible-text bboxes can use the former and analyses that prefer full coverage of inter-result clicks and fixations can use the latter.
 
 ### 2.6 X+Y bbox-aware click attribution
 
@@ -127,7 +120,7 @@ attribute_click_to_typed_gapfill(click_x, click_y, trial_id, x_tol=5, y_tol=10):
 
 Default tolerance is ±5 X / ±10 Y to capture link-padding clicks that fall just outside the row-projection bbox; most inter-result gaps are absorbed by Phase D itself, so the tolerance is small.
 
-The legacy `click_to_position` helper in the pre-existing codebase did Y-bisect against AOI tops with no X check, silently rolling off-axis clicks into main-axis AOIs sharing their Y. The X+Y bbox-aware rule is the core fix for the 22.7 % silent contamination documented in §3.
+X+Y containment matters because clicks land in three places that Y-only attribution would silently roll into adjacent main-axis AOIs: right-rail ad surfaces (`dd_right`), page chrome (search tools, pagination, header), and far-off-target clicks. Requiring X containment routes those clicks to either an off-axis AOI or to the trial-level filter (§2.7) instead of corrupting main-axis click counts.
 
 ### 2.7 Hard-error trial filter
 
@@ -149,48 +142,17 @@ Output: `AdSERP/data/organic-boundary-data-gapfill/`, `data/aoi-typed-gapfill/`,
 
 ## §3. Validation against shipped ground truth
 
-The shipped ad rectangles in \cite{latifzadeh2025adserp} provide a labeled gold standard for the ad / non-ad partition. We use them in two independent validation roles: as a structural correctness check on Phase C ad propagation (§3.0), and as alignment ground truth for an audit of the gaze and cursor coordinate streams themselves (§3.1). Both roles exploit the fact that the rectangles were extracted by the AdSERP authors against the same screenshots that the gaze and cursor were recorded against — they are pixel-anchored to the truth source.
+The shipped ad rectangles in \cite{latifzadeh2025adserp} provide a labeled set against which Phase C's ad classifications can be checked structurally. The rectangles were extracted by the AdSERP authors against the same screenshots that the gaze and cursor streams were recorded against, so they are pixel-anchored to the same truth source as our extraction.
 
-### 3.0 Ad-vs-non-ad partition
+Phase C ad propagation matches the shipped rectangles with **F1 = 1.000** across all three ad etypes (`dd_top`, `native_ad`, `dd_right`); 0 of 26,590 Phase A `organic_result` bboxes overlap any shipped ad rectangle; mean IoU = 1.000 between matched Phase C bboxes and the shipped rectangles. There are no cross-type misclassifications across 38,250 individual classifications.
 
-[ATTRIBUTE: af-validation-typed-vs-shipped-ads: 0 disagreements across 38,250 classifications on 2,776 trials; F1 = 1.000 on Phase C ad propagation; mean IoU = 1.000]
-
-Phase C ad propagation matches the shipped gold with **F1 = 1.000** across all three ad etypes (`dd_top`, `native_ad`, `dd_right`); 0 / 26,590 Phase A `organic_result` bboxes overlap any shipped ad rectangle, confirming Phase A ad-subtraction is clean; mean IoU = 1.000 between matched Phase C bboxes and the shipped rectangles. There are no cross-type misclassifications. This is the strongest validation gate the paper carries: a structural correctness check against an external label set on 38,250 individual classifications, with zero disagreements.
-
-The deeper non-ad partition (organic vs widget vs paa vs image_pack vs knowledge_panel vs top_places vs related_searches vs pagination vs other_widget vs unknown_widget) lacks an external gold-standard label set and is validated against the HTML structure (Phase B's 8-tier priority chain) plus visual spot-check on representative trials. We do not claim F1 = 1 on the deeper partition; we document the validation asymmetry honestly. Visual proof for the curated 147-trial replay set is browsable at [CITE: ar-replay-viewer-url], where each AOI is rendered as a colored overlay rectangle on the source SERP screenshot.
-
-### 3.1 Screenshot-alignment audit
-
-The ad-rectangle ground truth additionally enables an independent test of whether the gaze and cursor streams themselves are screenshot-aligned. For each trial's final click and longest-fixation, we compute signed Y-distance to the nearest shipped ad-rect edge (negative = inside, positive = outside).
-
-| stream | inside ad rect | median signed Y | near-edge ratio (inside : outside in [-50, +50] px) |
-|---|---:|---|---|
-| final clicks | 442 | −84 px | 152 : 39 (~4:1) |
-| longest fixation/trial | 771 | −87 px | 393 : 179 (~2:1) |
-
-A coordinate-space Y-drift would produce accumulation just-outside ad edges (clicks at signed Y = +N px where they should be inside). We see the opposite: deep median inside ads, near-edge ratios strongly favoring inside. The gaze and cursor streams are screenshot-aligned. This refutes a corpus-wide click-Y calibration bias hypothesis that arose from a small-sample visual inspection of replay trials.
-
-[Detailed audit script: `attentional-foraging/scripts/audit_screenshot_alignment.py`. Regime tag: `[LAB, AdSERP, alignment-audit-2026-05-05]`.]
-
-### 3.2 Click-vs-fixation directional asymmetry
-
-Within typed bboxes (where users clicked or fixated on a result), clicks are biased slightly downward of bbox center (median +12.5 px below center; IQR −21 to +40) while fixations are biased slightly upward (median normalized position 0.440 in the [0 = top, 1 = bottom] range; 66.5 % of *unattributed* fixations land above bbox top vs only 33.5 % below). The opposite-direction bias is consistent with normal user behavior: people **look** at the title text (top of card) and **click** the link target (center or slightly below the title baseline). It is not a coordinate-space bug.
-
-This dissociation, taken together with §3.1, refutes a class of calibration-drift hypotheses that would otherwise motivate corrective offset-adjustment of the gaze/cursor streams. The pre-audit hypothesis under test was a uniform corpus-wide click-Y drift on the order of +20 px — visible in 5 visually-inspected replay trials where clicks landed in inter-result gaps below their nearest organic. Two corpus-statistics tests refuted the uniform-drift hypothesis: clicks bias down while fixations bias up (incompatible with a single Y shift in the bbox coordinate frame), and per-participant medians cluster within IQR 0.54–0.63 with no outlier sessions. The 5-example visual sample was selection-biased on small N. No correction is applied; the streams are kept as-shipped.
-
-### 3.3 What this validation does and does not establish
-
-The shipped-gold partition gate (§3.0) and the alignment audit (§3.1) together establish: (a) Phase A's pixel-bbox extraction does not leak ads into the organic-result list, (b) Phase C's spatial join correctly propagates ad type labels to the right bboxes, and (c) the underlying gaze and cursor data are screenshot-aligned, refuting a coordinate-drift hypothesis that would otherwise propagate uncertainty downstream.
-
-What §3 does not establish: the per-cell labels inside composite widgets (image_pack subtypes, knowledge_panel cards), the off-axis classifications in the `chrome` and `unknown_widget` buckets, or the absolute correctness of widget category boundaries (a result mid-page-list with a knowledge-panel-style data-attrid is labeled `knowledge_panel` even if a human annotator might call it `organic` based on how it presents). These are validation gaps we name explicitly. The deeper non-ad partition relies on HTML structural signal plus visual spot-check; it does not have the F1 = 1 character of the ad partition.
+The deeper non-ad partition (organic vs paa vs image_pack vs knowledge_panel vs top_places vs related_searches vs pagination vs other_widget vs unknown_widget) lacks an external label set. It is validated against the HTML structure that Phase B's 8-tier chain consumes plus visual spot-check on representative trials. We document this validation asymmetry rather than claiming it has the same F1 = 1 character. Visual proof for the curated 147-trial replay set is browsable at [CITE: ar-replay-viewer-url], where each AOI is rendered as a colored overlay rectangle on the source SERP screenshot.
 
 ---
 
 ## §4. Element-Type Inventory and Observed Behavior
 
-Population: 2,775 trials processed (1 trial dropped: missing meta or fixations); 37,142 typed AOI rows under the `typed_gapfill` flavor. The four tables below report descriptive observed-behavior statistics per element type — counts and fixation coverage, click distribution, regressive share, and above-fold incidence.
-
-**Task-design framing (see §1.1).** All §4 statistics are conditioned on the AdSERP forced-choice task with up to one minute of examination time. We treat these as observations of *what users did with the SERP under that task design*, not as universal claims about Google search behavior. The 99.5 % of trials with duration < 60 s are within the first one-minute examination window; the 0.5 % > 60 s are post-prompt interrupted trials with different behavioral conditions and could be excluded from any analysis that conditions on within-trial time without changing headline tendencies.
+Population: 2,775 trials processed (1 trial dropped: missing meta or fixations); 37,142 typed AOI rows under the `typed_gapfill` flavor. The four tables below report descriptive observed-behavior statistics per element type — counts and fixation coverage, click distribution, regressive share, and above-fold incidence. We treat these as observations of *what users did with the SERP*, not as model claims; mechanistic interpretation belongs to the sibling tracks named in §5.
 
 ### 4.1 Counts and fixation coverage
 
@@ -226,7 +188,7 @@ Population: 2,775 trials processed (1 trial dropped: missing meta or fixations);
 
 **Read.** Organic results capture 79 % of clicks; ads (`dd_top` + `native_ad`) capture 15.5 %; widgets capture 5.4 %. The original AdSERP non-ad-click headline \cite{latifzadeh2025adserp} survives at finer resolution: `dd_top` has near-universal fixation (99.7 %, §4.1) but receives only 9.6 % of clicks — the click-fixation dissociation is preserved at element-type granularity. The pattern is sharper for `native_ad` (36.4 % fixated, 5.9 % clicked: a 6.2× attention-to-click gap) than for `dd_top` (99.7 % vs 9.6 %: a 10.4× gap). In both cases the dissociation is what would be predicted by an attention-without-commitment account of ad-element user behavior.
 
-The 8.3 % shortfall from full attribution (2,634 attributed clicks vs ~2,776 trial clicks) is the trial-level filter (`is_main_axis_click`) discussed in §2.7. Those trials have no defensible main-axis click target; they are excluded rather than silently mis-attributed, which is the core methodological move this paper documents.
+The 8.3 % shortfall from full attribution (2,634 attributed clicks vs ~2,776 trial clicks) is the trial-level filter (`is_main_axis_click`, §2.7). Those trials have no main-axis click target; they are flagged at trial level rather than rolled into adjacent organics.
 
 ### 4.3 Regressive share
 
@@ -266,132 +228,76 @@ Initial viewport: scroll = 0, height = `screen_height` (typically 1024 px). An A
 
 Cross-table observation: `dd_top`'s above-fold incidence (57 %) and its fixation coverage (99.7 %) together imply that on the 43 % of trials where `dd_top` is *not* present, users are still allocating attention to whatever is at the top of the page. The unconditional fixation rate of `dd_top` is high precisely because top-of-page foveation is inevitable; the finding is not "ads grab attention" but "users foveate whatever sits at trial onset." The dissociation between fixation and click for `dd_top` therefore reflects a commit-vs-not-commit decision *given* attention is granted by geometry.
 
-### 4.5 Four-class taxonomy preview (for sibling work)
+### 4.5 Four-class behavioral taxonomy
 
-The four-class behavioral taxonomy — **clicked** (was_clicked = True), **deferred** (approached non-click with gaze regression), **evaluated-rejected** (approached non-click without regression), **not-approached** (cursor `min_dist ≥ 100`) — is robust under the cascade. Class proportions invariant within ±0.3 pp across legacy `typed` vs `typed_gapfill`:
+A four-class taxonomy partitions trial × AOI records by user behavior: **clicked** (the user committed to the AOI), **deferred** (the user approached and gaze-regressed back to it without committing), **evaluated-rejected** (the user approached without regressing), and **not-approached** (cursor `min_dist ≥ 100` px). Under `typed_gapfill` the class proportions are:
 
-| class | typed_gapfill | typed (legacy) |
-|---|---:|---:|
-| clicked | 13.0 % | 13.1 % |
-| deferred | 13.3 % | 13.0 % |
-| evaluated-rejected | 2.9 % | 2.9 % |
-| not-approached | 70.8 % | 71.0 % |
+| class | proportion |
+|---|---:|
+| clicked | 13.0 % |
+| deferred | 13.3 % |
+| evaluated-rejected | 2.9 % |
+| not-approached | 70.8 % |
 
-The full per-etype × class breakdown is reported in [CITE: af-notebook-key-claims], NB22 K-bbox-y-* rows. **Do not interpret the taxonomy as graded relevance here** — that interpretation belongs to the sibling CIKM track [CITE: cikm-paper].
+Per-element-type breakdowns are reported in upstream notebook output [CITE: af-notebook-key-claims]. The taxonomy is descriptive — what behavior the user exhibited toward each AOI — not a relevance label; consumers needing graded-relevance signal should derive it explicitly rather than reading these labels as relevance.
 
 ---
 
-## §5. Data Enablement (what's now possible)
+## §5. What the enrichment opens up
 
-The original AdSERP dataset shipped raw multimodal signals plus ad bboxes. Per-element analysis was therefore limited to `dd_top` / `native_ad` vs everything-else. Under `typed_gapfill`, three classes of analysis become tractable on the existing 2,776-trial corpus without re-collecting data.
+The original AdSERP dataset shipped raw multimodal signals plus ad bboxes. Per-element analysis was therefore limited to ad surfaces vs everything-else. With per-element labels and geometry in place across the full main scroll axis, three classes of downstream analysis become tractable on the existing 2,776-trial corpus without re-collecting data.
 
-### 5.1 Descriptive
+### 5.1 Per-element descriptive baselines
 
-The per-element-type counts and rates reported in §4 are themselves a contribution: previously absent from the IR multimodal-data literature for commercial-intent SERPs. They support follow-on work that conditions on element type — for example, click-prediction baselines that previously had to pool ads with organics now have a clean per-etype split, and reading-time per-result analyses can stratify by widget type rather than averaging across mixed surfaces.
+The counts and rates in §4 are themselves a contribution: a per-element-type behavioral inventory for commercial-intent SERPs that the prior IR multimodal-data literature did not have. Click-prediction baselines that previously had to pool ads with organics now have a clean per-etype split. Reading-time and dwell analyses can stratify by widget type rather than averaging across heterogeneous surfaces. Click-fixation dissociation findings can be quantified per element type rather than at the ad-vs-organic granularity the original AdSERP analysis used.
 
 ### 5.2 Per-element conditioning of existing signals
 
-`typed_gapfill` carries per-AOI element-type tags into every downstream feature file. This enables straightforward per-etype conditioning of:
+`typed_gapfill` carries per-AOI element-type tags into every downstream feature file derived from the corpus. Existing signals — cursor approach features, pupil and LF/HF cognitive-load signals, saccade orientation, above-fold-conditioned analyses — gain a new conditioning axis they did not have before:
 
-- **Cursor approach features** (`cursor-approach-features-typed-gapfill.json`) — 9-dimensional M4 vector per trial × AOI with `etype` field.
-- **Pupil and LF/HF cognitive-load signals** (`butterworth-lfhf-by-position-typed.json`, `k-coefficient-by-position-typed.json`) — re-derived under typed; gapfill recomputation is mechanical.
-- **Saccade orientation** (`cursor-saccade-orientation-by-position.json`) — same.
-- **Above-fold-conditioned analyses** — geometric confound removed (§4.4 makes the case explicit).
+- **Cursor approach features** per trial × AOI with `etype` field.
+- **Pupil and LF/HF cognitive-load signals** per AOI position with element-type stratification.
+- **Saccade orientation** at per-position granularity.
+- **Above-fold-conditioned analyses**, with the geometric confound across element types (§4.4) made explicit and addressable.
 
 These are existing signals that gain a new conditioning axis under the enrichment, not new signals.
 
-### 5.3 Sibling tracks (where the enrichment is consumed)
+### 5.3 Reproducibility chain
 
-The AllSERP enrichment is the substrate for at least four ongoing model-paper tracks. We do not replicate their findings here; we cite the upstream artifacts as forthcoming and let interested readers pull the in-progress drafts from the indicated repositories.
-
-| sibling track | what the enrichment enables | venue |
-|---|---|---|
-| Click prediction & ranking | 9-feature M4 LOSO AUC = 0.856 under `typed_gapfill`; four-class taxonomy as graded-relevance label generator for LambdaMART / LambdaRank work | CIKM 2026 [CITE: cikm-paper] |
-| Cognitive task model (OSEC) | Per-element phase transitions (Orient → Survey → Evaluate → Commit) at saccade-level granularity, with rational-analysis foraging dynamics conditioned on element type | CHI 2027 [CITE: chi-task-model-paper] |
-| Pupillometric cognitive load | Butterworth LF/HF gradient per element type; the position-gradient finding holds under `typed`, per-element decomposition is the focus | ETTAC 2026 (Lyon) [CITE: ettac-paper] |
-| Per-fixation arousal (RIPA2) | Per-fixation pupil arousal computed via short-window Savitzky-Golay smoothing; per-element-type stratification of arousal during result evaluation | Standalone JEMR pub [CITE: ripa-pub] |
-
-Each sibling paper uses `typed_gapfill` as its attribution flavor by default. Joint authorship overlaps but does not coincide; the AllSERP paper is the substrate, not a competing surface.
-
-### 5.4 Reproducibility commitment
-
-Every claim in the four sibling papers above must trace back to a `typed_gapfill` K-bbox-y-* row in [CITE: af-notebook-key-claims], and every K-bbox-y-* row was computed by an executable script in `attentional-foraging/scripts/` against the released per-trial JSONs. The chain — paper claim → K-bbox-y-* row → script → typed AOI map → screenshot — is reproducible end-to-end without access to private state. The screenshot volume itself is at [CITE: AdSERP-zenodo].
+The full reproducibility chain — released per-trial JSONs, the executable scripts that produced them, and the shipped Zenodo screenshot volume — runs without access to private state. Source-of-truth pointers are listed in §6.2.
 
 ---
 
 ## §6. Limitations and Public Release
 
-### 6.1 What the pipeline does not solve
+### 6.1 Scope limits
 
-**DOM-anchored geometry.** A first-principles screenshot-replacing pipeline would extract bboxes from re-rendered HTML's `getBoundingClientRect`. §2.1 documents that this introduces 13–45 px layout drift relative to the original screenshots, large enough to break per-AOI fixation attribution given gaze-tracker spatial slop is itself only 30–50 px. We therefore anchor to the screenshots; DOM-anchored extraction is not a viable replacement for the geometry layer. Future work could combine DOM signal with screenshot anchoring (using HTML link-element rendered metrics as priors for screenshot-anchored Y bounds), but the wholesale replacement direction is empirically refuted.
+**Forced-choice task design.** AdSERP elicits one click per query within a 1-minute time limit (extended to 2 minutes after a confirmation prompt) on a single query phrase per trial. The corpus does not sample query refinement, query reformulation, pagination, abandonment, multi-query sessions, or decision arcs longer than the forced-choice envelope. The behavioral statistics in §4 are properties of constrained-choice SERP evaluation, not of free Google search. Trial durations under typed_gapfill: median 19.7 s, p95 46.3 s, p99 57.7 s; 99.5 % of trials sit within the first one-minute window, 0.5 % continue under post-prompt conditions. Analyses that need session-level dynamics or long-horizon decisions will need other data.
 
-**dd_right and right-rail blind spot.** The pipeline tracks `dd_right` ad rectangles for off-axis classification but does not recover right-rail organic-style results. The shipped `dd_right` rectangles also appear incomplete: visual inspection of the 147-trial replay set surfaced one trial (`p041-b5-t2`) with a clear right-rail click whose target had no shipped `dd_right` rectangle (Fig 4d). The right-rail blind spot is a property of the original AdSERP shipped data, not introduced by this pipeline; it affects ~1 % of trials based on the audit (§3.0 documents 67 dd_right clicks; the unshipped right-rail population is bounded above by trials in the `right_chrome` filter bucket whose visual inspection suggests right-rail rather than chrome).
+**Pre-AI-Overviews collection window.** Data was collected between 2022-12-16 and 2023-03-13 (verified from per-trial `entry_t` timestamps). This window predates Google's AI Overviews / SGE rollout (limited test May 2023, broad deployment May 2024) and Bard's launch (March 21, 2023, three days after collection ended). The element-type taxonomy in this paper is exhaustive for the 2022–2023 Google rendering. Replications on post-May-2024 SERPs need an `ai_overview` etype added and face substantively different click-fixation dynamics for the AI-generated answer card.
 
-**Composite-widget cell labels.** Phase A subdivides composite widgets (top_stories, image_pack, PAA) into per-cell rectangles via row-projection or vertical-edge peak detection. These cells receive geometry but not Phase B labels — the inner content of, say, an `image_pack` is not typed. Per-cell behavioral analysis would require additional HTML parsing per widget subtype, and is named here as future work for analyses that need within-widget granularity.
+**Right-rail coverage.** The pipeline tracks shipped `dd_right` rectangles for off-axis classification but does not recover right-rail organic-style results. Visual inspection of the 147-trial replay set surfaced a trial whose right-rail click had no shipped `dd_right` rectangle, indicating the shipped right-rail data is itself incomplete. The right-rail blind spot affects ~1 % of trials and is a property of the original shipped data; we name it rather than claim it is solved.
 
-**Phase D heuristic boundary.** The midpoint-split bbox extension is a defensible reproducible heuristic for inter-result Y boundaries, not a DOM-derived ground truth. Adjacent-result boundaries that are not mid-gap (e.g., where a heading rule places the boundary near the top of the lower result, not the center) are mis-attributed by the heuristic. The misattribution magnitude is bounded by the inter-result gap size, typically 5–60 px; we report the heuristic explicitly and ship both `typed` and `typed_gapfill` flavors so any K-claim can be re-cited under the alternative.
+**Composite-widget cell labels.** Phase A subdivides composite widgets (top_stories, image_pack, PAA) into per-cell rectangles. These cells receive geometry but not Phase B semantic labels — the inner content of an image_pack cell is not typed. Per-cell behavioral analysis needs additional HTML parsing per widget subtype, named as future work.
 
-**No causal claims.** This paper reports descriptive observed-behavior statistics. The *mechanism* of element-type-driven attention dynamics — what drives the click-fixation dissociation, why regressive returns differ across surfaces, how cognitive load modulates per-etype evaluation — is the domain of the sibling tracks named in §5. Per-element causal claims should not be extracted from the §4 tables in isolation.
+**Phase D heuristic boundary.** The midpoint-split is a heuristic choice of where to draw the boundary between adjacent organic results, not a DOM-derived ground truth. Misattribution magnitude is bounded by the inter-result gap size (typically 5–60 px). We ship both `typed` and `typed_gapfill` so consumers can pick the flavor that matches their attribution preference.
 
-**Forced-choice task framing constrains generalization.** §1.1 documents the AdSERP task design: up to one minute of examination, mandatory click on a result, prompt-confirmed selection, optional second one-minute window if not confirmed. Every behavioral statistic in §4 is conditioned on this task. Three caveats propagate. *Time pressure*: users are racing a one-minute clock, so late-trial behavior reflects time-running-out dynamics not steady-state browsing (median trial duration 19.7 s; p99 57.7 s). *Interruption regime change*: 12 trials (0.5 %) hit the 60 s boundary and continue under prompt-interrupted conditions; analyses that condition on within-trial time should flag those trials separately or restrict to the < 60 s population. *No abandon option*: forced-choice removes the natural-browsing affordance to refine the query or abandon the SERP entirely; click distributions and four-class taxonomy proportions are properties of *the constrained task*, not natural Google use. The dissociation findings in §4 (e.g., dd_top 99.7 % fixated, 9.6 % clicked) survive this caveat as within-task observations and motivate further work on natural-browsing replications, but should not be read as direct claims about user behavior outside the AdSERP task design.
-
-**Pre-AI-Overviews collection window.** AdSERP data was collected between **2022-12-16 and 2023-03-13** (verified from per-trial `entry_t` epoch timestamps; n = 18,218 records with timestamps under typed_gapfill). This window predates the rollout of Google's AI Overviews / Search Generative Experience (limited test May 2023, broad deployment May 2024), Bard's launch (March 21, 2023, three days after collection ended), and the influence of ChatGPT (launched Nov 30, 2022, just before collection started but with no observable effect on Google SERP composition during the collection window). Continuous-scroll on Google desktop launched in December 2022 — overlapping with the start of collection — and was reverted in mid-2024; trials in this corpus may include continuous-scroll geometry, though no analysis in this paper depends on the discrete-vs-continuous-scroll distinction.
-
-The element-type taxonomy reported in this paper (`organic`, `dd_top`, `native_ad`, `dd_right`, `paa`, `image_pack`, `knowledge_panel`, `top_places`, `related_searches`, `pagination`, plus widget catch-alls) is exhaustive for the late-2022 / early-2023 Google SERP rendering. Any replication on post-May-2024 Google SERPs would need an `ai_overview` etype added at minimum, and would face substantively different click-fixation dynamics for the AI-generated answer card. We document this as a temporal-scope caveat on the descriptive findings: the element-type proportions, click distributions, and regression rates in §4 are properties of *that era's* commercial-intent Google SERP. The pipeline itself is era-agnostic — given a screenshot and HTML snapshot from any era, the four-phase extraction works — but the labels in Phase B's 8-tier chain are calibrated to the 2022–2023 Google DOM dialect and would need extension for current SERPs.
+**Descriptive only.** This paper reports observed-behavior statistics. Mechanistic interpretation — what drives the click-fixation dissociation, why regressive returns differ across surfaces, how cognitive load modulates per-element evaluation — is downstream work; per-element causal claims should not be extracted from the §4 tables in isolation.
 
 ### 6.2 Public release
 
-- **Code.** `attentional-foraging` repository (`bbox-y-coverage-fix` merge, [CITE: af-repo-url]) and `approach-retreat` repository (`bbox-y-coverage-fix` merge, [CITE: ar-repo-url]). MIT license on both. Single-script public entry point: `scripts/build_aois.py`.
-- **Derived data.** Per-trial `typed_gapfill` JSONs in `data/aoi-typed-gapfill/` (~19 MB across 2,776 trials), corpus CSV in `scripts/output/adserp_aois_by_trial_id_typed_gapfill.csv` (37,142 rows × 2,776 trials).
-- **Replay viewer.** [CITE: ar-replay-viewer-url] renders `typed_gapfill` AOIs as colored overlay rectangles on the source SERP screenshots — visual proof of the pipeline's output for the curated 147-trial replay set, including the four trials shown in Fig 4.
-- **Audit producers.** Five cite-ready scripts in `attentional-foraging/scripts/`: `audit_unattributed_clicks.py`, `audit_dd_right.py`, `audit_cascade_contamination.py`, `audit_calibration_bias.py`, `audit_screenshot_alignment.py`. Each carries a regime-tag docstring naming its headline finding.
-- **K-bbox-y-\* claim references.** [CITE: af-notebook-key-claims] holds per-notebook claim numbers under `typed_gapfill` side-by-side with legacy K-bbox-* under `typed`. Per the upstream cascade rule, K-IDs are never renumbered: the typed and typed_gapfill rows coexist.
-- **Audit cascade writeup.** [CITE: af-null-finding-2026-05-05-bbox-y-coverage] documents the audit cascade end-to-end including the calibration-bias refutation and the pragmatic-not-principled framing of the midpoint-split.
+- **Code.** Upstream repositories under MIT license: `attentional-foraging` ([CITE: af-repo-url]) and `approach-retreat` ([CITE: ar-repo-url]). Single-script public entry point at `scripts/build_aois.py`.
+- **Derived data.** Per-trial `typed_gapfill` AOI JSONs (~19 MB across 2,776 trials) and corpus CSV (37,142 rows) at the upstream output paths.
+- **Replay viewer.** [CITE: ar-replay-viewer-url] renders typed AOIs as colored overlay rectangles on the source SERP screenshots, including the curated 147-trial subset.
 
-The full reproducibility chain — from the released per-trial JSONs through the executable scripts to the shipped Zenodo screenshot volume — runs without access to private state.
+The full reproducibility chain — from the released per-trial JSONs through the executable scripts to the shipped Zenodo screenshot volume [CITE: AdSERP-zenodo] — runs without access to private state.
 
 ---
 
 ## §7. Conclusion
 
-The AdSERP dataset is rich enough to underwrite a multi-paper analytical arc, but the shipped data omits per-element geometry and typing — gaps that block per-element analysis without significant reanalysis effort. AllSERP closes those gaps: screenshot-anchored bbox extraction, HTML-derived semantic labels, midpoint-split gap-fill, X+Y bbox-aware click attribution, and a trial-level filter that flags off-axis clicks rather than silently mis-attributing them. The pipeline is validated against shipped ground-truth (38,250 ad classifications, 0 disagreements) and the underlying gaze/cursor data is verified screenshot-aligned via an independent ad-rectangle calibration audit that refutes a coordinate-drift hypothesis. Honest click attribution under `typed_gapfill` reaches 91.7 % of corpus trials.
+The AdSERP team positioned their dataset as the first publicly available large-scale resource combining eye-tracking, mouse trajectories, and SERP HTML amenable to programmatic AOI segmentation at thousands-of-trials scale, with eye fixations on programmatically extracted AOIs as ground-truth labels for inferring visual attention from mouse movements at high granularity. AllSERP advances that direction: per-element geometry and typing across the full main scroll axis, validated against the shipped ad rectangles with F1 = 1.000 across 38,250 classifications, click attribution that catches off-axis clicks at trial level rather than routing them silently to adjacent organics.
 
-The contribution is a substrate for downstream model work, not a model itself. Sibling tracks — algorithmic ranking [CITE: cikm-paper], cognitive task modeling [CITE: chi-task-model-paper], pupillometric cognitive load [CITE: ettac-paper], per-fixation arousal [CITE: ripa-pub] — consume the enrichment for findings that the original AdSERP could not have supported at element-type resolution. The descriptive tables in §4 document what is now measurable and visible: the click-fixation dissociation persists at element-type granularity, regressive return rates differ four-fold across surfaces from `unknown_widget` (26 %) to `dd_top` (83 %), and above-fold geometry asymmetry across element types is large enough that any analysis pooling across types averages out the dominant effect.
+The descriptive observations in §4 demonstrate what the enrichment opens up: the click-fixation dissociation that the original AdSERP analysis identified at the ad-vs-organic level holds at finer element-type granularity, regressive return rates vary three-fold across surfaces, and above-fold geometry differs sharply by element type in ways that any analysis pooling across types would average out. The dataset's task design (forced-choice within a 1–2 minute envelope) means these are properties of constrained-choice evaluation rather than free Google search; the data does not sample query refinement, reformulation, pagination, or abandonment. We name those limits explicitly so consumers can scope their use of the enrichment.
 
-The methodological move worth carrying forward is the audit-first stance toward attribution. The 22.7 % silent contamination uncovered by the cascade is the kind of error class that survives F1 = 1 partition validation precisely because it does not affect partition correctness — it affects per-record attribution within a correct partition. The five-script audit cascade documented in Appendix A is the minimum machinery for catching such errors before they propagate through downstream models. Resource papers should ship audits, not just data.
-
----
-
-## Appendix A — Audit cascade (2026-05-05)
-
-The pipeline shipped in this paper carries an audit trail documenting how the `typed_gapfill` flavor came to exist. A 2026-05-05 audit during preparation of this paper surfaced 22.7 % silent contamination of approached-and-clicked records under the legacy `typed` flavor — Y-band-only click attribution rolled off-axis clicks (right-rail, page chrome, far-off-target) into adjacent main-axis AOIs sharing their Y. The five audit producers documented the cascade end-to-end:
-
-| script | finding |
-|---|---|
-| `audit_unattributed_clicks.py` | 690 / 2,774 final clicks unattributed under tight bboxes (75.1 %); 80 % of those within ±10 px Y of an organic edge |
-| `audit_dd_right.py` | 67 final clicks (2.41 %) on right-rail dd_right ads; typed extraction filters dd_right by design |
-| `audit_cascade_contamination.py` | 22.7 % of `approached & clicked` records (391 / 1,723) come from contaminated trials |
-| `audit_calibration_bias.py` | calibration-bias hypothesis refuted — opposite-direction click vs fixation bias |
-| `audit_screenshot_alignment.py` | data is screenshot-aligned (4:1 inside vs outside near-edge ratio for clicks; deep median inside ads) |
-
-The full writeup including pragmatic-not-principled framing, midpoint-split semantics, and post-cascade headline shifts (NB21 LOSO AUC 0.871 → 0.856; NB28 calibration AUC 0.842 → 0.842 invariant; NB30 LOPO AUC 0.687 → 0.701 with strengthened per-etype dissociation) lives at [CITE: af-null-finding-2026-05-05-bbox-y-coverage].
-
----
-
-## Open citation placeholders (Pass 2 verification queue)
-
-The following placeholders need resolution before submission:
-
-- `[CITE: AdSERP-original]` — Latifzadeh, Gwizdka & Leiva, "A Versatile Dataset of Mouse and Eye Movements on Search Engine Results Pages," SIGIR '25, 3412–3421. DOI 10.1145/3726302.3730325. Verify exact citation form.
-- `[CITE: cikm-paper]` — Andy + Peter; CIKM 2026 algorithmic submission. Title TBD. Cite as forthcoming.
-- `[CITE: chi-task-model-paper]` — Andy; CHI 2027 Pittsburgh; arxiv → CHI 2027 path. Title TBD.
-- `[CITE: ettac-paper]` — Andy + Duchowski; ETTAC 2026 Lyon, Aug 21. Title TBD.
-- `[CITE: ripa-pub]` — Gavindya/team; standalone RIPA pub. Title TBD.
-- `[CITE: plan-demo-fix-doc]` — Internal `attentional-foraging/docs/plan-demo-fix.md` documenting the 13–45 px DOM re-render drift. Format as URL or footnote pointing to the released repo.
-- `[CITE: af-notebook-key-claims]` — `attentional-foraging/docs/notebook-key-claims.md` (the K-bbox-y-* aggregate). Format as URL.
-- `[CITE: af-validation-typed-vs-shipped-ads]` — `attentional-foraging/docs/methodology/validation-typed-vs-shipped-ads.md`. Format as URL.
-- `[CITE: af-null-finding-2026-05-05-bbox-y-coverage]` — `attentional-foraging/docs/null-findings/2026-05-05-bbox-y-coverage.md`. Format as URL.
-- `[CITE: ar-replay-viewer-url]` — `https://andyed.github.io/approach-retreat/replay/`. Format as URL.
-
-[ATTRIBUTE: ...] entries are paraphrases that need verification against the named source.
-[CHECK: ...] entries are factual claims with uncertain source.
+The pipeline is screenshot-anchored because re-rendering 2022–2023 SERP HTML in 2026 introduces 13–45 px layout drift — measurable in less than three years between collection and reuse. Per-element analyses on this dataset can be done against bboxes that align to the released gaze and cursor coordinates. Replications on post-AI-Overviews SERPs will need an extended taxonomy and their own screenshot anchoring; the four-phase pipeline is era-agnostic in shape, and the Phase B label set is the layer that needs to grow.
