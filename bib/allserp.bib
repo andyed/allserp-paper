@@ -1,0 +1,96 @@
+% ═══════════════════════════════════════════════════════════════════════════
+% AllSERP resource paper bibliography.
+%
+% Pass 2 citation discipline (per CLAUDE.md): every entry here has been
+% verified against the abstract or canonical metadata. New entries added
+% during drafting must be verified before going into prose.
+% ═══════════════════════════════════════════════════════════════════════════
+
+% ─── PRIMARY: the dataset this paper enriches ─────────────────────────────
+
+@inproceedings{latifzadeh2025adserp,
+  author    = {Latifzadeh, Kayhan and Gwizdka, Jacek and Leiva, Luis A.},
+  title     = {A Versatile Dataset of Mouse and Eye Movements on Search Engine Results Pages},
+  booktitle = {Proceedings of the 48th International ACM SIGIR Conference on Research and Development in Information Retrieval},
+  series    = {SIGIR '25},
+  year      = {2025},
+  pages     = {3412--3421},
+  publisher = {ACM},
+  address   = {Padua, Italy},
+  doi       = {10.1145/3726302.3730325},
+  note      = {Dataset on Zenodo: \url{https://zenodo.org/records/15236546}},
+}
+
+% ─── ADJACENT WORK: paired SIGIR '25 release (multi-slot ad attention) ────
+
+@inproceedings{villaizan2025adsight,
+  author    = {Villaiz\'{a}n-Vallelado, Mario and Salvatori, Matteo and Latifzadeh, Kayhan and Penta, Antonio and Leiva, Luis A. and Arapakis, Ioannis},
+  title     = {{AdSight}: Scalable and Accurate Quantification of User Attention in Multi-Slot Sponsored Search},
+  booktitle = {Proceedings of the 48th International ACM SIGIR Conference on Research and Development in Information Retrieval},
+  series    = {SIGIR '25},
+  year      = {2025},
+  publisher = {ACM},
+  address   = {Padua, Italy},
+  doi       = {10.1145/3726302.3729891},
+}
+
+% ─── SUBSTRATE FOR WILD VALIDATION (cited by sibling tracks) ──────────────
+
+@article{leiva2020attentivecursor,
+  author    = {Leiva, Luis A. and Arapakis, Ioannis},
+  title     = {The Attentive Cursor Dataset},
+  journal   = {Frontiers in Human Neuroscience},
+  year      = {2020},
+  volume    = {14},
+  pages     = {565664},
+  doi       = {10.3389/fnhum.2020.565664},
+  note      = {Crowdsourced cursor + click on SERPs; ~2,909 sessions, no eye tracker.},
+}
+
+% ─── SIBLING TRACKS (cited as "what's enabled") ───────────────────────────
+
+% TODO Pass 2: when the CIKM, CHI, ETTAC, RIPA siblings are submitted /
+% accepted / arxived, replace these placeholder entries with real ones.
+% For now they remain as TODO comments; do not add `@misc{...}` placeholders
+% to the bib that would suppress the LaTeX warning — the warning is the
+% reminder.
+
+% [TODO: cikm-paper] — Edmonds & Dixon, CIKM 2026, four-class graded-relevance LambdaRank.
+% [TODO: chi-task-model-paper] — Edmonds, CHI 2027 (Pittsburgh), OSEC saccade-level.
+% [TODO: ettac-paper] — Edmonds & Duchowski, ETTAC 2026 (Lyon), pupillometric LF/HF on AdSERP.
+% [TODO: ripa-pub] — Jayawardena, Shi & Gwizdka follow-up, per-fixation arousal.
+
+% ─── METHODOLOGY: pupillometric + cognitive load (cited by sibling ETTAC) ─
+
+@article{jayawardena2025ripa2,
+  author    = {Jayawardena, Yasith and Jayawardana, Gavindya and Gwizdka, Jacek},
+  title     = {Real-Time Pupillometry-based Index of Pupillary Activity (RIPA2)},
+  journal   = {Journal of Eye Movement Research},
+  year      = {2025},
+  note      = {Method paper for RIPA2; per-fixation pupil arousal computed from short-window Savitzky-Golay smoothing.},
+}
+
+@article{huang2012mouse,
+  author    = {Huang, Jeff and White, Ryen W. and Buscher, Georg},
+  title     = {User See, User Point: Gaze and Cursor Alignment in Web Search},
+  booktitle = {Proceedings of the SIGCHI Conference on Human Factors in Computing Systems},
+  series    = {CHI '12},
+  year      = {2012},
+  pages     = {1341--1350},
+  publisher = {ACM},
+  doi       = {10.1145/2207676.2208591},
+  note      = {Foundational mouse-gaze coupling paper; cited by AdSERP for the per-axis comparison reversed in commercial-intent context.},
+}
+
+% ─── REUSED PRECEDENT: cursor-only WILD click prediction baseline ─────────
+
+@inproceedings{arapakis2016cursor,
+  author    = {Arapakis, Ioannis and Leiva, Luis A.},
+  title     = {Predicting User Engagement with Direct Displays Using Mouse Cursor Information},
+  booktitle = {Proceedings of the 39th International ACM SIGIR Conference on Research and Development in Information Retrieval},
+  series    = {SIGIR '16},
+  year      = {2016},
+  publisher = {ACM},
+  doi       = {10.1145/2911451.2911505},
+  note      = {AUC 0.86 click prediction with 638 cursor features on web search; competitive baseline against the 9-feature M4 vector reported in this paper.},
+}
