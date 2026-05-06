@@ -24,3 +24,23 @@ __pycache__/
 
 # Intermediate render artifacts (only the auto-cropped final is tracked)
 figs/*.full.png
+
+# Local TeX install + arxiv staging (build artifacts, not source)
+texmf/
+usertexmf/
+.arxiv-staging/
+
+# Bib backups + transient WIP renders
+bib/*.bak
+*.cut
+allserp-resource-WIP-*.pdf
+AllSERP-arxiv-v*.pdf
+
+# Shell-out-to-clipboard helper
+abstract.txt
+
+# Build outputs that regenerate from build.sh (paper-acmart.pdf IS tracked
+# as the canonical artifact for early sharing; the others are working renders).
+paper.pdf
+paper-anonymous.pdf
+allserp-arxiv.tar.gz

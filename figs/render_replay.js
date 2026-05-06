@@ -41,8 +41,10 @@ const OUT_FULL = path.join(FIGS_DIR, `fig4_replay_${trial}.full.png`);
     const page = await context.newPage();
     await page.goto(REPLAY, { waitUntil: 'networkidle', timeout: 30000 });
 
-    // Wait briefly for sparkline canvases to draw; they fire on DOMContentLoaded
-    await page.waitForTimeout(800);
+    // Wait for sparkline canvases to draw; they fire on DOMContentLoaded but
+    // some tracks render lazily (gaze series, AOI presence) and can take several
+    // seconds on a tall SERP.
+    await page.waitForTimeout(8000);
 
     // Read the SERP image's natural height + apply the max-y cap if given.
     const dims = await page.evaluate((capY) => {
@@ -64,8 +66,8 @@ const OUT_FULL = path.join(FIGS_DIR, `fig4_replay_${trial}.full.png`);
     }
     console.log(`SERP natural height: ${Math.round(dims.naturalHeight)}px, render: ${Math.round(dims.renderH)}px`);
 
-    // Give the page a beat to reflow + repaint canvases at the new size.
-    await page.waitForTimeout(300);
+    // Give the page time to reflow + repaint canvases at the new size.
+    await page.waitForTimeout(3000);
 
     // Full-page screenshot — captures header, expanded SERP viewer, sparkline timeline, and info-panel.
     await page.screenshot({ path: OUT_FULL, fullPage: true });

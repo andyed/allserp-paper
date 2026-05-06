@@ -2,7 +2,7 @@
 
 ## 2026-05-05 — Repository scaffolded
 
-Initial setup. Working title *AllSERP: A Typed AOI and Per-Element Behavioral Enrichment of the AdSERP Dataset*. Target venue SIGIR 2026 Resource Paper track (primary).
+Initial setup. Working title *AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset*. Target venue SIGIR 2026 Resource Paper track (primary).
 
 ### What landed
 

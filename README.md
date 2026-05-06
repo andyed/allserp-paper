@@ -1,6 +1,6 @@
 # AllSERP — Resource Paper Repository
 
-**Working title:** *AllSERP: A Typed AOI and Per-Element Behavioral Enrichment of the AdSERP Dataset*
+**Working title:** *AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset*
 
 **Target venue:** SIGIR 2026 Resource Paper track (primary). Backup: CHIIR Resource paper, JEMR.
 

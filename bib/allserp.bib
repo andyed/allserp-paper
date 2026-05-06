@@ -36,32 +36,6 @@
 
 % ─── SUBSTRATE FOR WILD VALIDATION (cited by sibling tracks) ──────────────
 
-@article{leiva2020attentivecursor,
-  author    = {Leiva, Luis A. and Arapakis, Ioannis},
-  title     = {The Attentive Cursor Dataset},
-  journal   = {Frontiers in Human Neuroscience},
-  year      = {2020},
-  volume    = {14},
-  pages     = {565664},
-  doi       = {10.3389/fnhum.2020.565664},
-  note      = {Crowdsourced cursor + click on SERPs; ~2,909 sessions, no eye tracker.},
-}
-
-% ─── SIBLING TRACKS (cited as "what's enabled") ───────────────────────────
-
-% TODO Pass 2: when the CIKM, CHI, ETTAC, RIPA siblings are submitted /
-% accepted / arxived, replace these placeholder entries with real ones.
-% For now they remain as TODO comments; do not add `@misc{...}` placeholders
-% to the bib that would suppress the LaTeX warning — the warning is the
-% reminder.
-
-% [TODO: cikm-paper] — Edmonds & Dixon, CIKM 2026, four-class graded-relevance LambdaRank.
-% [TODO: chi-task-model-paper] — Edmonds, CHI 2027 (Pittsburgh), OSEC saccade-level.
-% [TODO: ettac-paper] — Edmonds & Duchowski, ETTAC 2026 (Lyon), pupillometric LF/HF on AdSERP.
-% [TODO: ripa-pub] — Jayawardena, Shi & Gwizdka follow-up, per-fixation arousal.
-
-% ─── METHODOLOGY: pupillometric + cognitive load (cited by sibling ETTAC) ─
-
 @article{jayawardena2025ripa2,
   author    = {Jayawardena, Yasith and Jayawardana, Gavindya and Gwizdka, Jacek},
   title     = {Real-Time Pupillometry-based Index of Pupillary Activity (RIPA2)},
@@ -70,27 +44,38 @@
   note      = {Method paper for RIPA2; per-fixation pupil arousal computed from short-window Savitzky-Golay smoothing.},
 }
 
-@article{huang2012mouse,
-  author    = {Huang, Jeff and White, Ryen W. and Buscher, Georg},
-  title     = {User See, User Point: Gaze and Cursor Alignment in Web Search},
-  booktitle = {Proceedings of the SIGCHI Conference on Human Factors in Computing Systems},
-  series    = {CHI '12},
-  year      = {2012},
-  pages     = {1341--1350},
-  publisher = {ACM},
-  doi       = {10.1145/2207676.2208591},
-  note      = {Foundational mouse-gaze coupling paper; cited by AdSERP for the per-axis comparison reversed in commercial-intent context.},
+@article{duchowski2026rtlfhf,
+  author    = {Duchowski, Andrew T.},
+  title     = {Real-Time Cognitive Load Measurement of Pupillary Oscillation},
+  journal   = {Proceedings of the ACM on Computer Graphics and Interactive Techniques},
+  year      = {2026},
+  volume    = {9},
+  number    = {2},
+  doi       = {10.1145/3803537},
+  note      = {Real-time LF/HF pupil power-ratio: FFT, DWT, and Butterworth IIR variants. Establishes minimum windows from first principles; Butterworth (1 s window) is the real-time-compatible choice. Acknowledges LHIPA (Duchowski et al. 2020) as prior work.},
 }
 
-% ─── REUSED PRECEDENT: cursor-only WILD click prediction baseline ─────────
-
-@inproceedings{arapakis2016cursor,
-  author    = {Arapakis, Ioannis and Leiva, Luis A.},
-  title     = {Predicting User Engagement with Direct Displays Using Mouse Cursor Information},
-  booktitle = {Proceedings of the 39th International ACM SIGIR Conference on Research and Development in Information Retrieval},
-  series    = {SIGIR '16},
-  year      = {2016},
-  publisher = {ACM},
-  doi       = {10.1145/2911451.2911505},
-  note      = {AUC 0.86 click prediction with 638 cursor features on web search; competitive baseline against the 9-feature M4 vector reported in this paper.},
+@article{pirolli1999foraging,
+  author    = {Pirolli, Peter and Card, Stuart},
+  title     = {Information Foraging},
+  journal   = {Psychological Review},
+  year      = {1999},
+  volume    = {106},
+  number    = {4},
+  pages     = {643--675},
+  doi       = {10.1037/0033-295X.106.4.643},
+  note      = {Seminal IFT paper; introduces the information-scent / patch-foraging framework.},
 }
+
+@article{fu2007snifact,
+  author    = {Fu, Wai-Tat and Pirolli, Peter},
+  title     = {{SNIF-ACT}: A Cognitive Model of User Navigation on the World Wide Web},
+  journal   = {Human-Computer Interaction},
+  year      = {2007},
+  volume    = {22},
+  number    = {4},
+  pages     = {355--412},
+  doi       = {10.1080/07370020701638806},
+  note      = {Comprehensive HCI treatment of SNIF-ACT; rational analysis of link-following on web pages.},
+}
+

@@ -1,6 +1,6 @@
 # AllSERP Resource Paper
 
-**Working title:** *AllSERP: A Typed AOI and Per-Element Behavioral Enrichment of the AdSERP Dataset*
+**Working title:** *AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset*
 
 This is a **resource / dataset enrichment paper**. The contribution is the typed_gapfill AOI pipeline, the public extraction code, and the descriptive observed-behavior inventory across SERP element types. The paper does not propose new models; downstream model work lives in sibling tracks (CIKM 2026, CHI 2027, ETTAC 2026, standalone RIPA).
 

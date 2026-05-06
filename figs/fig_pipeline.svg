@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 694" role="img">
+<title>AOI extraction pipeline — four phases</title>
+<desc>Same synthetic SERP rendered four ways: Phase A row-projection geometry, Phase B HTML semantic typing across element types, Phase C spatial join binding labels to geometry by document order, Phase D midpoint-split gap-fill extending adjacent organic bboxes to a shared midpoint.</desc>
+<rect x="0" y="0" width="1060" height="694" fill="#FAFAF8"/>
+<text x="143.0" y="42" font-family="Georgia" font-size="13" font-weight="bold" fill="#0B1220" text-anchor="middle">(A) Screenshot-anchored geometry</text>
+<text x="143.0" y="60" font-family="Georgia" font-size="10" fill="#4B4B4B" text-anchor="middle" font-style="italic">row-projection on main column</text>
+<text x="401.0" y="42" font-family="Georgia" font-size="13" font-weight="bold" fill="#0B1220" text-anchor="middle">(B) HTML semantic typing</text>
+<text x="401.0" y="60" font-family="Georgia" font-size="10" fill="#4B4B4B" text-anchor="middle" font-style="italic">8-tier label chain</text>
+<text x="659.0" y="42" font-family="Georgia" font-size="13" font-weight="bold" fill="#0B1220" text-anchor="middle">(C) Spatial join</text>
+<text x="659.0" y="60" font-family="Georgia" font-size="10" fill="#4B4B4B" text-anchor="middle" font-style="italic">labels bound by document order</text>
+<text x="917.0" y="42" font-family="Georgia" font-size="13" font-weight="bold" fill="#0B1220" text-anchor="middle">(D) Midpoint-split gap-fill</text>
+<text x="917.0" y="60" font-family="Georgia" font-size="10" fill="#4B4B4B" text-anchor="middle" font-style="italic">organic bboxes extended</text>
+<g transform="translate(28,84)">
+<rect x="0" y="0" width="230" height="560" fill="#FFFFFF" stroke="#C9C2B0"/>
+<rect x="10" y="12" width="210" height="26" fill="#F5F5F5" rx="3"/>
+<text x="18" y="29" font-family="Georgia" font-size="9" fill="#0B1220">buy ski goggles</text>
+<rect x="176" y="50" width="44" height="64" fill="#999999" opacity="0.85" rx="2"/>
+<rect x="176" y="122" width="44" height="78" fill="#999999" opacity="0.85" rx="2"/>
+<rect x="10" y="50" width="210" height="64" fill="none" stroke="#0B1220" stroke-width="1.4" stroke-dasharray="3,3"/>
+<rect x="10" y="122" width="210" height="78" fill="none" stroke="#0B1220" stroke-width="1.4" stroke-dasharray="3,3"/>
+<rect x="10" y="210" width="210" height="50" fill="none" stroke="#0B1220" stroke-width="1.4" stroke-dasharray="3,3"/>
+<rect x="10" y="268" width="210" height="50" fill="none" stroke="#0B1220" stroke-width="1.4" stroke-dasharray="3,3"/>
+<rect x="10" y="326" width="210" height="50" fill="none" stroke="#0B1220" stroke-width="1.4" stroke-dasharray="3,3"/>
+<rect x="10" y="384" width="210" height="50" fill="none" stroke="#0B1220" stroke-width="1.4" stroke-dasharray="3,3"/>
+<rect x="10" y="442" width="210" height="50" fill="none" stroke="#0B1220" stroke-width="1.4" stroke-dasharray="3,3"/>
+<line x1="176" y1="50" x2="220" y2="114" stroke="#4B4B4B" stroke-width="1" opacity="0.6"/>
+<line x1="176" y1="122" x2="220" y2="200" stroke="#4B4B4B" stroke-width="1" opacity="0.6"/>
+</g>
+<g transform="translate(286,84)">
+<rect x="0" y="0" width="230" height="560" fill="#FFFFFF" stroke="#C9C2B0"/>
+<rect x="10" y="12" width="210" height="26" fill="#F5F5F5" rx="3"/>
+<text x="18" y="29" font-family="Georgia" font-size="9" fill="#0B1220">buy ski goggles</text>
+<rect x="176" y="50" width="44" height="64" fill="#999999" opacity="0.85" rx="2"/>
+<rect x="176" y="122" width="44" height="78" fill="#999999" opacity="0.85" rx="2"/>
+<rect x="10" y="50" width="210" height="64" fill="#E69F00" opacity="0.30"/>
+<rect x="10" y="50" width="210" height="64" fill="none" stroke="#E69F00" stroke-width="1.5"/>
+<rect x="14" y="54" width="48" height="14" fill="white" stroke="#E69F00" stroke-width="1.5" rx="2"/>
+<text x="38.0" y="64" font-family="Georgia" font-size="8" font-weight="bold" fill="#0B1220" text-anchor="middle">dd_top</text>
+<rect x="10" y="122" width="210" height="78" fill="#009E73" opacity="0.30"/>
+<rect x="10" y="122" width="210" height="78" fill="none" stroke="#009E73" stroke-width="1.5"/>
+<rect x="14" y="126" width="68" height="14" fill="white" stroke="#009E73" stroke-width="1.5" rx="2"/>
+<text x="48.0" y="136" font-family="Georgia" font-size="8" font-weight="bold" fill="#0B1220" text-anchor="middle">image_pack</text>
+<rect x="10" y="210" width="210" height="50" fill="#0072B2" opacity="0.30"/>
+<rect x="10" y="210" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.5"/>
+<rect x="14" y="214" width="50" height="14" fill="white" stroke="#0072B2" stroke-width="1.5" rx="2"/>
+<text x="39.0" y="224" font-family="Georgia" font-size="8" font-weight="bold" fill="#0B1220" text-anchor="middle">organic</text>
+<rect x="10" y="268" width="210" height="50" fill="#0072B2" opacity="0.30"/>
+<rect x="10" y="268" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.5"/>
+<rect x="14" y="272" width="50" height="14" fill="white" stroke="#0072B2" stroke-width="1.5" rx="2"/>
+<text x="39.0" y="282" font-family="Georgia" font-size="8" font-weight="bold" fill="#0B1220" text-anchor="middle">organic</text>
+<rect x="10" y="326" width="210" height="50" fill="#0072B2" opacity="0.30"/>
+<rect x="10" y="326" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.5"/>
+<rect x="14" y="330" width="50" height="14" fill="white" stroke="#0072B2" stroke-width="1.5" rx="2"/>
+<text x="39.0" y="340" font-family="Georgia" font-size="8" font-weight="bold" fill="#0B1220" text-anchor="middle">organic</text>
+<rect x="10" y="384" width="210" height="50" fill="#0072B2" opacity="0.30"/>
+<rect x="10" y="384" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.5"/>
+<rect x="14" y="388" width="50" height="14" fill="white" stroke="#0072B2" stroke-width="1.5" rx="2"/>
+<text x="39.0" y="398" font-family="Georgia" font-size="8" font-weight="bold" fill="#0B1220" text-anchor="middle">organic</text>
+<rect x="10" y="442" width="210" height="50" fill="#0072B2" opacity="0.30"/>
+<rect x="10" y="442" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.5"/>
+<rect x="14" y="446" width="50" height="14" fill="white" stroke="#0072B2" stroke-width="1.5" rx="2"/>
+<text x="39.0" y="456" font-family="Georgia" font-size="8" font-weight="bold" fill="#0B1220" text-anchor="middle">organic</text>
+<rect x="178" y="54" width="36" height="14" fill="white" stroke="#999999" stroke-width="1.5" rx="2"/>
+<text x="196" y="64" font-family="Georgia" font-size="8" font-weight="bold" fill="#0B1220" text-anchor="middle">dd_right</text>
+<rect x="178" y="126" width="36" height="14" fill="white" stroke="#999999" stroke-width="1.5" rx="2"/>
+<text x="196" y="136" font-family="Georgia" font-size="8" font-weight="bold" fill="#0B1220" text-anchor="middle">dd_right</text>
+</g>
+<g transform="translate(544,84)">
+<rect x="0" y="0" width="230" height="560" fill="#FFFFFF" stroke="#C9C2B0"/>
+<rect x="10" y="12" width="210" height="26" fill="#F5F5F5" rx="3"/>
+<text x="18" y="29" font-family="Georgia" font-size="9" fill="#0B1220">buy ski goggles</text>
+<rect x="176" y="50" width="44" height="64" fill="#999999" opacity="0.85" rx="2"/>
+<rect x="176" y="122" width="44" height="78" fill="#999999" opacity="0.85" rx="2"/>
+<rect x="10" y="50" width="210" height="64" fill="#E69F00" opacity="0.22"/>
+<rect x="10" y="50" width="210" height="64" fill="none" stroke="#E69F00" stroke-width="1.4"/>
+<circle cx="1" cy="82.0" r="9" fill="#0B1220"/>
+<text x="1" y="85.0" font-family="Georgia" font-size="9" font-weight="bold" fill="white" text-anchor="middle">0</text>
+<rect x="10" y="122" width="210" height="78" fill="#009E73" opacity="0.22"/>
+<rect x="10" y="122" width="210" height="78" fill="none" stroke="#009E73" stroke-width="1.4"/>
+<circle cx="1" cy="161.0" r="9" fill="#0B1220"/>
+<text x="1" y="164.0" font-family="Georgia" font-size="9" font-weight="bold" fill="white" text-anchor="middle">1</text>
+<rect x="10" y="210" width="210" height="50" fill="#0072B2" opacity="0.22"/>
+<rect x="10" y="210" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.4"/>
+<circle cx="1" cy="235.0" r="9" fill="#0B1220"/>
+<text x="1" y="238.0" font-family="Georgia" font-size="9" font-weight="bold" fill="white" text-anchor="middle">2</text>
+<rect x="10" y="268" width="210" height="50" fill="#0072B2" opacity="0.22"/>
+<rect x="10" y="268" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.4"/>
+<circle cx="1" cy="293.0" r="9" fill="#0B1220"/>
+<text x="1" y="296.0" font-family="Georgia" font-size="9" font-weight="bold" fill="white" text-anchor="middle">3</text>
+<rect x="10" y="326" width="210" height="50" fill="#0072B2" opacity="0.22"/>
+<rect x="10" y="326" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.4"/>
+<circle cx="1" cy="351.0" r="9" fill="#0B1220"/>
+<text x="1" y="354.0" font-family="Georgia" font-size="9" font-weight="bold" fill="white" text-anchor="middle">4</text>
+<rect x="10" y="384" width="210" height="50" fill="#0072B2" opacity="0.22"/>
+<rect x="10" y="384" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.4"/>
+<circle cx="1" cy="409.0" r="9" fill="#0B1220"/>
+<text x="1" y="412.0" font-family="Georgia" font-size="9" font-weight="bold" fill="white" text-anchor="middle">5</text>
+<rect x="10" y="442" width="210" height="50" fill="#0072B2" opacity="0.22"/>
+<rect x="10" y="442" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.4"/>
+<circle cx="1" cy="467.0" r="9" fill="#0B1220"/>
+<text x="1" y="470.0" font-family="Georgia" font-size="9" font-weight="bold" fill="white" text-anchor="middle">6</text>
+<rect x="176" y="50" width="44" height="64" fill="#999999" opacity="0.5"/>
+<circle cx="226" cy="82.0" r="8" fill="#0B1220" stroke="#4B4B4B" stroke-width="1" stroke-dasharray="2,1.5"/>
+<text x="226" y="85.0" font-family="Georgia" font-size="8" font-weight="bold" fill="white" text-anchor="middle">−1</text>
+<rect x="176" y="122" width="44" height="78" fill="#999999" opacity="0.5"/>
+<circle cx="226" cy="161.0" r="8" fill="#0B1220" stroke="#4B4B4B" stroke-width="1" stroke-dasharray="2,1.5"/>
+<text x="226" y="164.0" font-family="Georgia" font-size="8" font-weight="bold" fill="white" text-anchor="middle">−1</text>
+</g>
+<g transform="translate(802,84)">
+<rect x="0" y="0" width="230" height="560" fill="#FFFFFF" stroke="#C9C2B0"/>
+<rect x="10" y="12" width="210" height="26" fill="#F5F5F5" rx="3"/>
+<text x="18" y="29" font-family="Georgia" font-size="9" fill="#0B1220">buy ski goggles</text>
+<rect x="176" y="50" width="44" height="64" fill="#999999" opacity="0.85" rx="2"/>
+<rect x="176" y="122" width="44" height="78" fill="#999999" opacity="0.85" rx="2"/>
+<rect x="10" y="50" width="210" height="64" fill="#E69F00" opacity="0.22"/>
+<rect x="10" y="50" width="210" height="64" fill="none" stroke="#E69F00" stroke-width="1.4"/>
+<rect x="10" y="122" width="210" height="78" fill="#009E73" opacity="0.22"/>
+<rect x="10" y="122" width="210" height="78" fill="none" stroke="#009E73" stroke-width="1.4"/>
+<rect x="10" y="210" width="210" height="50" fill="#0072B2" opacity="0.22"/>
+<rect x="10" y="210" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.4"/>
+<rect x="10" y="268" width="210" height="50" fill="#0072B2" opacity="0.22"/>
+<rect x="10" y="268" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.4"/>
+<rect x="10" y="326" width="210" height="50" fill="#0072B2" opacity="0.22"/>
+<rect x="10" y="326" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.4"/>
+<rect x="10" y="384" width="210" height="50" fill="#0072B2" opacity="0.22"/>
+<rect x="10" y="384" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.4"/>
+<rect x="10" y="442" width="210" height="50" fill="#0072B2" opacity="0.22"/>
+<rect x="10" y="442" width="210" height="50" fill="none" stroke="#0072B2" stroke-width="1.4"/>
+<rect x="10" y="260" width="210" height="4" fill="#5B3EB8" opacity="0.32"/>
+<rect x="10" y="260" width="210" height="4" fill="none" stroke="#5B3EB8" stroke-width="1" stroke-dasharray="2,2"/>
+<rect x="10" y="264" width="210" height="4" fill="#5B3EB8" opacity="0.32"/>
+<rect x="10" y="264" width="210" height="4" fill="none" stroke="#5B3EB8" stroke-width="1" stroke-dasharray="2,2"/>
+<rect x="10" y="318" width="210" height="4" fill="#5B3EB8" opacity="0.32"/>
+<rect x="10" y="318" width="210" height="4" fill="none" stroke="#5B3EB8" stroke-width="1" stroke-dasharray="2,2"/>
+<rect x="10" y="322" width="210" height="4" fill="#5B3EB8" opacity="0.32"/>
+<rect x="10" y="322" width="210" height="4" fill="none" stroke="#5B3EB8" stroke-width="1" stroke-dasharray="2,2"/>
+<rect x="10" y="376" width="210" height="4" fill="#5B3EB8" opacity="0.32"/>
+<rect x="10" y="376" width="210" height="4" fill="none" stroke="#5B3EB8" stroke-width="1" stroke-dasharray="2,2"/>
+<rect x="10" y="380" width="210" height="4" fill="#5B3EB8" opacity="0.32"/>
+<rect x="10" y="380" width="210" height="4" fill="none" stroke="#5B3EB8" stroke-width="1" stroke-dasharray="2,2"/>
+<rect x="10" y="434" width="210" height="4" fill="#5B3EB8" opacity="0.32"/>
+<rect x="10" y="434" width="210" height="4" fill="none" stroke="#5B3EB8" stroke-width="1" stroke-dasharray="2,2"/>
+<rect x="10" y="438" width="210" height="4" fill="#5B3EB8" opacity="0.32"/>
+<rect x="10" y="438" width="210" height="4" fill="none" stroke="#5B3EB8" stroke-width="1" stroke-dasharray="2,2"/>
+<line x1="6" y1="264" x2="224" y2="264" stroke="#5B3EB8" stroke-width="1.5" stroke-dasharray="4,2"/>
+<text x="228" y="267" font-family="Georgia" font-size="7" fill="#0B1220" font-style="italic">midpoint</text>
+</g>
+<text x="28" y="670" font-family="Georgia" font-size="8" fill="#4B4B4B">CV-detected card spans (dashed). Right-rail</text>
+<text x="28" y="681" font-family="Georgia" font-size="8" fill="#4B4B4B">cards struck through: detected but off-axis.</text>
+<text x="286" y="670" font-family="Georgia" font-size="8" fill="#4B4B4B">Labels via heading text → class → data-attrid</text>
+<text x="286" y="681" font-family="Georgia" font-size="8" fill="#4B4B4B">chain. 13 element types incl. off-axis</text>
+<text x="286" y="692" font-family="Georgia" font-size="8" fill="#4B4B4B">dd_right.</text>
+<text x="544" y="670" font-family="Georgia" font-size="8" fill="#4B4B4B">Position 0…N in display order. Right-rail</text>
+<text x="544" y="681" font-family="Georgia" font-size="8" fill="#4B4B4B">and footer pulled to position −1.</text>
+<text x="802" y="670" font-family="Georgia" font-size="8" fill="#4B4B4B">Adjacent organic pairs share a midpoint;</text>
+<text x="802" y="681" font-family="Georgia" font-size="8" fill="#4B4B4B">gap-fill claims every Y for exactly one</text>
+<text x="802" y="692" font-family="Georgia" font-size="8" fill="#4B4B4B">bbox.</text>
+</svg>
