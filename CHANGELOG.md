@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-10 — Gaze-cursor spatial-registration validity paragraph
+
+Added a `\paragraph{Gaze-cursor spatial registration}` to §sec:validation. The check: for each trial with a final click, take all gaze fixations whose midpoint sits in $[t_\text{click}-1500\,\text{ms}, t_\text{click}]$ and compute the minimum Euclidean distance from any such fixation to the click coordinates. Median 128.8 px, IQR 80.4--206.5, p95 446.2; 17.8 % (489 / 2,752) above 250 px ($\sim$3° visual angle). Concurrent at-click distance reported alongside (median 506.8 px) only to disambiguate the question — gaze leads cursor by several hundred milliseconds, so synchronous co-location isn't the right registration probe.
+
+Producer: `scripts/audit_gaze_cursor_coverage.py` (in upstream `attentional-foraging`).
+Output: `scripts/output/allserp/gaze_cursor_coverage.json` (provenance-stamped via `muriel.provenance`).
+
 ## 2026-05-05 — Repository scaffolded
 
 Initial setup. Working title *AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset*. Target venue SIGIR 2026 Resource Paper track (primary).
