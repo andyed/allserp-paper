@@ -10,15 +10,7 @@
 
 ## Scope
 
-This is a **resource / dataset enrichment paper**: it describes the AOI extraction pipeline, validates it against shipped ground-truth, reports descriptive observed-behavior statistics per SERP element type, and points to enabled downstream analyses. **It is not a model paper.**
-
-Explicit out-of-scope (other paper tracks):
-- Four-class taxonomy as graded-relevance label generator → **CIKM 2026** (algorithmic; ranking).
-- OSEC cognitive task model — Orient/Survey/Evaluate/Commit phase machinery → **CHI 2027** (Pittsburgh; Andy + Anderson rational-analysis lineage).
-- Per-etype LF/HF cognitive load gradients → **ETTAC 2026** (Lyon, Aug 21; Duchowski coauthor).
-- Per-fixation RIPA2 arousal / "lingered first time" findings → **standalone RIPA pub** (Gavindya/team track).
-
-The AllSERP paper points to each of these via "what's enabled" pointers; it does not duplicate their findings.
+This is a **resource / dataset enrichment paper**: it describes the AOI extraction pipeline, validates it against shipped ground-truth, reports descriptive observed-behavior statistics per SERP element type, and points to enabled downstream analyses. **It is not a model paper.** Downstream model work is scoped out to sibling tracks and surfaces only as "what's enabled" pointers in §5.
 
 ---
 
