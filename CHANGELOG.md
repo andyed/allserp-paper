@@ -27,11 +27,7 @@ All numbers anchor to the `attentional-foraging` `bbox-y-coverage-fix` cascade (
 - Calibration-bias hypothesis tested and refuted (`audit_screenshot_alignment.py`, `audit_calibration_bias.py`)
 - K-bbox-y-* rows landed for NB21 / NB22 / NB28 / NB30
 
-### Out-of-scope (sibling tracks)
+### Out-of-scope
 
-- CIKM 2026 (algorithmic / four-class graded relevance)
-- CHI 2027 Pittsburgh (OSEC task model)
-- ETTAC 2026 Lyon (LF/HF cognitive load)
-- Standalone RIPA pub (Gavindya/team)
-
-The paper points to each as "what's enabled" in §5.
+Downstream model work is scoped out to sibling tracks and surfaces only
+as "what's enabled" pointers in §5.
