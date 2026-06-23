@@ -29,7 +29,8 @@ This is a **resource / dataset enrichment paper**: it describes the AOI extracti
 
 ```
 allserp-paper/
-  paper.md                  — markdown draft (writing-first; LaTeX conversion later)
+  paper.tex                 — CANONICAL paper source (ACM acmart). Build: ./build.sh --acmart
+  paper.md                  — FROZEN legacy markdown draft (pre-2026-05-06 acmart-format conversion; not current)
   README.md                 — this file
   CHANGELOG.md              — version + decision history
   CLAUDE.md                 — project conventions for AI-assisted edits

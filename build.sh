@@ -2,11 +2,17 @@
 # Build paper PDFs.
 #
 # Usage:
-#   ./build.sh                # markdown working copy via pandoc -> paper.pdf
-#   ./build.sh --acmart       # ACM SIGIR / CHIIR submission via acmart -> paper-acmart.pdf
-#   ./build.sh --anonymous    # anonymized version of the markdown copy
+#   ./build.sh --acmart       # CANONICAL: paper.tex via acmart -> paper-acmart.pdf
+#   ./build.sh                # FROZEN legacy markdown draft via pandoc -> paper.pdf
+#   ./build.sh --anonymous    # FROZEN legacy markdown draft, anonymized -> paper-anonymous.pdf
 #
-# acmart is bundled in ./texmf/ (via local TEXINPUTS); no system-wide install needed.
+# CANONICAL SOURCE IS paper.tex. paper.md is frozen at the 2026-05-06 acmart-format conversion and is
+# NOT current (missing top-ads subdivision, the dd_top cell split, reviewer-pass fixes). The
+# pandoc paths below are a legacy escape hatch only. The --anonymous double-blind path still
+# anonymizes the STALE markdown and must be re-based on paper.tex before the next venue
+# submission — see docs/anon-checklist.md.
+#
+# acmart is bundled locally (via local TEXINPUTS); no system-wide install needed.
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -38,6 +44,10 @@ if (( ACMART )); then
 fi
 
 # Markdown working copy via pandoc -------------------------------------------
+# NOTE: paper.md is the FROZEN legacy draft (pre-2026-05-06 conversion). paper.tex is canonical.
+echo "WARNING: building from paper.md — the FROZEN legacy markdown draft (pre-2026-05-06 acmart-format" >&2
+echo "         conversion), missing the dd_top cell split and reviewer-pass fixes that paper.tex" >&2
+echo "         has. For the current paper run: ./build.sh --acmart" >&2
 
 # Convert LaTeX-style \cite{...} into pandoc [@...]
 sed -E 's/\\cite\{([^}]+)\}/\[@\1\]/g; s/; *@/; @/g' paper.md \

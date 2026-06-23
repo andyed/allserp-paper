@@ -1,3 +1,22 @@
+<!--
+  DEPRECATED / FROZEN — DO NOT EDIT FOR CONTENT.
+  Canonical source is paper.tex (ACM acmart). Build the current paper with: ./build.sh --acmart
+  This markdown copy was frozen at the 2026-05-06 acmart-format conversion (commit ef15946) and is
+  retained only because ./build.sh (default) and ./build.sh --anonymous still consume it via pandoc.
+  It is MISSING content that paper.tex has, including:
+    - the top-ads (dd_top) subdivision paragraphs
+    - the dd_top cell split: the typed_gapfill_cellsplit flavor, the within-carousel figure, and the
+      dd_right-as-variance-reduction-covariate framing (shipped on branch feat/dd-top-cellsplit, 51e22a9)
+  For current content read paper.tex. The arXiv bundle (make-arxiv-bundle.sh) ships paper.tex, not this.
+-->
+
+> **⚠️ Frozen legacy draft — not the canonical paper.** The canonical source is
+> [`paper.tex`](paper.tex) (ACM acmart format); build it with `./build.sh --acmart`. This markdown
+> copy was frozen at the 2026-05-06 acmart-format conversion and lacks later content: the top-ads
+> subdivision, the `dd_top` cell split (`typed_gapfill_cellsplit`, the within-carousel figure, the
+> `dd_right` variance-reduction-covariate framing), and reviewer-pass fixes. See
+> [`CHANGELOG.md`](CHANGELOG.md) and [`README.md`](README.md).
+
 ## Abstract
 
 We release **AllSERP**, a typed AOI and per-element behavioral enrichment of the AdSERP commercial-intent SERP corpus \cite{latifzadeh2025adserp}. AdSERP ships 2,776 trials of full-page screenshots, captured SERP HTML, 150 Hz Gazepoint eye tracking, evtrack mouse telemetry, scroll, and pupil signals against real Google SERPs collected before AI Overviews — but its bounding boxes cover only ad surfaces (15.5 % of attributable clicks). AllSERP adds pixel-accurate organic and widget bboxes via screenshot-anchored CV, semantic types across thirteen element types via an HTML parser, an inter-result gap-fill flavor (`typed_gapfill`), and X+Y click attribution that reaches 91.7 % of the corpus while flagging the rest at trial level. The Phase C ad-vs-non-ad partition is internally consistent with the shipped ad rectangles (0 disagreements across 38,250 classifications). We ship the pipeline, per-trial JSONs, a corpus CSV, and a browser-based replay viewer; everything is reproducible from the AdSERP Zenodo volume. The release enables per-element click, fixation, regression, and above-fold analyses that the shipped ads-vs-organic split could not resolve.

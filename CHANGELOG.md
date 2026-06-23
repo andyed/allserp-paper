@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-06-23 — paper.md deprecated; paper.tex is canonical
+
+`paper.md` is frozen as of the 2026-05-06 acmart-format conversion (commit `ef15946`). Everything since
+— ARS-audit cleanup, reviewer-pass fixes, and the `dd_top` cell split (`typed_gapfill_cellsplit`,
+within-carousel figure, `dd_right`-as-variance-reduction-covariate framing; commit `51e22a9`) — lives
+only in `paper.tex`, the canonical acmart source built via `./build.sh --acmart` and shipped by
+`make-arxiv-bundle.sh`. `paper.md` is retained (not deleted) because `./build.sh` (default) and
+`./build.sh --anonymous` still consume it via pandoc; a deprecation header now marks it frozen, and
+`build.sh` warns at runtime. **Follow-up:** re-base the anonymization pipeline (`docs/anon-checklist.md`,
+`./build.sh --anonymous`) onto `paper.tex` before the next double-blind submission — it currently
+anonymizes stale content.
+
 ## 2026-05-10 — Gaze-cursor spatial-registration validity paragraph
 
 Added a `\paragraph{Gaze-cursor spatial registration}` to §sec:validation. The check: for each trial with a final click, take all gaze fixations whose midpoint sits in $[t_\text{click}-1500\,\text{ms}, t_\text{click}]$ and compute the minimum Euclidean distance from any such fixation to the click coordinates. Median 128.8 px, IQR 80.4--206.5, p95 446.2; 17.8 % (489 / 2,752) above 250 px ($\sim$3° visual angle). Concurrent at-click distance reported alongside (median 506.8 px) only to disambiguate the question — gaze leads cursor by several hundred milliseconds, so synchronous co-location isn't the right registration probe.
