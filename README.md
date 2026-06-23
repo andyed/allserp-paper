@@ -21,6 +21,7 @@ This is a **resource / dataset enrichment paper**: it describes the AOI extracti
 3. **91.7 %** of corpus-wide final clicks attributable to a main-axis AOI under `typed_gapfill` (vs 75.1 % under tight typed bboxes; the remaining 8.3 % flagged off-axis at trial level — 158 hard-error trials [right-rail dd_right + page chrome + far-off-target] + ~73 no-click / pathological).
 4. **Calibration-bias hypothesis tested and refuted** — opposite-direction click vs fixation bias confirms the data is screenshot-aligned; no coordinate-space drift to correct.
 5. **Per-element-type descriptive inventory** across 9 etypes: organic / dd_top / native_ad / paa / image_pack / knowledge_panel / top_places / unknown_widget / other_widget. Click share, fixation coverage, regression rate, above-fold incidence.
+6. **Cell-aware flavor** (`typed_gapfill_cellsplit`) — subdivides the `dd_top` top-ads carousel into its per-card cells (6,373 cells across 1,550 trials, 100 % aligned to the block-level bboxes; modal 4 cells/carousel). Carries sparse organic sub-cells (174 aligned cells, 75 trials — least-mature tier) and the off-axis `dd_right` right-rail block (861 trials) as a **variance-reduction covariate**, not a modeling target. Filtering `role=='parent'` and `main_axis` recovers `typed_gapfill` exactly.
 
 ---
 
@@ -52,6 +53,9 @@ Every quantitative claim in this paper traces back to:
   - `docs/null-findings/2026-05-05-bbox-y-coverage.md` — comprehensive cascade writeup
   - `docs/methodology/organic-result-aoi-extraction.md` — pipeline spec
   - `docs/methodology/attribution-cascade-synthesis.md` — flavor history
+  - `docs/methodology/dd-top-cellsplit.md` — cell-split methodology, tier maturity, dd_right-as-covariate rationale
+  - `scripts/output/adserp_aois_by_trial_id_typed_gapfill_cellsplit.csv` + `scripts/output/cellsplit_coverage.json` — cell-aware flavor + coverage
+  - `scripts/cellsplit_click_composition.py` → `scripts/output/cellsplit_click_composition/` — within-carousel click composition (Fig. cellsplit)
 
 - **`approach-retreat` repo** (`bbox-y-coverage-fix` branch, merged 2026-05-05):
   - `site/replay/` — visual verification on 147-trial replay set

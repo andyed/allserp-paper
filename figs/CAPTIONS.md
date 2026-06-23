@@ -41,6 +41,14 @@ This file documents intended figures + caption stubs. Figures themselves are not
 **Type:** horizontal stacked bar with 9 etypes
 **Caption:** "Above-fold incidence per element type (above fold = AOI top_y < initial viewport height, scroll = 0). Organic results sit above the initial fold on 97.3 % of trials; widgets (knowledge_panel, paa, top_places) on 1–11 %. Per-element above-fold conditioning is therefore necessary for any analysis that joins viewport visibility with click outcome — pooling across element types averages out the dominant geometric reality."
 
+## Fig 6 — dd_top cell split anatomy (two-panel bar chart)
+
+**File:** `fig_cellsplit_composition.pdf` / `.png` (rendered)
+**Source data:** `attentional-foraging/scripts/output/nb25_cellsplit_composition/cells_per_carousel.csv` (left); `attentional-foraging/scripts/output/cellsplit_click_composition/by_cell_index.csv` (right)
+**Production:** `figs/render_cellsplit_composition.py` (matplotlib; all text in INK ≈ 18:1 contrast on BG, well above the 8:1 floor)
+**Type:** two side-by-side bar charts
+**Caption:** "Anatomy of the `dd_top` cell split. Left: top-ads carousels hold 2–6 cards, modal 4 (61.9 % of 1,550 carousels). Right: of the 237 clicks landing inside a carousel, the within-carousel distribution on the modal four-cell layout (n = 142) favors the leftmost cell (31.7 % vs the 25 % uniform baseline) but spreads across all cells. The block-level `dd_top` AOI conflates this distribution; the cell-aware flavor (`typed_gapfill_cellsplit`) exposes it."
+
 ---
 
 ## Notes on rendering
