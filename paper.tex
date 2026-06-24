@@ -34,7 +34,7 @@
 \renewcommand{\shortauthors}{Edmonds}
 
 \begin{abstract}
-We release \textbf{AllSERP}, a typed AOI and per-element behavioral enrichment of the AdSERP commercial-intent SERP corpus~\cite{latifzadeh2025adserp}. AdSERP ships 2,776 trials of full-page screenshots, captured SERP HTML, 150~Hz Gazepoint eye tracking, \texttt{evtrack} mouse telemetry~\cite{leiva2013evtrack}, scroll, and pupil signals against real Google SERPs collected before AI Overviews, but its bounding boxes cover only ad surfaces (15.5\,\% of attributable clicks). AllSERP adds pixel-accurate organic and widget bboxes via screenshot-anchored CV, semantic types across thirteen element types via an HTML parser, an inter-result gap-fill flavor (\path{typed_gapfill}), a cell-aware flavor that subdivides the top-ads carousel into its per-card cells, and X+Y click attribution that reaches 91.7\,\% of the corpus while flagging the rest at trial level. The typed ad-vs-non-ad partition is internally consistent with the shipped ad rectangles (0 disagreements across 38,250 classifications). We ship the pipeline, per-trial JSONs, a corpus CSV, and a browser-based replay viewer. Everything is reproducible from the AdSERP Zenodo volume. The release enables per-element click, fixation, regression, and above-fold analyses that the shipped ads-vs-organic split could not resolve.
+We release \textbf{AllSERP}, a typed AOI and per-element behavioral enrichment of the AdSERP commercial-intent SERP corpus~\cite{latifzadeh2025adserp}. AdSERP ships 2,776 trials of full-page screenshots, captured SERP HTML, 150~Hz Gazepoint eye tracking, \texttt{evtrack} mouse telemetry~\cite{leiva2013evtrack}, scroll, and pupil signals against real Google SERPs collected before AI Overviews, but its bounding boxes cover only ad surfaces (15.5\,\% of attributable clicks). AllSERP adds pixel-accurate organic and widget bboxes via screenshot-anchored CV, semantic types across thirteen element types (nine main-axis) via an HTML parser, an inter-result gap-fill flavor (\path{typed_gapfill}), a cell-aware flavor that subdivides the top-ads carousel into its per-card cells, and X+Y click attribution that reaches 91.7\,\% of the corpus while flagging the rest at trial level. The typed ad-vs-non-ad partition is internally consistent with the shipped ad rectangles (0 disagreements across 38,250 classifications). We ship the pipeline, per-trial JSONs, a corpus CSV, and a browser-based replay viewer. Everything is reproducible from the AdSERP Zenodo volume. The release enables per-element click, fixation, regression, and above-fold analyses that the shipped ads-vs-organic split could not resolve.
 \end{abstract}
 
 \begin{CCSXML}
@@ -118,7 +118,7 @@ The shipped ad rectangles~\cite{latifzadeh2025adserp} were extracted by the AdSE
 
 \section{Element-Type Inventory}\label{sec:inventory}
 
-Population: 2,775 trials processed (1 trial dropped for missing meta or fixations), yielding 37,142 typed AOI rows under the gap-fill flavor. Table~\ref{tab:inventory} reports the per-element-type behavioral inventory. Column denominators differ across columns (see notes below).
+Population: 2,775 trials processed (1 trial dropped for missing meta or fixations), yielding 37,162 typed AOI rows under the gap-fill flavor. Table~\ref{tab:inventory} reports the per-element-type behavioral inventory. Column denominators differ across columns (see notes below).
 
 \begin{table*}[t]
   \caption{Per-element-type behavioral inventory under the gap-fill flavor. Etypes ordered by AOI count, descending.}
@@ -128,13 +128,13 @@ Population: 2,775 trials processed (1 trial dropped for missing meta or fixation
     \toprule
     etype & n\_aois & fixated \% & n\_clicks & click \% & regressive \% & above-fold \% \\
     \midrule
-    organic         & 22,346 & 55.6           & 2,084 & 79.1 & 57.8 & 97.3 \\
+    organic         & 22,346 & 55.6           & 2,084 & 79.1 & 57.8 & 97.7 \\
     native\_ad      & 9,214  & 36.4           & 156   & 5.9  & 46.9 & 37.8 \\
-    image\_pack     & 1,584  & 52.0           & 55    & 2.1  & 59.3 & 20.5 \\
+    image\_pack     & 1,584  & 52.0           & 55    & 2.1  & 59.3 & 21.0 \\
     dd\_top         & 1,582  & \textbf{99.7}  & 254   & 9.6  & 83.4 & 57.0 \\
     unknown\_widget & 788    & 17.4           & 7     & 0.3  & 26.3 & 0.0  \\
-    paa             & 769    & 40.6           & 44    & 1.7  & 45.8 & 11.3 \\
-    knowledge\_panel& 745    & 48.6           & 31    & 1.2  & 44.5 & 3.5  \\
+    paa             & 769    & 40.6           & 44    & 1.7  & 45.8 & 12.2 \\
+    knowledge\_panel& 745    & 48.6           & 31    & 1.2  & 44.5 & 3.8  \\
     top\_places     & 84     & 54.8           & 1     & 0.0  & 50.0 & 2.1  \\
     other\_widget   & 50     & 58.0           & 2     & 0.1  & 44.8 & 1.1  \\
     \bottomrule
@@ -143,7 +143,7 @@ Population: 2,775 trials processed (1 trial dropped for missing meta or fixation
 
 \paragraph{Column notes} \emph{Fixated~\%} is over the etype's full AOI population. \emph{Click~\%} is over 2,634 click events attributed to a gap-fill AOI (89\,\% of all click events). The remaining 11\,\% are intermediate cursor clicks that landed off any main-axis AOI. The 91.7\,\% corpus-level rate quoted in the abstract counts trials whose \emph{final} click lands main-axis under the trial filter, a different denominator. \emph{Regressive~\%} is over the fixated subset and is therefore not directly comparable across etypes whose fixation rates differ widely (organic 56\,\%, dd\_top 99.7\,\%). \emph{Above-fold~\%} is the share of the 2,776 trials in which at least one AOI of that etype sits in the initial viewport.
 
-\paragraph{Read} \path{dd_top} reaches near-universal fixation but only 9.6\,\% of clicks. The click-fixation dissociation is preserved at element-type granularity, sharper than at the ad-vs-organic level the original AdSERP analysis used. The pattern (36.4\,\% vs 5.9\,\% for \path{native_ad}, 99.7\,\% vs 9.6\,\% for \path{dd_top}) matches an attention-without-commitment account. Organic results occupy the initial viewport on 97\,\% of trials and capture 79\,\% of clicks. Widgets and ads dominate above-fold geometry but not click outcomes.
+\paragraph{Read} \path{dd_top} reaches near-universal fixation but only 9.6\,\% of clicks. The click-fixation dissociation is preserved at element-type granularity, sharper than at the ad-vs-organic level the original AdSERP analysis used. The pattern (36.4\,\% vs 5.9\,\% for \path{native_ad}, 99.7\,\% vs 9.6\,\% for \path{dd_top}) shows high fixation coverage decoupled from click share. Organic results occupy the initial viewport on 97\,\% of trials and capture 79\,\% of clicks. Ads and widgets hold substantial above-fold geometry while drawing few clicks.
 
 \begin{figure*}[t]
   \centering
@@ -153,7 +153,7 @@ Population: 2,775 trials processed (1 trial dropped for missing meta or fixation
   \label{fig:rank}
 \end{figure*}
 
-\paragraph{Within-carousel composition} The cell-aware flavor (\S\ref{sec:public-release}) resolves the \path{dd_top} top-ads block into its cards. Of the 1,582 carousels, 1,550 (55.8\,\% of all trials) subdivide into a median of four cells (Fig.~\ref{fig:cellsplit}, left; range 2--6, modal 4 at 61.9\,\%). Of the 237 clicks landing inside a carousel, the leftmost cell draws 31.7\,\% on the modal four-cell layout ($n = 142$) against a 25\,\% uniform baseline, with the remaining cells near-even at 21--24\,\% (Fig.~\ref{fig:cellsplit}, right). The leftmost-card bias is modest and the click count small, but the block-level \path{dd_top} AOI cannot express this distribution at all: the subdivision is what makes within-surface position legible. Producer: \path{scripts/cellsplit_click_composition.py}.
+\paragraph{Within-carousel composition} The cell-aware flavor (\S\ref{sec:public-release}) resolves the \path{dd_top} top-ads block into its cards. Of the 1,582 carousels, 1,550 (55.8\,\% of the 2{,}776 trials) subdivide into a median of four cells (Fig.~\ref{fig:cellsplit}, left; range 2--6, modal 4 at 61.9\,\%). Of the 237 \emph{final} clicks landing inside a carousel (Table~\ref{tab:inventory}'s 254 \path{dd_top} clicks count all click events on the block; the cell split scores final clicks only), the leftmost cell draws 31.7\,\% on the modal four-cell layout ($n = 142$) against a 25\,\% uniform baseline, with the remaining cells near-even at 21--24\,\% (Fig.~\ref{fig:cellsplit}, right). The leftmost-card bias is modest and the click count small, but the block-level \path{dd_top} AOI cannot express this distribution at all: the subdivision is what makes within-surface position legible. Producer: \path{scripts/cellsplit_click_composition.py}.
 
 \begin{figure*}[t]
   \centering
@@ -186,7 +186,7 @@ Population: 2,775 trials processed (1 trial dropped for missing meta or fixation
   \item \textbf{Derived data (CC-BY-4.0).} The release ships three corpus-CSV flavors of per-AOI geometry plus matching per-trial JSONs ($\sim$19~MB across 2,776 trials) and a per-(trial, position) content-feature file with lexical, query-overlap, and semantic-cosine features:
   \begin{itemize}
     \item \path{adserp_aois_by_trial_id_typed_gapfill.csv} --- 9-etype gap-fill flavor (Phase A $\rightarrow$ D). \textbf{Recommended default} and the basis for the inventory in \S\ref{sec:inventory}.
-    \item \path{adserp_aois_by_trial_id_organic_hybrid.csv} --- 3-etype taxonomy (\texttt{organic}, \path{native_ad}, \path{dd_top}) with all-main-axis position numbering. Non-ad widgets (PAA, knowledge panels, image packs, top\_places, other widgets) are pooled into \texttt{organic}, so the \texttt{organic} row count (26,590) exceeds \path{typed_gapfill}'s (22,354). Use this flavor for continuous position-rank analyses where the topmost SERP slot is the unit of interest; use \path{typed_gapfill} when per-widget fixation or pupil signals must be disambiguated. Fig.~\ref{fig:rank} (right panel) uses this flavor.
+    \item \path{adserp_aois_by_trial_id_organic_hybrid.csv} --- 3-etype taxonomy (\texttt{organic}, \path{native_ad}, \path{dd_top}) with all-main-axis position numbering. Non-ad widgets (PAA, knowledge panels, image packs, top\_places, other widgets) are pooled into \texttt{organic}, so the \texttt{organic} row count (26,590) exceeds \path{typed_gapfill}'s (22,354; both are full-corpus CSV row counts over all 2{,}776 trials, whereas the \S\ref{sec:inventory} inventory tabulates the 2{,}775 processed trials). Use this flavor for continuous position-rank analyses where the topmost SERP slot is the unit of interest; use \path{typed_gapfill} when per-widget fixation or pupil signals must be disambiguated. Fig.~\ref{fig:rank} (right panel) uses this flavor.
     \item \path{adserp_aois_by_trial_id_typed_gapfill_cellsplit.csv} --- cell-aware superset of \path{typed_gapfill}. Filtering \texttt{role == 'parent'} and \path{main_axis} recovers \path{typed_gapfill} exactly; additional \texttt{role == 'cell'} rows subdivide the \path{dd_top} carousel (6,373 cells across 1,550 trials, 100\,\% aligned to the block bboxes), carry sparse organic sub-cells (174 aligned cells, 75 trials), and expose the off-axis \path{dd_right} right-rail block (861 trials) and its cells (184). The right-rail rows (\path{main_axis}~=~false) are a \textbf{variance-reduction covariate}: most consumers filter them out, but conditioning on right-rail exposure absorbs variance in main-axis models. Use this flavor for within-surface (per-card) analysis of the top-ads block.
   \end{itemize}
   The repo README documents the cell-split methodology. One caveat carries across all flavors: snippet lexical diversity (type-token ratio) is correlated with rank position, so consumers should control for rank before claiming any per-position content effect.
