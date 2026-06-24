@@ -36,10 +36,19 @@ cp paper.tex          "$STAGE/paper.tex"
 cp paper.bbl          "$STAGE/paper.bbl"
 cp bib/allserp.bib    "$STAGE/bib/allserp.bib"
 
-# Figures (every \includegraphics target in paper.tex)
-cp figs/fig_pipeline.png            "$STAGE/figs/fig_pipeline.png"
-cp figs/fig4_replay_p010-b2-t6.png  "$STAGE/figs/fig4_replay_p010-b2-t6.png"
-cp figs/fig_rank_effects.png        "$STAGE/figs/fig_rank_effects.png"
+# Figures — derived from every \includegraphics target in paper.tex, so the
+# staged set cannot drift from the source. (The hardcoded list this replaced
+# silently dropped fig_cellsplit_composition.png after the dd_top cell split.)
+echo "==> staging figures referenced by paper.tex"
+while IFS= read -r ref; do
+  if [[ ! -f "$ref" ]]; then
+    echo "  MISSING SOURCE: $ref (referenced in paper.tex but not on disk)"
+    exit 1
+  fi
+  mkdir -p "$STAGE/$(dirname "$ref")"
+  cp "$ref" "$STAGE/$ref"
+  echo "  staged $ref"
+done < <(grep -oE '\\includegraphics(\[[^]]*\])?\{[^}]+\}' paper.tex | grep -oE '\{[^}]+\}' | tr -d '{}')
 
 # Sanity check: every \includegraphics target in paper.tex must exist in stage
 echo ""
