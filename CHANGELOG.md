@@ -1,5 +1,43 @@
 # Changelog
 
+## 2026-07-10 — arXiv v3 (dd_top cell-split enrichment + within-carousel ordering)
+
+Change-note for the arXiv:2605.04949 **v3** replacement. Baseline is the live **v2** (submitted
+2026-05-19), which was v1 (`ef15946`, 2026-05-06) plus the 2026-05-18 ARS-audit / reviewer-pass
+cleanup (`c20e6f0`, `bddd2bf`). Everything below landed after that v2. Bundled by
+`make-arxiv-bundle.sh` from `paper.tex`.
+
+**New content (v2 → v3):**
+- **`dd_top` cell-split enrichment.** New `typed_gapfill_cellsplit` flavor subdivides the top-ads
+  carousel into per-card cells (X-axis midpoint-split); within-carousel composition figure
+  (Fig.~`cellsplit`); `dd_right` right-rail block shipped as a variance-reduction covariate.
+- **Within-carousel rank ordering** (§Inventory). Pooled across carousel sizes and indexed by cell
+  rank, click-through declines monotonically 4.3 %→2.0 % (leftmost→fifth cell, Spearman ρ = −1.0
+  over 231 clicks; fixation count and dwell ρ = −0.94). Complements the layout-conditioned modal-4
+  composition (leftmost 31.7 % vs 25 % uniform, n=142). Source: `nb23_cellsplit_rank`,
+  `compute_nb23_cellsplit_rank.py`.
+
+**Corrections carried since v1:** above-fold column → gap-fill values (organic 97.7, image_pack 21.0,
+paa 12.2, KP 3.8); population 37,142 → 37,162 (gap-fill, 2,775-trial inventory); organic-denominator
+labels disambiguated (22,346 inventory vs 22,354 CSV = the 1 dropped trial); 237 final clicks vs
+Table 1's 254 all-event dd_top clicks clarified inline.
+
+**Voice + sourcing pass (this release):**
+- dd_top's 99.7 % fixation flagged as partly area/above-fold confounded (read alongside AOI area).
+- Layout-drift claim (§Pipeline) sourced and made precise: ~13 px median → ~45 px at page bottom
+  (was a flat "13--45 px" band). Provenance: AF `plan-demo-fix.md` / `backlog-live-resources.md`,
+  DOM-anchoring commit `c225517`; original SERPs captured on Chrome 110/Windows.
+- Cut the hollow-optimism closer ("optimistic about the breadth…"); dried the "This is a feature",
+  "kept the draft honest", and inspection/scan/glance register.
+- `jayawardena2025ripa2` citation completed and corrected from CrossRef: DOI `10.3390/jemr18060070`,
+  published title *Measuring Mental Effort in Real Time Using Pupillometry* (JEMR 18(6), 2025),
+  author given-names de-swapped (Gavindya Jayawardena / Yasith Jayawardana).
+
+**arXiv Comments field (paste at upload):** `v3: adds dd_top top-ads carousel cell-split enrichment
+(per-card AOIs) with within-carousel rank ordering and a dd_right variance-reduction covariate;
+above-fold and population-count corrections; completed RIPA2 citation. No change to the core typing
+pipeline or the 38,250-classification consistency check.`
+
 ## 2026-06-23 — paper.md deprecated; paper.tex is canonical
 
 `paper.md` is frozen as of the 2026-05-06 acmart-format conversion (commit `ef15946`). Everything since
