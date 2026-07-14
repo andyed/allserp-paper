@@ -2,7 +2,7 @@
 
 **Working title:** *AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset*
 
-This is a **resource / dataset enrichment paper**. The contribution is the typed_gapfill AOI pipeline, the public extraction code, and the descriptive observed-behavior inventory across SERP element types. The paper does not propose new models; downstream model work lives in sibling tracks (CIKM 2026, CHI 2027, ETTAC 2026, standalone RIPA).
+This is a **resource / dataset enrichment paper**. The contribution is the typed_gapfill AOI pipeline, the public extraction code, and the descriptive observed-behavior inventory across SERP element types. The paper does not propose new models; downstream model work lives in sibling tracks (CIKM 2026, ETTAC 2026, standalone RIPA).
 
 ---
 
@@ -22,7 +22,7 @@ If a number appears in this paper without a `[<flavor>, <source>]` regime tag, i
 ## Out-of-scope (do not duplicate from sibling tracks)
 
 - **Four-class taxonomy as graded-relevance label generator** → CIKM 2026.
-- **OSEC cognitive task model** (Orient / Survey / Evaluate / Commit) → CHI 2027.
+- **OSEC cognitive task model** (Orient / Survey / Evaluate / Commit) → sibling task-model track.
 - **Per-etype LF/HF / pupillometric cognitive load gradients** → ETTAC 2026.
 - **Per-fixation RIPA2 arousal findings** → standalone RIPA pub (Gavindya/team).
 
@@ -61,7 +61,7 @@ Instead use:
 
 - **Voice check** — every section drafted should pass: would Andy say this in conversation, or does it feel like academic posturing? If the latter, simplify.
 - **Empirical check** — every numeric claim has a `[<flavor>, <source>]` tag.
-- **Sibling-track guard** — every paragraph that ventures toward a model claim gets the question: "is this scoping into CIKM / CHI / ETTAC / RIPA?" If yes, cut to a "what's enabled" pointer.
+- **Sibling-track guard** — every paragraph that ventures toward a model claim gets the question: "is this scoping into CIKM / ETTAC / RIPA / the task-model track?" If yes, cut to a "what's enabled" pointer.
 - **Ad-rect ground truth** — the validation gate (38,250 classifications, 0 disagreements, F1 = 1.000) is the empirical anchor. Mention it early; it's the single most paper-credibility-establishing fact.
 
 ---
