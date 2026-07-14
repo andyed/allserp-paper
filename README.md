@@ -4,7 +4,7 @@
 
 **Target venue:** SIGIR 2026 Resource Paper track (primary). Backup: CHIIR Resource paper, JEMR.
 
-**Authors (TBD):** Andy Edmonds (lead). Co-authors gated on collaborator alignment — Latifzadeh, Gwizdka & Leiva (AdSERP authors) on courtesy review at minimum; possibly Jacek Gwizdka as senior coauthor depending on track decision.
+**Author:** Andy Edmonds.
 
 ---
 
@@ -22,6 +22,7 @@ This is a **resource / dataset enrichment paper**: it describes the AOI extracti
 4. **Calibration-bias hypothesis tested and refuted** — opposite-direction click vs fixation bias confirms the data is screenshot-aligned; no coordinate-space drift to correct.
 5. **Per-element-type descriptive inventory** across 9 etypes: organic / dd_top / native_ad / paa / image_pack / knowledge_panel / top_places / unknown_widget / other_widget. Click share, fixation coverage, regression rate, above-fold incidence.
 6. **Cell-aware flavor** (`typed_gapfill_cellsplit`) — subdivides the `dd_top` top-ads carousel into its per-card cells (6,373 cells across 1,550 trials, 100 % aligned to the block-level bboxes; modal 4 cells/carousel). Carries sparse organic sub-cells (174 aligned cells, 75 trials — least-mature tier) and the off-axis `dd_right` right-rail block (861 trials) as a **variance-reduction covariate**, not a modeling target. Filtering `role=='parent'` and `main_axis` recovers `typed_gapfill` exactly.
+7. **Within-carousel rank ordering** — pooling `dd_top` clicks by cell rank (leftmost→fifth) shows CTR declining monotonically from 4.3 % to 2.0 % (Spearman ρ = -1.0 over 231 ranked clicks; fixation count and dwell fall in step, ρ = -0.94 each). This reframes the earlier fixed-four-cell leftmost-cut (31.7 % vs 25 % baseline, n = 142, NS at p ≈ 0.066) as the layout-conditioned companion to the significant pooled rank gradient. Producers: `scripts/cellsplit_click_composition.py`, `scripts/compute_nb23_cellsplit_rank.py`.
 
 ---
 
