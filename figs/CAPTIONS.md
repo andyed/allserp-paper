@@ -55,5 +55,5 @@ This file documents intended figures + caption stubs. Figures themselves are not
 
 - All figures rendered from the upstream tagged data (`scripts/output/allserp_descriptives_gapfill/`); none depend on private state.
 - Figure 4 (replay grid) requires the AdSERP screenshot volume mounted to render the source SERP backgrounds. Two of the four trials are in the local cache; the other two need the volume.
-- Use Andy's `muriel` skill / brand tokens for color palette consistency; defer to ACM template constraints for SIGIR submission.
+- Use Andy's `muriel` skill / brand tokens for color palette consistency; defer to ACM acmart template constraints.
 - Compute 8:1 contrast ratios for any text overlays (per Andy's project-wide rule).

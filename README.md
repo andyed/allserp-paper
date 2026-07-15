@@ -2,8 +2,6 @@
 
 **Working title:** *AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset*
 
-**Target venue:** SIGIR 2026 Resource Paper track (primary). Backup: CHIIR Resource paper, JEMR.
-
 **Author:** Andy Edmonds.
 
 ---
