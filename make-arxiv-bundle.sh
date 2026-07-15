@@ -10,6 +10,10 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
+# Prevent macOS from writing AppleDouble (._*) resource-fork sidecar files
+# into the tarball; arXiv strips them anyway but it's noise in the log.
+export COPYFILE_DISABLE=1
+
 SKIP_BUILD=0
 for arg in "$@"; do
   case "$arg" in
