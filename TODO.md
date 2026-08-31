@@ -108,9 +108,9 @@ re-render the figure, re-run the numbers.
 
 ## Standing cautions
 
-- **AF has deliberately uncommitted state pending Andy's review** (NB26 / NB30
-  reversal-bearing notebooks + regenerated `notebook-key-claims.md`, as of
-  2026-08-31). Any number quoted from key-claims for v4 must come from the
-  reviewed/committed state, not the working tree.
+- **Resolved 2026-08-31:** the NB26/NB30 reversal annotations and regenerated
+  `notebook-key-claims.md` were reviewed and committed (AF `ceb95cb0`), with
+  a propagation warning — the K27/K29 tables still carry May values; quote
+  the 2026-08-30/31 producer outputs, not the tables, until re-transcribed.
 - `allserp-arxiv/` at the repo root is the extracted **v3** bundle (Jul 10),
   now stale vs `paper.tex` — gitignored; don't source anything from it.
