@@ -44,3 +44,6 @@ abstract.txt
 paper.pdf
 paper-anonymous.pdf
 allserp-arxiv.tar.gz
+
+# Stale extracted v3 bundle (Jul 10) + macOS cruft
+allserp-arxiv/
