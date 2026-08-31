@@ -53,6 +53,17 @@ couples the erratum fix to an unscheduled build.
    the 12 excluded trials are the pathological-widget pages — quarantined,
    not silently mislabeled.
 
+4b. **Data statement: the coordinate conversion reframes gapfill.** The
+   2026-08-31 screenshot-space re-run of the audit quartet collapses
+   `approached & clicked` contamination **22.7 % → 3.91 %** (94/2,406;
+   dd_right captures 103 final clicks, 3.71 %). The conversion resolves
+   most of what `typed_gapfill` was invented to mop up — v4 should present
+   gapfill as the ~4 %-residual mitigation, not the 23 % patch, and quote
+   audit numbers ONLY from the screenshot-space re-runs
+   (`AF/docs/null-findings/2026-08-31-coordinate-conversion-null-revisit.md`).
+   Prereq: add a `--space` flag to the four audit scripts so the published
+   numbers come from repo scripts, not scratch copies.
+
 5. **Data statement: collision fix + substrate re-pin.** Document the
    2026-08-30 aoi-card-collision fix (two-phase DOM-node claiming in
    `measure_card_geometry`; collisions 454 → 0, orphaned main-column trials
