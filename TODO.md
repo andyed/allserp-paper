@@ -21,6 +21,31 @@ Decisions left for Andy: keep the title? (kept for citation stability); upload t
 (Leaky Cursor abstract Oct 8 should cite v4); push of the approach-retreat replay commit
 (`b348e2c`, labelled log LF/HF tracks) so the deployed viewer matches Fig. 2.
 
+## Landing checklist before the arXiv v4 upload (surveyed 2026-09-07)
+
+Nothing below is pushed; every step is one command from Andy.
+
+1. **attentional-foraging** — `origin/main` is at 2026-06-03, 90 commits behind
+   `release/allserp-v1.1.0`, so the paper's GitHub link serves the pre-v1.1.0 substrate
+   (`docs/allserp-v1.1.0-migration.md` 404s on main). Local `main` is now fast-forwarded to
+   the release branch (it was a clean ancestor). Push both:
+   `git push origin release/allserp-v1.1.0 main` (14 commits on the release branch,
+   102 files, no blobs > 20 MB; tag `allserp-v1.1.0` already on origin). Tests under
+   Homebrew python: carousel 76, fidelity 30, export 3, audit-space 9, all pass.
+   Untracked M4/LTR files from another session this morning stay local.
+2. **approach-retreat** — 8 commits ahead of `origin/main` (replay LF/HF tracks, substrate
+   stamp, curation disclosure, rebuilt `dist/`). `git push origin main` triggers the Pages
+   deploy (`npm ci && npm run build`, 30/30 vitest, verified locally). The other session's
+   uncommitted docs edits stay local.
+3. **allserp-paper** — 1 commit ahead (v4 draft). Public repo: this TODO names the Leaky
+   Cursor CHIIR 2027 dates and "Sara"; scrub or move planning notes out before pushing.
+4. Then re-verify from the outside: the migration-guide URL on main returns 200, the
+   deployed replay page for p010-b2-t6 shows the labelled tracks, and `make-arxiv-bundle.sh`
+   is re-run if anything in `paper.tex` moves.
+5. Optional but citable: a GitHub Release `allserp-v1.1.0` on attentional-foraging with the
+   four corpus CSVs attached (latest release there is v0.2.1 from May). Zenodo was timing
+   out today; the records URL in the paper is unchanged.
+
 Environment note: `attentional-foraging/.venv` is gone (docs still call it canonical);
 `/opt/homebrew/bin/python3` imports `notebooks-v2/data_loader` and ran every producer
 today.
