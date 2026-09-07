@@ -18,7 +18,7 @@
 | 8 bundle + upload | bundle built; **upload is Andy's call** (not before the title decision below) |
 
 Decisions left for Andy: keep the title? (kept for citation stability); upload timing
-(Leaky Cursor abstract Oct 8 should cite v4); push of the approach-retreat replay commit
+(the downstream citing draft's deadline is in the private note); push of the approach-retreat replay commit
 (`b348e2c`, labelled log LF/HF tracks) so the deployed viewer matches Fig. 2.
 
 ## Landing checklist before the arXiv v4 upload (surveyed 2026-09-07)
@@ -37,8 +37,8 @@ Nothing below is pushed; every step is one command from Andy.
    stamp, curation disclosure, rebuilt `dist/`). `git push origin main` triggers the Pages
    deploy (`npm ci && npm run build`, 30/30 vitest, verified locally). The other session's
    uncommitted docs edits stay local.
-3. **allserp-paper** — 1 commit ahead (v4 draft). Public repo: this TODO names the Leaky
-   Cursor CHIIR 2027 dates and "Sara"; scrub or move planning notes out before pushing.
+3. **allserp-paper** — ahead of origin (v4 draft). Public repo: downstream-paper
+   coordination now lives in `notes/private-todo.md` (gitignored), done 2026-09-07.
 4. Then re-verify from the outside: the migration-guide URL on main returns 200, the
    deployed replay page for p010-b2-t6 shows the labelled tracks, and `make-arxiv-bundle.sh`
    is re-run if anything in `paper.tex` moves.
@@ -114,21 +114,18 @@ figure the paper now quotes — same metric, 26× the denominator, and independe
 reproduced by a second corpus run. Keep the 19/61 sample as provenance only.
 The v5 cell-result regeneration gate remains open.
 
-## 0 · CRITICAL PATH — v4 live before the CHIIR submission
+## 0 · Critical path
 
-Verified 2026-08-31: **arXiv v3 (live since Jul 23) still asserts the
-within-carousel ρ = −1.0** and describes the pre-collision-fix substrate.
-The Leaky Cursor CHIIR 2027 resubmission (abstract **Oct 8**, paper **Oct 15**)
-cites this paper third-person as the AOI-substrate authority and quotes v1.1.0
-numbers — a reviewer who reads the cited resource finds a known-bad claim or
-mismatched counts. Target: **v4 uploaded by end of September** (announce takes
-1–2 days; the Oct 8 abstract should cite v4).
+v4 must be live before a downstream paper that cites this resource as its AOI-substrate
+authority is submitted; the coordination details are in a private, gitignored note.
+Verified 2026-08-31: arXiv v3 (live since Jul 23) still asserts the within-carousel
+ρ = −1.0 and describes the pre-collision-fix substrate. Target: **v4 uploaded by end of
+September** (announce takes 1–2 days).
 
-**v4 does NOT wait on the DOM-derived cellsplit rebuild** (AF Stage 4, the
-"real build", to be scoped with Sara). The restated §results paragraph already
-discloses the frozen-snapshot provenance and the DOM-agreement score; full
-per-cell re-derivation is a v5 item (§B below). Overridable call — but waiting
-couples the erratum fix to an unscheduled build.
+**v4 does NOT wait on the DOM-derived cellsplit rebuild** (AF Stage 4, the "real
+build"). The restated §results paragraph already discloses the frozen-snapshot
+provenance and the DOM-agreement score; full per-cell re-derivation is a v5 item (§B
+below). Overridable call — but waiting couples the erratum fix to an unscheduled build.
 
 ## A · v4 items (ship by end of September)
 
@@ -253,7 +250,7 @@ couples the erratum fix to an unscheduled build.
    DOM agreement reported); documents the aoi-card-collision fix and re-pins
    the substrate identity (2,764 trials, 12 alignment exclusions); adds
    widget-slot semantics callout for the typed flavor.` After announce:
-   downstream citing drafts (Leaky Cursor CHIIR revision) pin v4.
+   downstream citing drafts pin v4 (see the private note).
 
 ## B · v5 — after AF Stage 4 (DOM-derived cellsplit producer)
 

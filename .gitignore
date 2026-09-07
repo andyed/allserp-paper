@@ -47,3 +47,6 @@ allserp-arxiv.tar.gz
 
 # Stale extracted v3 bundle (Jul 10) + macOS cruft
 allserp-arxiv/
+
+# Private planning notes (collaborators, downstream-paper coordination)
+notes/
