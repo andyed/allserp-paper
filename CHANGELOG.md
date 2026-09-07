@@ -43,8 +43,8 @@ of final clicks); within-carousel rank claim of v3 withdrawn and restated as
 directional; new coverage section on element-level and within-element layers. Core
 typing pipeline and the 38,250-classification check unchanged.`
 
-**Open before upload (Andy):** title kept for citation stability ("Exhaustive" /
-"Versatile" are the puffiest words left — decide); re-base `is_main_axis_click` on
+**Open before upload:** title kept for citation stability ("Exhaustive" / "Versatile"
+remain under review); re-base `is_main_axis_click` on
 screenshot space upstream is still a queued substrate revision (paper discloses it);
 zero-paging selector scope re-verification (TODO item 7).
 

@@ -1,6 +1,6 @@
 # TODO — arXiv v4 revision
 
-## 2026-09-07 — v4 draft state (Claude session)
+## 2026-09-07 — v4 draft state
 
 `paper.tex` restructured and rebuilt (8 pp, 0 prose-lint findings); bundle at
 `allserp-arxiv.tar.gz`. Item status against §A below:
@@ -15,15 +15,15 @@
 | 5 data statement | done (§7.2 substrate identity; harness triple in §3.2; the 92.4/93.3 sample pair stays out of the paper) |
 | 6 coordinate ripple | **done for Table 1** via new `allserp_descriptives.py --space screenshot` (AF commit today). 38,250 check re-run 2026-09-05, unchanged. `is_main_axis_click` re-base still queued upstream; paper discloses it. |
 | 7 zero-paging paragraph | in (§5); selector-scope re-verification still open, paragraph says so |
-| 8 bundle + upload | bundle built; **upload is Andy's call** (not before the title decision below) |
+| 8 bundle + upload | bundle built; upload pending the title decision below |
 
-Decisions left for Andy: keep the title? (kept for citation stability); upload timing
+Decisions left: keep the title? (kept for citation stability); upload timing
 (the downstream citing draft's deadline is in the private note); push of the approach-retreat replay commit
 (`b348e2c`, labelled log LF/HF tracks) so the deployed viewer matches Fig. 2.
 
 ## Landing checklist before the arXiv v4 upload (surveyed 2026-09-07)
 
-Nothing below is pushed; every step is one command from Andy.
+Nothing below is pushed; every step is one command.
 
 1. **attentional-foraging** — `origin/main` is at 2026-06-03, 90 commits behind
    `release/allserp-v1.1.0`, so the paper's GitHub link serves the pre-v1.1.0 substrate
@@ -32,11 +32,9 @@ Nothing below is pushed; every step is one command from Andy.
    `git push origin release/allserp-v1.1.0 main` (14 commits on the release branch,
    102 files, no blobs > 20 MB; tag `allserp-v1.1.0` already on origin). Tests under
    Homebrew python: carousel 76, fidelity 30, export 3, audit-space 9, all pass.
-   Untracked M4/LTR files from another session this morning stay local.
 2. **approach-retreat** — 8 commits ahead of `origin/main` (replay LF/HF tracks, substrate
    stamp, curation disclosure, rebuilt `dist/`). `git push origin main` triggers the Pages
-   deploy (`npm ci && npm run build`, 30/30 vitest, verified locally). The other session's
-   uncommitted docs edits stay local.
+   deploy (`npm ci && npm run build`, 30/30 vitest, verified locally).
 3. **allserp-paper** — ahead of origin (v4 draft). Public repo: downstream-paper
    coordination now lives in `notes/private-todo.md` (gitignored), done 2026-09-07.
 4. Then re-verify from the outside: the migration-guide URL on main returns 200, the
@@ -45,10 +43,6 @@ Nothing below is pushed; every step is one command from Andy.
 5. Optional but citable: a GitHub Release `allserp-v1.1.0` on attentional-foraging with the
    four corpus CSVs attached (latest release there is v0.2.1 from May). Zenodo was timing
    out today; the records URL in the paper is unchanged.
-
-Environment note: `attentional-foraging/.venv` is gone (docs still call it canonical);
-`/opt/homebrew/bin/python3` imports `notebooks-v2/data_loader` and ran every producer
-today.
 
 Substrate: `attentional-foraging` at `release/allserp-v1.1.0` post `574218b6`
 (typed maps content hash `2cb789eb8febd234`, 2,764 trials, 12 exclusions)
