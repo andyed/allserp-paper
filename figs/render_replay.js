@@ -12,7 +12,9 @@
 
 const path = require('path');
 const fs = require('fs');
-const { chromium } = require('/Users/andyed/Documents/dev/node_modules/playwright');
+// Resolve playwright from NODE_PATH (or PLAYWRIGHT_PATH) rather than one
+// hard-coded checkout; e.g. NODE_PATH=~/Documents/dev/session-cartographer/node_modules
+const { chromium } = require(process.env.PLAYWRIGHT_PATH || 'playwright');
 
 const args = process.argv.slice(2);
 const trial = args[0];

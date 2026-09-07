@@ -87,7 +87,7 @@ def render_panel(ax, positions, rates, counts, top_etype, *, color, title, flavo
                  fontsize=12, color=INK, family="Georgia", pad=10)
     ax.set_xticks(positions)
     ax.set_xticklabels([f"{p}\nn={c:,}" for p, c in zip(positions, counts)],
-                       fontsize=9, color=MUTED)
+                       fontsize=7.5, color=MUTED)
     ax.set_ylim(0, max(rates.max() * 1.18, 30))
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)

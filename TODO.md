@@ -1,10 +1,93 @@
 # TODO — arXiv v4 revision
 
+## 2026-09-07 — v4 draft state (Claude session)
+
+`paper.tex` restructured and rebuilt (8 pp, 0 prose-lint findings); bundle at
+`allserp-arxiv.tar.gz`. Item status against §A below:
+
+| item | status |
+|---|---|
+| 1 ρ = −1.0 restated | done (footnote in §4) |
+| 2 cell-layer limitations | done (§5 Coverage table + §3.2) |
+| 3 cell-audit denominator | done (29.5 % full-corpus) |
+| 4 widget-slot callout | done (§2.2; 353 trials / 352 main-axis / 0 mis-shifted; the "35 strictly between organics" clause dropped, no producer) |
+| 4b contamination reframe | done (§2.4; 23.9 → 3.91 % reproduced today) |
+| 5 data statement | done (§7.2 substrate identity; harness triple in §3.2; the 92.4/93.3 sample pair stays out of the paper) |
+| 6 coordinate ripple | **done for Table 1** via new `allserp_descriptives.py --space screenshot` (AF commit today). 38,250 check re-run 2026-09-05, unchanged. `is_main_axis_click` re-base still queued upstream; paper discloses it. |
+| 7 zero-paging paragraph | in (§5); selector-scope re-verification still open, paragraph says so |
+| 8 bundle + upload | bundle built; **upload is Andy's call** (not before the title decision below) |
+
+Decisions left for Andy: keep the title? (kept for citation stability); upload timing
+(Leaky Cursor abstract Oct 8 should cite v4); push of the approach-retreat replay commit
+(`b348e2c`, labelled log LF/HF tracks) so the deployed viewer matches Fig. 2.
+
+Environment note: `attentional-foraging/.venv` is gone (docs still call it canonical);
+`/opt/homebrew/bin/python3` imports `notebooks-v2/data_loader` and ran every producer
+today.
+
 Substrate: `attentional-foraging` at `release/allserp-v1.1.0` post `574218b6`
 (typed maps content hash `2cb789eb8febd234`, 2,764 trials, 12 exclusions)
 unless noted. Driven by the 2026-08-30 substrate review
 (`AF/docs/JOURNEY-2026-08-30.md`, `AF/docs/aoi-fidelity-baseline-2026-08-30.md`,
 harness `AF/scripts/aoi_fidelity.py`).
+
+## Full-corpus carousel check — 2026-09-04
+
+[LAB, AdSERP, typed-parent candidate] All **2,776 trials** were measured. After
+the existing 12 exclusions, the old source matches **465/1,575 top-parent
+counts**; the candidate admits **1,570/1,575 matching subdivisions**, with
+**7,265 cards**. The **5 rejected cases** remain unadmitted and stay
+in the denominator. Eight additional preselected pages confirm captured card
+order for 34 cards; this does not certify SKU identity or merchant destinations.
+
+Sources: AF `docs/methodology/carousel-full-corpus-validation.md`,
+`docs/methodology/carousel-source-adoption.md`, and
+`docs/evidence/carousel-2026-09-04/corpus/`. The exporter exclusion leak is fixed
+and 109 focused tests pass. Released exports and behavioral claims remain unchanged.
+
+Next: resolve single-card validation and the recorded-height scale discrepancy,
+then version the top-cell source against the current parent baseline, validate
+click attribution, then migrate NB23/NB25 together. Both read snapshots directly;
+NB25 also uses old parent boxes and an X-ignoring attribution fallback. A CSV swap
+alone is insufficient. Preserve old outputs/K IDs and record new source-specific
+populations before updating per-cell claims.
+
+## Carousel candidate improvement — 2026-09-04
+
+Upstream screenshot registration increases candidate count agreement from the
+released snapshot's **19/61 to 61/61** on the same fixed comparison cohort
+(**279 visible cards**). Every candidate card has original-screenshot border
+support; three HTML/screenshot layout shifts are repaired. Six separately selected
+spelling-mismatch cases match the reviewer's original-screenshot counts and pass
+registration with unchanged thresholds. This is targeted candidate validation,
+not a corpus-wide accuracy estimate or semantic identity check.
+
+Source: AF `docs/methodology/carousel-screenshot-registration.md` and
+`docs/evidence/carousel-2026-09-04/registration/`. The released cells, behavioral
+figures, and paper's legacy-snapshot disclosures remain unchanged until the
+versioned-source adoption gate. The current candidate CSV is an audit adapter, not
+the released enrichment schema.
+
+## Carousel repair update — 2026-09-04
+
+First implementation slice is complete upstream: corrected count audit plus a
+DOM candidate and original-screenshot fixtures. The candidate is **not yet the
+released cell source**. Five positive screenshot cases pass; one count-matching
+layout mismatch is correctly rejected. Source/commands/gates:
+`attentional-foraging/docs/methodology/carousel-dom-candidate.md`.
+
+The old **451/1,551 (29.1%)** and **18/58 (31.0%)** cell-count figures are retired
+as fidelity estimates: the old export counter mixed top, organic and right-rail
+cells and omitted zero/missing comparisons. The repaired exact retained sample
+has **19/61 (31.1%) matching top-parent counts**, **37 short**, **5 over**;
+**59/120** trials have no top-carousel comparison. This is count agreement,
+not a per-card accuracy rate or a new full-corpus result.
+
+**Superseded for publication 2026-09-05:** the full-corpus check above
+(**466/1,582 = 29.5%**, 961 short, 155 over, 1,194 absent, 0 unresolved) is the
+figure the paper now quotes — same metric, 26× the denominator, and independently
+reproduced by a second corpus run. Keep the 19/61 sample as provenance only.
+The v5 cell-result regeneration gate remains open.
 
 ## 0 · CRITICAL PATH — v4 live before the CHIIR submission
 
@@ -31,38 +114,76 @@ couples the erratum fix to an unscheduled build.
    analysis** — it scored `vplaurlt`/`platop` ids that double-count right-rail
    cells; a documented wrong turn.
 
-2. **Disclose cell-layer fidelity where "100 % aligned" appears**
-   (§Validation "Top-ads cell subdivision" ¶; `typed_gapfill_cellsplit` CSV
-   bullet in §Release). Those claims are internal consistency against the
-   block bbox, not DOM fidelity. Add the DOM-agreement number and
-   frozen-snapshot provenance so the two aren't conflated.
+2. **[DONE locally — 2026-09-04] Disclose cell-layer limitations**
+   The Validation paragraph and Release CSV bullet now distinguish internal
+   parent alignment from card-level fidelity and identify the frozen source.
 
-3. **Name the denominator on every cell-agreement figure.** Two true numbers
-   in play: **29.1 % (451/1,551 comparable trials, full corpus)** — use for
-   the §results erratum and item 2 — and **31.0 % (120-trial fidelity-harness
-   sample)** — item 5's harness triple. Same site must never mix them
-   unlabeled; verify both against `aoi_fidelity.py` output before bundling.
+3. **[DONE locally — 2026-09-04] Correct the cell-audit denominator**
+   **Updated 2026-09-05:** the results paragraph now uses the **full-corpus**
+   466/1,582 (29.5%) comparison, not the retained-sample 19/61 it was first
+   drafted against; the evidence pointer moves from `audit-retained120.json` to
+   `corpus/comparison.json`. The old 29.1% full-corpus rate remains retired.
+   Provenance: AF `docs/evidence/carousel-2026-09-04/`.
 
 4. **Callout: widget blocks are first-class slots in the typed flavor**
    (taxonomy/flavors section). Local packs type as `top_places`, main-axis
-   display order: 354/2,776 trials (12.8 %) contain one; 352 main-axis; 35
-   strictly between organics. `organic_rank` numbers within organics only, so
-   a widget slot never shifts organic ranks. Contrast with `organic` /
+   display order: **353/2,776 trials (12.7 %)** contain one; **352 main-axis**.
+   `organic_rank` numbers within organics only, so a widget slot never shifts
+   organic ranks — and the producer now measures this rather than asserting it
+   (`n_mis_shifted: 0`).
+
+   Re-derived 2026-09-05 from `AF scripts/audit_local_pack_aois.py` on the
+   shipped substrate (AF `d12f50a4`): `n_trials_with_local_content` **353**.
+   **353 was already the committed value in AF's own output sidecar, so the
+   draft's 354 is a transcription error, not substrate drift** — the only
+   thing the collision fix actually moved here is `aois_below_pack`
+   (3,603 → 3,613). `n_typed_top_places_main` **352** (unchanged),
+   `n_mis_shifted` **0**, pack location 268 out-of-rso-main / 85 in-rso,
+   3,613 AOIs below the pack (mean 10.26). **The "35 strictly between organics"
+   figure is not emitted by that script** — find its producer or drop the clause;
+   same cite-blocked category as item 4b's 3.91 %. Contrast with `organic` /
    `organic_hybrid` where widgets are not slots — flavor semantics, not a
    coverage gap. Honest caveat: local packs were the hard alignment cases;
    the 12 excluded trials are the pathological-widget pages — quarantined,
    not silently mislabeled.
 
-4b. **Data statement: the coordinate conversion reframes gapfill.** The
-   2026-08-31 screenshot-space re-run of the audit quartet collapses
-   `approached & clicked` contamination **22.7 % → 3.91 %** (94/2,406;
-   dd_right captures 103 final clicks, 3.71 %). The conversion resolves
-   most of what `typed_gapfill` was invented to mop up — v4 should present
-   gapfill as the ~4 %-residual mitigation, not the 23 % patch, and quote
-   audit numbers ONLY from the screenshot-space re-runs
-   (`AF/docs/null-findings/2026-08-31-coordinate-conversion-null-revisit.md`).
-   Prereq: add a `--space` flag to the four audit scripts so the published
-   numbers come from repo scripts, not scratch copies.
+4b. **Data statement: the conversion reframes gapfill — and the 23 % was
+   mostly a coordinate bug.** `typed_gapfill` was invented to mop up a 22.7 %
+   contamination of `approached & clicked`. In screenshot space that
+   contamination is **3.91 %**, and the bucket collapse says why:
+
+   | bucket | document space | screenshot space |
+   |---|--:|--:|
+   | `in_column_edge` (bbox-edge near miss) | 510 | **5** |
+   | `right_chrome` | 91 | **1** |
+   | `dd_right` | 66 | **102** |
+   | **contamination rate** | **23.94 %** | **3.91 %** |
+
+   The 510 "bbox-edge near misses" were never near misses. With X unscaled,
+   right-rail clicks landed inside the main column's *apparent* X range and
+   were classified as geometry failures; converting moves them where they
+   always belonged, and dd_right nearly doubles (66 → 102). So the residual
+   gapfill legitimately recovers is real inter-result-gap clicks at ~4 %, and
+   the headline 23 % was a coordinate-space defect wearing a geometry costume.
+   **That is a stronger and more honest claim than "gapfill mops up less than
+   we thought"** — write it that way.
+
+   **Prereq DONE (2026-09-05, AF `f926466e`).** `--space {screenshot,document}`
+   on all four audits, defaulting to screenshot, with the space printed in a
+   banner on every run. Both published figures now reproduce from repo
+   scripts, exactly:
+
+   ```
+   .venv/bin/python scripts/audit_cascade_contamination.py --space screenshot
+   #   contamination rate of 'approached & clicked' pop: 3.91%
+   .venv/bin/python scripts/audit_dd_right.py --space screenshot
+   #   final clicks landing inside a dd_right rect: 103  (3.71% of final clicks)
+   ```
+
+   Thresholds travel with the points (the 162/702 column bounds and `doc_h`
+   are document-space constants), and `scripts/test_audit_space.py` carries a
+   fixture the flag must trip. Quote these commands beside the numbers — the
+   convention item 5 should adopt too.
 
 5. **Data statement: collision fix + substrate re-pin.** Document the
    2026-08-30 aoi-card-collision fix (two-phase DOM-node claiming in
@@ -70,8 +191,21 @@ couples the erratum fix to an unscheduled build.
    17.3 % → 6.0 %, 454 typed maps changed per flavor). Re-pin identity: hash
    `2cb789eb8febd234`, exclusion list **12** trials (membership changed from
    the 14-trial list — consumers must re-read). Point at the harness triple
-   (click 92.4 % / AOI IoU≥0.5 93.3 % / cell 31.0 %, 120-trial sample) as the
-   standing quality measurement.
+   **on the full corpus** (click 87.7 % = 2,433/2,775; AOI IoU≥0.5 90.8 % =
+   2,520/2,776; cell count agreement 29.5 % = 466/1,582, with its separate
+   denominator) as the standing quality measurement.
+
+   **Do not publish the 92.4 % / 93.3 % pair** — verified 2026-09-05, those are
+   the 120-trial retained sample (110/119 and 112/120), reproduced to the digit,
+   and they run ~2.5 pp optimistic against the corpus. The baseline doc's
+   93.4 % (2,593/2,776) is full-corpus but **pre-collision-fix**; the shipped
+   substrate now measures 90.8 %. The 73-trial gap is not explained — no
+   full-corpus 08-30 JSON survives to diff against, only the doc's prose — so
+   disclose it, do not attribute it. Confirmed NOT a harness artifact: the
+   committed harness (`AF 86b7a44e`) and the current working copy return
+   identical click and AOI figures; the working copy's uncommitted changes
+   touch only the cell check. That same committed harness reproduces the
+   retired 451/1,551 = 29.1 % exactly, which independently validates retiring it.
 
 6. **Coordinate-space ripple into click attribution — verify precondition,
    then re-derive.** evtrack records document space (1403 px), AOIs screenshot
@@ -84,8 +218,8 @@ couples the erratum fix to an unscheduled build.
 
 7. **Optional: zero-paging paragraph.** 1,582 carousels, 272 cell clicks,
    zero clicks on a card not already on screen (27 DOM cells, ~5 visible).
-   Settles the visible-cells definitional question for the DOM-derived
-   cellsplit. One paragraph if it fits.
+   Recheck its selector scope and denominator before using it to define exposure
+   for the DOM-derived cellsplit; snapshot visibility alone does not establish paging history. One paragraph if it fits.
 
 8. **Bundle + upload.** `make-arxiv-bundle.sh` (AppleDouble fix `6798895`
    in). CHANGELOG v3 → v4 change-note mirroring the v3 entry. Comments field
@@ -101,9 +235,9 @@ couples the erratum fix to an unscheduled build.
 **Re-derive all per-cell numbers from DOM-derived cells.** Every cellsplit
 number (31.7 % leftmost share, 4.3 %/2.0 % endpoints, ρ = −0.94 fixation/dwell
 gradients, Fig. cellsplit both panels) comes from the frozen 2026-05-24
-snapshot with no in-repo producer; export short on 902/1,551 carousels,
-median shortfall exactly 1 cell (trailing-drop). When AF ships the DOM-derived
-producer: regenerate `nb23_cellsplit_rank` / `nb25_cellsplit_composition`,
+snapshot with no in-repo producer. The corrected full-corpus count diagnostic is now complete (see above).
+When AF adopts the versioned DOM-derived source and resolves the NB23/NB25
+coordinate, parent-lineage and denominator requirements: regenerate `nb23_cellsplit_rank` / `nb25_cellsplit_composition`,
 re-render the figure, re-run the numbers.
 
 ## Standing cautions

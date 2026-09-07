@@ -1,5 +1,53 @@
 # Changelog
 
+## 2026-09-07 — arXiv v4 draft (restructure + re-derivation on AllSERP v1.1.0)
+
+Change-note for the arXiv:2605.04949 **v4** replacement. Baseline is the live **v3**
+(2026-07-23). Bundled by `make-arxiv-bundle.sh` from `paper.tex`.
+
+**Restructure.** Abstract rewritten for a reader who does not know the flavour names.
+Sections now: Pipeline (with a flavours table and one coordinate-space paragraph) →
+Validation (ad rectangles, DOM harness, gaze–cursor registration) → Inventory →
+**Coverage** (new: a layer table and the history of how coverage grew across element
+types and within them, incl. the zero-paging observation) → Limitations → Release and
+data statement (substrate identity, changes since v3, one "Reproducing the numbers"
+paragraph replacing inline script paths) → Conclusion. Prose linter: 0 errors,
+0 warnings (was 26); semicolons 31 → 15, em-dashes 8 → 0. 8 pages (was 7).
+
+**Substrate.** Every number on AllSERP v1.1.0 post collision fix (hash
+`2cb789eb8febd234`, 2,764 trials, 12 exclusions). Table 1 re-derived by
+`AF scripts/allserp_descriptives.py --flavor typed_gapfill --space screenshot`
+(new `--space` flag, AF commit today): the knowledge_panel row is gone by construction
+(right-rail, position −1), top_places 84 → 340 AOIs, organic above-fold 97.7 → 93.8 %.
+Click columns in **screenshot space**: 2,749 click events attributed vs 2,627 in
+document space. paa clicks 29 → 2; the 26 movers land on the organic directly above and
+their evtrack xpaths name organic headings, which confirms the conversion.
+
+**Corrections carried.** Within-carousel ρ = −1.0 withdrawn (footnote); cell-count
+agreement 29.5 % (466/1,582) full-corpus; "100 % aligned" cell claim demoted to
+internal parent alignment. Rank-effects figure re-rendered from the Aug-31 feature
+files (organic ρ −0.624 → −0.879, pos 0 39.5 → 40.1 %; hybrid unchanged at −0.939) and
+its overlapping n-labels fixed. Replay figure re-rendered from the updated viewer
+(labelled, log-scaled LF/HF tracks; 148 trials).
+
+**Coverage section sources.** DOM-derived carousel candidate 1,570/1,575 admitted,
+7,265 cards (AF `docs/methodology/carousel-full-corpus-validation.md`); zero-paging
+(AF `docs/JOURNEY-2026-08-30.md`, selector scope still flagged for re-verification);
+contamination 23.9 → 3.91 % and dd_right 67 → 102/103 reproduced today from
+`audit_cascade_contamination.py` / `audit_dd_right.py --space screenshot`.
+
+**arXiv Comments field (paste at upload):** `v4: restructured; every number re-derived
+on the realigned AllSERP v1.1.0 substrate (knowledge panels routed off-axis, local packs
+typed, 12 alignment exclusions); click attribution reported in screenshot space (95.7%
+of final clicks); within-carousel rank claim of v3 withdrawn and restated as
+directional; new coverage section on element-level and within-element layers. Core
+typing pipeline and the 38,250-classification check unchanged.`
+
+**Open before upload (Andy):** title kept for citation stability ("Exhaustive" /
+"Versatile" are the puffiest words left — decide); re-base `is_main_axis_click` on
+screenshot space upstream is still a queued substrate revision (paper discloses it);
+zero-paging selector scope re-verification (TODO item 7).
+
 ## 2026-07-10 — arXiv v3 (dd_top cell-split enrichment + within-carousel ordering)
 
 Change-note for the arXiv:2605.04949 **v3** replacement. Baseline is the live **v2** (submitted
