@@ -14,7 +14,7 @@ data statement (substrate identity, changes since v3, one "Reproducing the numbe
 paragraph replacing inline script paths) → Conclusion. Prose linter: 0 errors,
 0 warnings (was 26); semicolons 31 → 15, em-dashes 8 → 0. 8 pages (was 7).
 
-**Substrate.** Every number on AllSERP v1.1.0 post collision fix (hash
+**Substrate.** Every number on AllSERP v1.1.1 (the collision-fixed maps) (hash
 `2cb789eb8febd234`, 2,764 trials, 12 exclusions). Table 1 re-derived by
 `AF scripts/allserp_descriptives.py --flavor typed_gapfill --space screenshot`
 (new `--space` flag, AF commit today): the knowledge_panel row is gone by construction

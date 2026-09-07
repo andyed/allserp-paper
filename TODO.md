@@ -25,13 +25,17 @@ Decisions left: keep the title? (kept for citation stability); upload timing
 
 Nothing below is pushed; every step is one command.
 
-1. **attentional-foraging** — `origin/main` is at 2026-06-03, 90 commits behind
+1. **attentional-foraging** — `origin/main` is at 2026-06-03, 90+ commits behind
    `release/allserp-v1.1.0`, so the paper's GitHub link serves the pre-v1.1.0 substrate
-   (`docs/allserp-v1.1.0-migration.md` 404s on main). Local `main` is now fast-forwarded to
-   the release branch (it was a clean ancestor). Push both:
-   `git push origin release/allserp-v1.1.0 main` (14 commits on the release branch,
-   102 files, no blobs > 20 MB; tag `allserp-v1.1.0` already on origin). Tests under
-   Homebrew python: carousel 76, fidelity 30, export 3, audit-space 9, all pass.
+   (`docs/allserp-v1.1.0-migration.md` 404s on main). Local `main` is fast-forwarded to
+   the release branch. The unpushed range was rewritten to drop a private working note and
+   is verified clean. Tag `allserp-v1.1.1` is local. Push both branches and the tag:
+   `git push origin release/allserp-v1.1.0 main allserp-v1.1.1`
+   Then create the release with the notes and the data files attached:
+   `gh release create allserp-v1.1.1 --title "AllSERP enrichment v1.1.1" --notes-file docs/releases/allserp-v1.1.1.md scripts/output/adserp_aois_by_trial_id_typed_gapfill.csv scripts/output/adserp_aois_by_trial_id_typed.csv scripts/output/adserp_aois_by_trial_id_organic_hybrid.csv scripts/output/adserp_aois_by_trial_id_typed_gapfill_cellsplit.csv data/aoi-typed/alignment-exclusions.json`
+   Optional: connect the repo in Zenodo's GitHub integration first so the release mints a DOI.
+   All tracked tests pass in the rebuilt `.venv` (carousel 76, fidelity 30, export 3,
+   audit-space 9, nested grades and matched sensitivity).
 2. **approach-retreat** — 8 commits ahead of `origin/main` (replay LF/HF tracks, substrate
    stamp, curation disclosure, rebuilt `dist/`). `git push origin main` triggers the Pages
    deploy (`npm ci && npm run build`, 30/30 vitest, verified locally).
@@ -44,7 +48,7 @@ Nothing below is pushed; every step is one command.
    four corpus CSVs attached (latest release there is v0.2.1 from May). Zenodo was timing
    out today; the records URL in the paper is unchanged.
 
-Substrate: `attentional-foraging` at `release/allserp-v1.1.0` post `574218b6`
+Substrate: `attentional-foraging` at `release/allserp-v1.1.0`, released as v1.1.1
 (typed maps content hash `2cb789eb8febd234`, 2,764 trials, 12 exclusions)
 unless noted. Driven by the 2026-08-30 substrate review
 (`AF/docs/JOURNEY-2026-08-30.md`, `AF/docs/aoi-fidelity-baseline-2026-08-30.md`,
