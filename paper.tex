@@ -153,7 +153,7 @@ Box quality is measured rather than asserted. A harness (\path{aoi_fidelity.py})
   \item a released box matches its DOM element at IoU $\geq 0.5$ on 90.8\,\% of trials (2,520 of 2,776), median IoU 0.879;
   \item the visible top-carousel card count agrees with the cell export on 29.5\,\% of carousels (466 of 1,582), the weakest layer, discussed in \S\ref{sec:coverage}.
 \end{itemize}
-Two cautions travel with these rates. A 120-trial retained sample scores about 2.5 points higher on the first two checks, so sample and corpus figures must not be quoted interchangeably. And the box rate was 93.4\,\% before the card-collision fix of \S\ref{sec:coverage} changed 454 maps. No full-corpus pre-fix output survives to diff against, so we disclose the gap rather than attribute it.
+Two cautions travel with these rates. A 120-trial retained sample scores higher on the first two checks (92.4\,\% and 93.3\,\%, so 4.7 and 2.5 points), and sample and corpus figures must not be quoted interchangeably. And the box rate was 93.4\,\% before the card-collision fix of \S\ref{sec:coverage} changed 454 maps. No full-corpus pre-fix output survives to diff against, so we disclose the gap rather than attribute it.
 
 \subsection{Gaze--cursor registration}
 
@@ -254,7 +254,7 @@ A resource like this is built in layers, and each layer has a different amount o
 
 \paragraph{A pre-AI-Overviews snapshot} Data were collected between 2022-12-16 and 2023-03-13 (from per-trial timestamps), before Google's AI Overviews rollout (limited test May 2023, broad deployment May 2024) and eight days before Bard opened to the public on 2023-03-21. The corpus is therefore a clean pre-rollout baseline, and its value as a reference grows as the live SERP diverges from it. Replications on later SERPs need an \path{ai_overview} label, and the AI answer card has different click and fixation dynamics. The pipeline shape is era-agnostic. Only Phase~B's label set needs to grow.
 
-\paragraph{Heuristics and missing labels} The midpoint split and the cell widening are heuristics with bounded error, and both tight and extended boxes ship. The non-ad partition has no independent annotation. The right rail's organic-style results are not recovered, and about 1\,\% of trials have a right-rail click with no shipped rectangle, a property of the original release.
+\paragraph{Heuristics and missing labels} The midpoint split and the cell widening are heuristics with bounded error, and both tight and extended boxes ship. The non-ad partition has no independent annotation. The right rail's organic-style results are not recovered, and one trial's final click lands in the right rail with no shipped rectangle to catch it, a property of the original release.
 
 \section{Release and Data Statement}\label{sec:release}
 
@@ -276,7 +276,7 @@ The maps this paper describes are AllSERP enrichment \textbf{v1.1.0}, pinned by 
 \subsection{Changes since version 3}
 
 \begin{itemize}
-  \item Every number re-derived on v1.1.0. Table~\ref{tab:inventory} loses its knowledge-panel row and gains 256 local-pack AOIs. Click columns now use screenshot-space coordinates.
+  \item Every number re-derived on v1.1.0, except the within-carousel cell figures, which still come from the frozen May snapshot and say so. Table~\ref{tab:inventory} loses its knowledge-panel row and gains 256 local-pack AOIs. Click columns now use screenshot-space coordinates.
   \item The within-carousel click decline is restated as directional. The $\rho = -1.0$ of v3 is withdrawn (\S\ref{sec:inventory}).
   \item The coordinate-space finding of \S\ref{sec:clicks} is new, as are the DOM fidelity harness rates and the coverage account of \S\ref{sec:coverage}.
 \end{itemize}
