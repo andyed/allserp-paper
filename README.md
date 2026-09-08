@@ -3,9 +3,8 @@
 **AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset**
 Andy Edmonds. arXiv:[2605.04949](https://arxiv.org/abs/2605.04949).
 
-Live on arXiv: **v3** (2026-07-23). **v4** is drafted, rebuilt, and bundled (2026-09-07);
-upload is pending the landing checklist in [TODO.md](TODO.md). The change-note for each
-version is in [CHANGELOG.md](CHANGELOG.md).
+Live on arXiv: **v3** (2026-07-23). **v4** is drafted, rebuilt, and bundled (2026-09-07),
+and clear to upload. The change-note for each version is in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
