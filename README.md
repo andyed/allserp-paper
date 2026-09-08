@@ -1,26 +1,54 @@
 # AllSERP — Resource Paper Repository
 
-**Working title:** *AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset*
+**AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset**
+Andy Edmonds. arXiv:[2605.04949](https://arxiv.org/abs/2605.04949).
 
-**Author:** Andy Edmonds.
-
----
-
-## Scope
-
-This is a **resource / dataset enrichment paper**: it describes the AOI extraction pipeline, validates it against shipped ground-truth, reports descriptive observed-behavior statistics per SERP element type, and points to enabled downstream analyses. **It is not a model paper.** Downstream model work is scoped out to sibling tracks and surfaces only as "what's enabled" pointers in §5.
+Live on arXiv: **v3** (2026-07-23). **v4** is drafted, rebuilt, and bundled (2026-09-07);
+upload is pending the landing checklist in [TODO.md](TODO.md). The change-note for each
+version is in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
-## Headline empirical contributions
+## What the paper is
 
-1. **Typed AOI extraction pipeline** validated against 38,250 shipped ad-rectangle classifications with **0 disagreements** (F1 = 1.000 on ad propagation, mean IoU = 1.000).
-2. **`typed_gapfill` flavor** — pragmatic post-processing that fills inter-result Y gaps via midpoint-split, recovering signal previously dropped from per-AOI attribution.
-3. **95.7 %** of corpus-wide final clicks attributable to a main-axis AOI under `typed_gapfill` once evtrack clicks are converted into screenshot space (91.5 % on the shipped document-space filter; the conversion recovers 118 flagged trials and loses none). Paper v4 reports clicks in screenshot space; the shipped `is_main_axis_click` helper is still document-space (queued substrate revision).
-4. **Calibration-bias hypothesis tested and refuted** — opposite-direction click vs fixation bias confirms the data is screenshot-aligned; no coordinate-space drift to correct.
-5. **Per-element-type descriptive inventory** across 8 main-axis etypes on AllSERP v1.1.0: organic / dd_top / native_ad / paa / image_pack / top_places / unknown_widget / other_widget (knowledge panels are right-rail, position −1, and no longer a main-axis row). Click share, fixation coverage, regression rate, above-fold incidence. Producer: `AF scripts/allserp_descriptives.py --flavor typed_gapfill --space screenshot`.
-6. **Cell-aware flavor** (`typed_gapfill_cellsplit`) — the released frozen May snapshot contains 6,373 top-carousel cells across 1,550 trials. Its reported “100% alignment” is internal alignment to parent boxes, not card-level fidelity. Organic sub-cells and right-rail covariates remain separate tiers. A full-corpus screenshot-registered candidate now admits 1,570/1,575 eligible top subdivisions with matching independent counts (5 rejected cases remain unadmitted; not yet the released source); see [the current repair status](TODO.md#full-corpus-carousel-check--2026-09-04). The frozen export's parent rows are also stale relative to the current `typed_gapfill` export; adoption must preserve the pinned current parent baseline.
-7. **Within-carousel composition (legacy snapshot)** — historical rank and click-share summaries await re-derivation from validated cells. The previously stated perfect rank correlation is retired. Current manuscript prose discloses the snapshot provenance; the repaired count audit is a diagnostic, not validation of those behavioral estimates. Producers: `scripts/cellsplit_click_composition.py`, `scripts/compute_nb23_cellsplit_rank.py` in attentional-foraging.
+A **resource / dataset-enrichment paper**. AdSERP ships 2,776 search trials with gaze,
+cursor, scroll, pupil and click telemetry on real Google result pages, but its bounding
+boxes cover only advertisements. AllSERP adds a typed area-of-interest (AOI) layer for
+everything else: screenshot-anchored boxes for organic results, People-Also-Ask, image
+packs, local packs and other widgets, labelled from the captured HTML. The paper
+describes the pipeline, validates it, reports a per-element behavioural inventory, and
+documents how coverage grew across and within element types.
+
+It is **not a model paper**. Downstream model work lives in sibling tracks and appears
+only as "what's enabled" pointers.
+
+## Headline claims (v4, on AllSERP v1.1.1)
+
+1. **Ad partition validated** against the shipped ad rectangles: 0 disagreements across
+   38,250 classifications. A DOM-based harness measures box fidelity on the full corpus.
+2. **Three released flavours** trade box tightness for coverage: `typed` (tight boxes),
+   `typed_gapfill` (inter-result Y gaps filled by midpoint split), and
+   `typed_gapfill_cellsplit` (per-card cells inside the top-ads carousel).
+3. **95.7 % of final clicks** land in a typed main-axis AOI under `typed_gapfill` once
+   evtrack cursor coordinates are converted into screenshot space (91.5 % on the shipped
+   document-space filter). The shipped `is_main_axis_click` helper is still
+   document-space; the paper discloses this as a queued substrate revision.
+4. **Calibration-bias hypothesis tested and refuted**: opposite-direction click vs
+   fixation bias confirms the data is screenshot-aligned.
+5. **Per-element inventory** across 8 main-axis element types (organic, dd_top,
+   native_ad, paa, image_pack, top_places, unknown_widget, other_widget): click share,
+   fixation coverage, regression rate, above-fold incidence. Knowledge panels are
+   right-rail (position −1) and no longer a main-axis row.
+6. **Coverage section** (new in v4): how coverage grew across element types (organic
+   boxes → HTML typing → gap-fill → geometric label verification in v1.1.0) and within
+   them (the carousel cell layer). The v3 within-carousel rank claim (ρ = −1.0) is
+   withdrawn and restated as directional; the released cells come from a May 2026
+   snapshot and the paper says so.
+
+**Substrate identity.** Every number is pinned to AllSERP enrichment **v1.1.1**:
+2,764 analysable trials, a 12-trial alignment-exclusion list, typed-map content hash
+`2cb789eb8febd234`. A stale export contains ~746 main-column knowledge-panel rows and
+84 local packs; v1.1.1 contains 0 and 340.
 
 ---
 
@@ -28,54 +56,92 @@ This is a **resource / dataset enrichment paper**: it describes the AOI extracti
 
 ```
 allserp-paper/
-  paper.tex                 — CANONICAL paper source (ACM acmart). Build: ./build.sh --acmart
-  paper.md                  — FROZEN legacy markdown draft (pre-2026-05-06 acmart-format conversion; not current)
-  README.md                 — this file
-  CHANGELOG.md              — version + decision history
-  CLAUDE.md                 — project conventions for AI-assisted edits
-  sections/                 — LaTeX sections (placeholder; activate when stable)
-  bib/                      — BibTeX entries
-  figs/                     — figures + captions
-  data/                     — derived numbers / cached extracts copied from
-                              attentional-foraging at submission time
+  paper.tex               CANONICAL source (ACM acmart). Build: ./build.sh --acmart
+  paper-acmart.pdf        tracked build output, for early sharing
+  paper.md                FROZEN legacy markdown draft (pre-2026-05-06); not current
+  build.sh                acmart build (xelatex + bibtex); legacy pandoc paths retained
+  make-arxiv-bundle.sh    rebuilds, then stages paper.tex/.bbl/bib/figs -> allserp-arxiv.tar.gz
+  bib/allserp.bib         bibliography
+  figs/                   figures + CAPTIONS.md + render_*.py / render_replay.js producers
+  CHANGELOG.md            per-arXiv-version change-notes and decision history
+  TODO.md                 v4 worklist and the pre-upload landing checklist
+  CLAUDE.md               editing conventions (citation discipline, voice, commit types)
 ```
+
+Not tracked: `texmf/` and `usertexmf/` (the local acmart install that `build.sh` expects
+via `TEXMFHOME`), `.arxiv-staging/`, the tarball, working PDFs, and `notes/` (private
+coordination). A fresh clone needs acmart installed locally before `./build.sh --acmart`
+will run.
+
+## Building
+
+```bash
+./build.sh --acmart          # paper.tex -> paper-acmart.pdf
+./make-arxiv-bundle.sh       # rebuild + stage -> allserp-arxiv.tar.gz
+```
+
+Figures regenerate from `figs/render*.py` and `figs/render_replay.js`; they read the
+attentional-foraging outputs listed below. `figs/CAPTIONS.md` holds the caption text.
 
 ---
 
 ## Sources of truth
 
-Every quantitative claim in this paper traces back to:
+The paper does not re-derive numbers. Every quantitative claim traces to a file in one
+of two repositories:
 
-- **`attentional-foraging` repo** (`bbox-y-coverage-fix` branch, merged 2026-05-05):
-  - `scripts/audit_*.py` — five cite-ready audit scripts
-  - `scripts/output/allserp_descriptives_gapfill/` — descriptive tables
-  - `docs/notebook-key-claims.md` — K-bbox-y-* row aggregates
-  - `docs/null-findings/2026-05-05-bbox-y-coverage.md` — comprehensive cascade writeup
+- **[attentional-foraging](https://github.com/andyed/attentional-foraging)** — pipeline
+  and producers. Substrate branch `release/allserp-v1.1.0`, tag `allserp-v1.1.1`
+  (release publication is item 1 of the TODO landing checklist).
+  - `scripts/allserp_descriptives.py --flavor typed_gapfill --space screenshot` — Table 1
+  - `scripts/audit_*.py` — cite-ready audit producers (`audit_cascade_contamination.py`,
+    `audit_dd_right.py --space screenshot`, and the ad-rectangle check)
+  - `scripts/output/adserp_aois_by_trial_id_{typed,typed_gapfill,organic_hybrid,typed_gapfill_cellsplit}.csv`
+    and `data/aoi-typed/alignment-exclusions.json` — the released exports
   - `docs/methodology/organic-result-aoi-extraction.md` — pipeline spec
-  - `docs/methodology/attribution-cascade-synthesis.md` — flavor history
-  - `docs/methodology/dd-top-cellsplit.md` — cell-split methodology, tier maturity, dd_right-as-covariate rationale
-  - `scripts/output/adserp_aois_by_trial_id_typed_gapfill_cellsplit.csv` + `scripts/output/cellsplit_coverage.json` — cell-aware flavor + coverage
-  - `scripts/cellsplit_click_composition.py` → `scripts/output/cellsplit_click_composition/` — within-carousel click composition (Fig. cellsplit)
+  - `docs/methodology/attribution-cascade-synthesis.md` — flavour history
+  - `docs/methodology/dd-top-cellsplit.md` — cell-split tiers, dd_right-as-covariate
+  - `docs/methodology/carousel-full-corpus-validation.md` — DOM-derived carousel candidate
+    (1,570/1,575 admitted, 7,265 cards)
+  - `docs/allserp-v1.1.0-migration.md`, `docs/releases/allserp-v1.1.1.md` — substrate notes
+  - `docs/notebook-key-claims.md` — Key Claim IDs cited in the text
+- **[approach-retreat](https://github.com/andyed/approach-retreat)** — the
+  [replay viewer](https://andyed.github.io/approach-retreat/replay/) (148 curated trials,
+  labelled log-scaled LF/HF tracks as of the v4 figure).
 
-- **`approach-retreat` repo** (`bbox-y-coverage-fix` branch, merged 2026-05-05):
-  - `site/replay/` — visual verification on 147-trial replay set
-
-The paper does not re-derive numbers; it cites them by file path + Key Claim ID.
-
----
-
-## Two-pass citation discipline (per AF CLAUDE.md)
-
-Every citation token in the paper goes through two passes:
-
-- **Pass 1 — prose generation.** Use placeholders only: `[CITE: ...]`, `[ATTRIBUTE: ...]`, `[CHECK: ...]`. No author names in citation position, no venue+year tokens, no paraphrases of "what X showed."
-- **Pass 2 — verification.** Walk every placeholder. Locate candidate source (bib first, then lit-notes, then WebSearch). Verify the abstract/passage matches the claim. Resolve placeholder with verified citation, or change the argument to use a source we have.
-
-This separates prose from citation generation to prevent confabulation. See AF CLAUDE.md for the full discipline spec.
+The underlying corpus is the AdSERP Zenodo volume
+([zenodo.org/records/15236546](https://zenodo.org/records/15236546), CC-BY-4.0). AllSERP
+does not redistribute it.
 
 ---
 
-## Project status
+## Editing
 
-- **2026-09-07** — v4 draft: restructured, re-derived on v1.1.0, new Coverage section. See CHANGELOG.
-- **2026-05-05** — repository scaffolded. Markdown skeleton + introduction + methods stubs landed. Empirical numbers integrated from the bbox-y-coverage-fix cascade.
+Conventions for edits (two-pass citation discipline, voice, sibling-track guard,
+conventional-commit types) are in [CLAUDE.md](CLAUDE.md). Short version: no author names
+or venue tokens in citation position until the source has been verified against its
+abstract, and no number without a `[<flavor>, <source>]` provenance.
+
+## History
+
+| date | event |
+|---|---|
+| 2026-05-05 | repository scaffolded from the bbox-y-coverage-fix cascade |
+| 2026-05-06 | arXiv **v1** submitted |
+| 2026-05-19 | arXiv **v2**: ARS-audit / reviewer-pass cleanup |
+| 2026-06-23 | `paper.md` frozen; `paper.tex` canonical |
+| 2026-07-23 | arXiv **v3**: dd_top cell-split enrichment, within-carousel ordering |
+| 2026-09-07 | **v4** drafted and bundled: restructure, re-derivation on v1.1.1, Coverage section; upload pending |
+
+## Citation
+
+```bibtex
+@misc{edmonds2026allserp,
+  title  = {AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset},
+  author = {Edmonds, Andy},
+  year   = {2026},
+  eprint = {2605.04949},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2605.04949}
+}
+```
