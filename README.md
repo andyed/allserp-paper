@@ -92,7 +92,8 @@ of two repositories:
 
 - **[attentional-foraging](https://github.com/andyed/attentional-foraging)** — pipeline
   and producers. Substrate branch `release/allserp-v1.1.0`, tag `allserp-v1.1.1`
-  (release publication is item 1 of the TODO landing checklist).
+  ([GitHub release](https://github.com/andyed/attentional-foraging/releases/tag/allserp-v1.1.1)
+  with the four corpus CSVs and the exclusion list attached).
   - `scripts/allserp_descriptives.py --flavor typed_gapfill --space screenshot` — Table 1
   - `scripts/audit_*.py` — cite-ready audit producers (`audit_cascade_contamination.py`,
     `audit_dd_right.py --space screenshot`, and the ad-rectangle check)

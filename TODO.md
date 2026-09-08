@@ -23,7 +23,12 @@ Decisions left: keep the title? (kept for citation stability); upload timing
 
 ## Landing checklist before the arXiv v4 upload (surveyed 2026-09-07)
 
-Nothing below is pushed; every step is one command.
+**Status 2026-09-07 (evening):** items 1–3 landed. attentional-foraging `main` and
+`release/allserp-v1.1.0` pushed, tag `allserp-v1.1.1` pushed, GitHub release published
+15:40 UTC with the four corpus CSVs + `alignment-exclusions.json` attached; the migration
+guide on `main` returns 200. approach-retreat `main` pushed (0 ahead). allserp-paper
+README rewritten and pushed. Remaining: item 4's replay-page eyeball, the optional
+Zenodo DOI, and the v4 upload itself.
 
 1. **attentional-foraging** — `origin/main` is at 2026-06-03, 90+ commits behind
    `release/allserp-v1.1.0`, so the paper's GitHub link serves the pre-v1.1.0 substrate
