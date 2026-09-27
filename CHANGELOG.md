@@ -60,6 +60,18 @@ typing pipeline and the 38,250-classification check unchanged.`
 trials; a later exporter revision (AF `448fad26`) records per export whether the list was
 applied, data byte-identical. No v1.1.2 cut.
 
+**Editorial pass 2026-09-26** (5,906 → 5,756 words in source). Abstract now states the
+per-element attention/click dissociation instead of the coverage history. Cut repeated
+pre-AI-Overviews and "Phase B label set" points, the Bard date, the 120-trial sample
+caution, two aphoristic closers, and most "X, not Y" and inanimate-subject constructions.
+Fixes: organic click share 80 → 81 % to match Table 1; rank-figure caption names the
+organic-only attribution as unshipped; LF/HF robustness given its scale (medians 14 to 31,
+shift under 0.6); gaze-leads-cursor now cites Huang, White and Buscher, CHI 2012 (DOI
+verified); AI-use disclosure adds Opus 5.5. **Correction:** the 505 near-miss clicks that
+vanish in screenshot space were described as right-rail clicks. `audit_cascade_contamination.py`
+in both spaces shows at most 36 moved to the right rail and at least 469 land inside a
+main-axis box. Exclusion-stamp detail moved to the AF v1.1.1 release notes.
+
 **Bundle rebuilt 2026-09-26**; the tarball compiles standalone under pdflatex (8 pp, no
 undefined references). **Open before upload:** only the upload itself. Title kept for
 citation stability.
