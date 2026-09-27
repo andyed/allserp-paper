@@ -43,10 +43,21 @@ of final clicks); within-carousel rank claim of v3 withdrawn and restated as
 directional; new coverage section on element-level and within-element layers. Core
 typing pipeline and the 38,250-classification check unchanged.`
 
+**Closed 2026-09-26.** Both disclosed gaps are resolved upstream (AF `7800381f`, `33e486ff`).
+- *Zero-paging.* The 08-30 check assigned clicks to cells by position, so it could not see
+  paging. Re-run keyed on each click's evtrack xpath against the DOM harness (every card,
+  hidden tail included): 281 top-carousel card clicks in 275 trials, all on cards visible at
+  load; one Next press on a top-ads carousel, followed by a click on a card visible from the
+  start. Paragraph rewritten (§5, "Exposure is defined by the viewport"); producer
+  `audit_carousel_paging.py`.
+- *Main-axis filter.* `is_main_axis_click(trial_id, space=...)` now takes the space; default
+  stays document so released populations reproduce; screenshot space adds 118 trials and
+  drops none. §3.2 sentence rewritten. Whether downstream producers switch is a separate
+  substrate decision.
+
 **Open before upload:** title kept for citation stability ("Exhaustive" / "Versatile"
-remain under review); re-base `is_main_axis_click` on
-screenshot space upstream is still a queued substrate revision (paper discloses it);
-zero-paging selector scope re-verification (TODO item 7).
+remain under review); the substrate-identity paragraph describes an exclusion `applied`
+flag that landed after the v1.1.1 tag (reword, or cut v1.1.2).
 
 ## 2026-07-10 — arXiv v3 (dd_top cell-split enrichment + within-carousel ordering)
 
