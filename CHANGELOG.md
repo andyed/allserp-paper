@@ -55,9 +55,14 @@ typing pipeline and the 38,250-classification check unchanged.`
   drops none. §3.2 sentence rewritten. Whether downstream producers switch is a separate
   substrate decision.
 
-**Open before upload:** title kept for citation stability ("Exhaustive" / "Versatile"
-remain under review); the substrate-identity paragraph describes an exclusion `applied`
-flag that landed after the v1.1.1 tag (reword, or cut v1.1.2).
+**Substrate-identity paragraph reworded 2026-09-26** to describe v1.1.1 as shipped: the
+`organic_hybrid` summary embeds the exclusion list although that export keeps the listed
+trials; a later exporter revision (AF `448fad26`) records per export whether the list was
+applied, data byte-identical. No v1.1.2 cut.
+
+**Bundle rebuilt 2026-09-26**; the tarball compiles standalone under pdflatex (8 pp, no
+undefined references). **Open before upload:** only the upload itself. Title kept for
+citation stability.
 
 ## 2026-07-10 — arXiv v3 (dd_top cell-split enrichment + within-carousel ordering)
 
