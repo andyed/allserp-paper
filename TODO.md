@@ -13,8 +13,8 @@
 | 4 widget-slot callout | done (§2.2; 353 trials / 352 main-axis / 0 mis-shifted; the "35 strictly between organics" clause dropped, no producer) |
 | 4b contamination reframe | done (§2.4; 23.9 → 3.91 % reproduced today) |
 | 5 data statement | done (§7.2 substrate identity; harness triple in §3.2; the 92.4/93.3 sample pair stays out of the paper) |
-| 6 coordinate ripple | **done for Table 1** via new `allserp_descriptives.py --space screenshot` (AF commit today). 38,250 check re-run 2026-09-05, unchanged. `is_main_axis_click` takes `space=` (AF `33e486ff`, 2026-09-26); default document, screenshot adds 118 / drops 0. Switching downstream producers is a separate substrate decision. |
-| 7 zero-paging paragraph | **done 2026-09-26**: element-keyed re-run (AF `7800381f`), 281/281 card clicks visible at load, 1 top-carousel Next press; paragraph rewritten |
+| 6 coordinate ripple | **done for Table 1** via new `allserp_descriptives.py --space screenshot` (AF commit today). 38,250 check re-run 2026-09-05, unchanged. `is_main_axis_click` takes `space=` (AF `d89f4987`, 2026-09-26); default document, screenshot adds 118 / drops 0. Switching downstream producers is a separate substrate decision. |
+| 7 zero-paging paragraph | **done 2026-09-26**: element-keyed re-run (AF `3c3dfebc`), 281/281 card clicks visible at load, 1 top-carousel Next press; paragraph rewritten |
 | 8 bundle + upload | bundle built; upload pending the title decision below |
 
 Decisions left: keep the title? (kept for citation stability); upload timing

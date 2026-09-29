@@ -43,7 +43,7 @@ of final clicks); within-carousel rank claim of v3 withdrawn and restated as
 directional; new coverage section on element-level and within-element layers. Core
 typing pipeline and the 38,250-classification check unchanged.`
 
-**Closed 2026-09-26.** Both disclosed gaps are resolved upstream (AF `7800381f`, `33e486ff`).
+**Closed 2026-09-26.** Both disclosed gaps are resolved upstream (AF `3c3dfebc`, `d89f4987`).
 - *Zero-paging.* The 08-30 check assigned clicks to cells by position, so it could not see
   paging. Re-run keyed on each click's evtrack xpath against the DOM harness (every card,
   hidden tail included): 281 top-carousel card clicks in 275 trials, all on cards visible at
