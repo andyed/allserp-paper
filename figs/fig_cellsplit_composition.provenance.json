@@ -1,0 +1,16 @@
+{
+  "source": "summary.json",
+  "source_sha256": "072ad6158a7d0ac31712d73ea24b6f2d5c6f460c5ee7f2396189c0f0afd05c17",
+  "renderer_sha256": "d91e1ebb53bb690573c4fac8a81517617f322364e1db56bb50177c3ede2ea900",
+  "regime": "[LAB, AdSERP, typed_gapfill_cellsplit, final-click composition]",
+  "coordinate_provenance": {
+    "click_space": "screenshot",
+    "geometry_source": "exact PNG dimensions / XML document dimensions",
+    "geometry_manifest_sha256": "8ef0abc922b39c09fe84b7e7cc1262b07111b8b680faa5724aa4367e49a925df",
+    "coordinate_helper_sha256": "c1deebb13ccb37f02a6a99d1d2ba6ccbfb1e3e2d1985db5eb656e1f26a14e0df"
+  },
+  "n_carousels": 1543,
+  "n_modal4_clicks": 159,
+  "png_sha256": "499f33097c47c6091d54ed57013b0a7b54e27f649ba665f828acb22b59ceaec3",
+  "pdf_sha256": "b1fbef6531fb4f24fd4b698c454b98fbaec597cc4463ac703cbb7af2d1db8596"
+}

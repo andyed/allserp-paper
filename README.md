@@ -3,8 +3,8 @@
 **AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset**
 Andy Edmonds. arXiv:[2605.04949](https://arxiv.org/abs/2605.04949).
 
-Live on arXiv: **v3** (2026-07-23). **v4** is drafted, rebuilt, and bundled (2026-09-07),
-and clear to upload. The change-note for each version is in [CHANGELOG.md](CHANGELOG.md).
+Live on arXiv: **v3** (2026-07-23). **v4** has been corrected and prepared for replacement (2026-10-24);
+submission and announcement are separate from the local build. The change-note for each version is in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -23,17 +23,18 @@ only as "what's enabled" pointers.
 
 ## Headline claims (v4, on AllSERP v1.1.1)
 
-1. **Ad partition validated** against the shipped ad rectangles: 0 disagreements across
+1. **Ad partition internally consistent** against the shipped ad rectangles: 0 disagreements across
    38,250 classifications. A DOM-based harness measures box fidelity on the full corpus.
-2. **Three released flavours** trade box tightness for coverage: `typed` (tight boxes),
+2. **Three typed flavours** trade box tightness for coverage: `typed` (tight boxes),
    `typed_gapfill` (inter-result Y gaps filled by midpoint split), and
    `typed_gapfill_cellsplit` (per-card cells inside the top-ads carousel).
 3. **95.7 % of final clicks** land in a typed main-axis AOI under `typed_gapfill` once
    evtrack cursor coordinates are converted into screenshot space (91.5 % on the shipped
    document-space filter). The shipped `is_main_axis_click` helper is still
    document-space; the paper discloses this as a queued substrate revision.
-4. **Calibration-bias hypothesis tested and refuted**: opposite-direction click vs
-   fixation bias confirms the data is screenshot-aligned.
+4. **Coordinate-audited gaze–click diagnostics**: the 1.5-second lead-window minimum
+   has a median of 75.7 px across 2,752 trials. This is temporal coupling, not a
+   tracker-calibration accuracy estimate.
 5. **Per-element inventory** across 8 main-axis element types (organic, dd_top,
    native_ad, paa, image_pack, top_places, unknown_widget, other_widget): click share,
    fixation coverage, regression rate, above-fold incidence. Knowledge panels are
@@ -41,12 +42,13 @@ only as "what's enabled" pointers.
 6. **Coverage section** (new in v4): how coverage grew across element types (organic
    boxes → HTML typing → gap-fill → geometric label verification in v1.1.0) and within
    them (the carousel cell layer). The v3 within-carousel rank claim (ρ = −1.0) is
-   withdrawn and restated as directional; the released cells come from a May 2026
+   withdrawn along with pooled cell-rank endpoints; the released cells come from a May 2026
    snapshot and the paper says so.
 
-**Substrate identity.** Every number is pinned to AllSERP enrichment **v1.1.1**:
+**Substrate identity.** Typed analyses use AllSERP enrichment **v1.1.1**:
 2,764 analysable trials, a 12-trial alignment-exclusion list, typed-map content hash
-`2cb789eb8febd234`. A stale export contains ~746 main-column knowledge-panel rows and
+`2cb789eb8febd234`. Geometry-only rank plots retain all 2,776 `organic_hybrid` trials;
+gaze–click diagnostics use the full telemetry corpus. A stale export contains ~746 main-column knowledge-panel rows and
 84 local packs; v1.1.1 contains 0 and 340.
 
 ---
@@ -61,7 +63,8 @@ allserp-paper/
   build.sh                acmart build (xelatex + bibtex); legacy pandoc paths retained
   make-arxiv-bundle.sh    rebuilds, then stages paper.tex/.bbl/bib/figs -> allserp-arxiv.tar.gz
   bib/allserp.bib         bibliography
-  figs/                   figures + CAPTIONS.md + render_*.py / render_replay.js producers
+  figs/                   figures + provenance sidecars + renderers (CAPTIONS.md is historical)
+  arxiv/                  plain-text upload metadata and validated artifact manifest
   CHANGELOG.md            per-arXiv-version change-notes and decision history
   TODO.md                 v4 worklist and the pre-upload landing checklist
   CLAUDE.md               editing conventions (citation discipline, voice, commit types)

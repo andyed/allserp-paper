@@ -1,3 +1,5 @@
+> Historical figure plan, frozen before the October 2026 v4 coordinate audit. Current captions and numeric claims are authoritative in `paper.tex`; current rank and carousel figures have adjacent `.provenance.json` files. Do not copy the old numbers below into new work.
+
 # Figure plan — AllSERP resource paper
 
 This file documents intended figures + caption stubs. Figures themselves are not yet generated; they will be produced from the upstream data when the paper moves to LaTeX.

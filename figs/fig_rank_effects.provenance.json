@@ -1,0 +1,30 @@
+{
+  "source_sha256": "1480cc9bf41f4d33f3ff46fa3be0803661e040b9873b6c7236b10a750776b75a",
+  "renderer_sha256": "becb660e447c02c8db7ce1b5f0a38929965d65dad0047669e3536762db7129bd",
+  "source_provenance": {
+    "schema": "allserp-rank-inventory-v1",
+    "regime": "LAB / AdSERP",
+    "coordinate_space": "screenshot",
+    "click_selection": "final recorded click",
+    "attribution": "inclusive X+Y containment; multiple matches unassigned and reported",
+    "cohort": "all trials in released organic_hybrid CSV; no alignment-exclusion filtering",
+    "denominator": "all exported AOIs at position, including trials with no click or unmatched click",
+    "organic_definition": "organic rows from same export, reindexed in display order per trial",
+    "source_path": "scripts/output/adserp_aois_by_trial_id_organic_hybrid.csv",
+    "source_sha256": "f6c0ec898924da0be687d879df435c7628007acdf8dd29370507b4be859b8f65",
+    "producer_sha256": "69271897b6a519f2ee4ee14a08533e782c40c352c0769dacb9635ec74374e883",
+    "data_loader_sha256": "2a1d7c51a1919fac1c6c86c476f646ef96800be265688cd57c351cab18b00275",
+    "converted_clicks_sha256": "c7b17c389cae9030674dc35f9381ace89772625572b3d0ef10841f75810a58ce",
+    "coordinates": {
+      "click_space": "screenshot",
+      "geometry_source": "exact PNG dimensions / XML document dimensions",
+      "geometry_manifest_sha256": "8ef0abc922b39c09fe84b7e7cc1262b07111b8b680faa5724aa4367e49a925df",
+      "coordinate_helper_sha256": "c1deebb13ccb37f02a6a99d1d2ba6ccbfb1e3e2d1985db5eb656e1f26a14e0df"
+    }
+  },
+  "shown_positions": [
+    0,
+    9
+  ],
+  "note": "Orange identifies positions where dd_top is the most frequent element type."
+}

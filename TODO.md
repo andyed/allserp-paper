@@ -1,3 +1,15 @@
+# Current publication status — 2026-10-24
+
+The sections below are historical planning records. The September bundle is superseded.
+The October correction reproduces the old registration and composition aggregates,
+converts final clicks using exact screenshot/XML dimensions, replaces gaze-selected
+rank plots with all-AOI denominators, withdraws pooled cell-rank endpoints, and corrects
+DOM-harness and exposure wording. The released v1.1.1 CSVs are unchanged.
+
+- Prepared: corrected manuscript, figure provenance, upload metadata, fresh source bundle.
+- Required before completion: inspect arXiv-generated PDF, finalize replacement, verify receipt.
+- Still separate: versioned DOM-derived cell adoption and held-out annotation study.
+
 # TODO — arXiv v4 revision
 
 ## 2026-09-07 — v4 draft state

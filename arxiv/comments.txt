@@ -1,0 +1,1 @@
+8 pages, 4 figures. Corrected screenshot-space click attribution and gaze-click diagnostics; rank plots use all exported AOIs; withdrew pooled carousel-rank endpoints and v3 rank coefficients; clarified DOM agreement and released-cell limitations.

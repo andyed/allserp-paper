@@ -1,3 +1,22 @@
+# 2026-10-24 — v4 publication correction
+
+- Exact-coordinate reproduction gates recover the old document-space registration
+  and carousel composition before computing their screenshot-space replacements.
+  Lead-window median: 128.8 → 75.7 px; trials over 250 px: 489 → 407 of 2,752.
+  The threshold is descriptive, not a calibration or visual-angle tolerance.
+- Carousel composition now uses 264 final clicks in the released cells; the
+  four-cell subset has 159 clicks with shares 28.9/22.0/22.0/27.0 percent.
+  Both figure panels use the same released cohort of 1,543 carousels.
+- Rank plots now use all exported AOIs and screenshot X+Y final clicks, without
+  fixation selection. Pooled cell-rank endpoints and the three v3 coefficients
+  are withdrawn pending a versioned cell-source analysis.
+- DOM IoU is explicitly a per-trial median statistic. Ad consistency names its
+  overlap thresholds. The paging audit discloses 67 unresolved click xpaths and
+  distinguishes DOM-identified click events from released-cell final clicks.
+- Bibliography metadata verified against Crossref (8 DOI entries, 8 matches).
+  Source bundle and metadata are rebuilt from canonical paper.tex; the original
+  v1.1.1 data release and the future annotation study are unchanged.
+
 # Changelog
 
 ## 2026-09-07 — arXiv v4 draft (restructure + re-derivation on AllSERP v1.1.0)

@@ -1,0 +1,12 @@
+{
+  "target": "https://arxiv.org/abs/2605.04949",
+  "replacement_version": 4,
+  "title": "AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset",
+  "authors": "K. Andrew Edmonds",
+  "primary_category": "cs.IR",
+  "license": "CC BY 4.0 (preserve existing license)",
+  "abstract_file": "abstract.txt",
+  "comments_file": "comments.txt",
+  "abstract_ascii_characters": 1342,
+  "note": "Preserve established arXiv author metadata. Finalize only after checking the server-generated PDF; local build is not submission."
+}

@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-24",
+  "analysis_commit": "240c89ba928eb3bc0d5299602c4d2df7490b9f66",
+  "baseline_paper_commit": "b2fcc70306ffb885040e2cd01344c16cdedd9e62",
+  "target_arxiv": "2605.04949v4",
+  "submission_status": "prepared; arXiv authentication and server-PDF verification pending",
+  "pages": 8,
+  "figures": 4,
+  "archive_sha256": "c7783b2b278442255d0476dd57972d5ab1c4ba80bb4b74c462bb59aed76229c8",
+  "archive_bytes": 4692302,
+  "canonical_pdf_sha256": "446e6ae79f8df7bd18767b3210eb4dbdf140183a7bd1d67285be68186f49c9d8",
+  "archive_files_sha256": {
+    "paper.tex": "d9e56c191516487f127ba69afdc1603431bf7b19eb66e8e45014be7c81187981",
+    "paper.bbl": "05b13f3e0f631e09739f951c570d578733eb97c0c66118844f48452631acc5b7",
+    "bib/allserp.bib": "c7c6a93b9235509c983fb50561a4900a8ef290bba418ac14af8ad0882415393a",
+    "figs/fig_pipeline.png": "cd3680bc729aa4d0b8aa0906d07e66bbe97c8896fee69121b990c8011349b9a3",
+    "figs/fig4_replay_p010-b2-t6.png": "da77dcaa0ed705ca2b3187768d010183e2c19534e8be7380b3619e682ee50195",
+    "figs/fig_rank_effects.png": "acd2b69a3a8c6e50f0c7d12c76c45c5ff4dceaafcad049efb1dc5ecc420c9b04",
+    "figs/fig_cellsplit_composition.png": "499f33097c47c6091d54ed57013b0a7b54e27f649ba665f828acb22b59ceaec3"
+  },
+  "validation": {
+    "BIGFU": {
+      "passed": 16,
+      "exit_code": 0,
+      "run": "20261024-075434-53290"
+    },
+    "reproduction_audits": {
+      "registration": {
+        "scanned": 1,
+        "gated": 1,
+        "severity_counts": {
+          "error": 0,
+          "warn": 0,
+          "info": 0
+        }
+      },
+      "composition": {
+        "scanned": 1,
+        "gated": 1,
+        "severity_counts": {
+          "error": 0,
+          "warn": 0,
+          "info": 0
+        }
+      },
+      "rank": {
+        "scanned": 1,
+        "gated": 1,
+        "severity_counts": {
+          "error": 0,
+          "warn": 0,
+          "info": 0
+        }
+      }
+    },
+    "bibliography_metadata": {
+      "total": 8,
+      "withDOI": 8,
+      "withoutDOI": 0,
+      "verified": 8,
+      "matched": 8,
+      "mismatched": 0,
+      "unverified": 0,
+      "invalidDOI": 0,
+      "duplicateDOI": 0,
+      "issueCount": 0
+    },
+    "tex_citation_keys": 8,
+    "all_tex_keys_resolve": true,
+    "canonical_compile": "XeLaTeX + BibTeX + two XeLaTeX passes",
+    "unpacked_compile": "three pdfLaTeX passes; no undefined references; standard locally installed xurl supplied separately because BasicTeX lacks it globally",
+    "visual_review": "8-page unpacked PDF and both regenerated figures reviewed; final changed pages rechecked",
+    "remaining": "arXiv server-generated PDF and submission receipt"
+  }
+}

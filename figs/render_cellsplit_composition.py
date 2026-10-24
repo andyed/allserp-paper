@@ -1,19 +1,9 @@
-"""Anatomy of the dd_top cell split (two panels).
-
-Left:  carousel size distribution — how many cells a top-ads carousel holds
-       (modal 4). Source: attentional-foraging nb25_cellsplit_composition.
-Right: within-carousel click distribution on the modal 4-cell carousel —
-       of clicks landing inside the carousel, which cell? Leftmost is
-       favored (~32% vs 25% uniform) but clicks spread across all cells;
-       the block-level dd_top AOI conflates this. Source: attentional-
-       foraging cellsplit_click_composition (from the shipped flavor).
-
-All text is rendered in INK on BG (contrast ratio ~18:1, well above the 8:1
-floor); the 25% reference line and axis rules use RULE/MUTED (non-text).
-"""
+"""Render both carousel panels from one coordinate-audited release summary."""
 from __future__ import annotations
 
-import csv
+import argparse
+import hashlib
+import json
 import sys
 from pathlib import Path
 
@@ -24,9 +14,6 @@ OUT_DIR = Path(__file__).parent
 OUT_PNG = OUT_DIR / "fig_cellsplit_composition.png"
 OUT_PDF = OUT_DIR / "fig_cellsplit_composition.pdf"
 
-AF = Path("/Users/andyed/Documents/dev/attentional-foraging/scripts/output")
-SIZE_CSV = AF / "nb25_cellsplit_composition" / "cells_per_carousel.csv"
-CLICK_CSV = AF / "cellsplit_click_composition" / "by_cell_index.csv"
 
 ACCENT  = "#5B3EB8"
 ACCENT2 = "#26A69A"
@@ -36,14 +23,15 @@ BG      = "#FAFAF8"
 DD_TOP_HUE = "#E69F00"
 
 
-def read_csv(path):
-    with open(path) as f:
-        return list(csv.DictReader(f))
-
-
-def render() -> None:
-    size = read_csv(SIZE_CSV)          # n_cells, count, pct
-    clicks = read_csv(CLICK_CSV)       # cell_index, count, pct
+def render(source) -> None:
+    raw = source.read_bytes()
+    summary = json.loads(raw)
+    if summary["coordinate_provenance"]["click_space"] != "screenshot" or summary["gate"]["status"] != "ok":
+        raise ValueError("Expected a verified screenshot-space composition")
+    size = summary["carousel_sizes"]
+    clicks = [dict(cell_index=i, count=summary["modal4"]["by_cell_index_count"][str(i)],
+                   pct=100*summary["modal4"]["by_cell_index_count"][str(i)]/summary["modal4"]["n_clicks"])
+              for i in range(4)]
 
     n_cells = [int(r["n_cells"]) for r in size]
     size_pct = [float(r["pct"]) for r in size]
@@ -115,9 +103,19 @@ def render() -> None:
     plt.tight_layout(rect=[0, 0.03, 1, 1])
     plt.savefig(OUT_PNG, dpi=160, bbox_inches="tight", facecolor=BG)
     plt.savefig(OUT_PDF, bbox_inches="tight", facecolor=BG)
+    (OUT_DIR / "fig_cellsplit_composition.provenance.json").write_text(json.dumps({
+        "source": source.name, "source_sha256": hashlib.sha256(raw).hexdigest(),
+        "renderer_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "regime": summary["regime"], "coordinate_provenance": summary["coordinate_provenance"],
+        "n_carousels": n_carousels, "n_modal4_clicks": n_modal_clicks,
+        "png_sha256": hashlib.sha256(OUT_PNG.read_bytes()).hexdigest(),
+        "pdf_sha256": hashlib.sha256(OUT_PDF.read_bytes()).hexdigest(),
+    }, indent=2) + "\n")
     print(f"wrote {OUT_PNG}", file=sys.stderr)
     print(f"wrote {OUT_PDF}", file=sys.stderr)
 
 
 if __name__ == "__main__":
-    render()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source", type=Path, required=True)
+    render(parser.parse_args().source)
