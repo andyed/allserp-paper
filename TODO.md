@@ -6,8 +6,10 @@ converts final clicks using exact screenshot/XML dimensions, replaces gaze-selec
 rank plots with all-AOI denominators, withdraws pooled cell-rank endpoints, and corrects
 DOM-harness and exposure wording. The released v1.1.1 CSVs are unchanged.
 
-- Prepared: corrected manuscript, figure provenance, upload metadata, fresh source bundle.
-- Required before completion: inspect arXiv-generated PDF, finalize replacement, verify receipt.
+- Completed: corrected manuscript, figure provenance, upload metadata, fresh source bundle.
+- Submitted: arXiv replacement 8277182 on 2026-10-24; account page confirmed submitted.
+- Verified: arXiv TeX Live 2025 / pdfLaTeX output, eight pages, four figures, references and corrected claims.
+- Pending: public announcement of v4; submission does not establish public availability.
 - Still separate: versioned DOM-derived cell adoption and held-out annotation study.
 
 # TODO — arXiv v4 revision

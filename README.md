@@ -3,8 +3,9 @@
 **AllSERP: Exhaustive Per-Element Enrichment of the Versatile AdSERP Dataset**
 Andy Edmonds. arXiv:[2605.04949](https://arxiv.org/abs/2605.04949).
 
-Live on arXiv: **v3** (2026-07-23). **v4** has been corrected and prepared for replacement (2026-10-24);
-submission and announcement are separate from the local build. The change-note for each version is in [CHANGELOG.md](CHANGELOG.md).
+Latest verified public version: **v3** (2026-07-23). **v4 was submitted on 2026-10-24**
+(receipt 8277182); announcement is pending. The arXiv-generated eight-page PDF was
+reviewed with all four figures and references present. The change-note for each version is in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -134,7 +135,8 @@ abstract, and no number without a `[<flavor>, <source>]` provenance.
 | 2026-05-19 | arXiv **v2**: ARS-audit / reviewer-pass cleanup |
 | 2026-06-23 | `paper.md` frozen; `paper.tex` canonical |
 | 2026-07-23 | arXiv **v3**: dd_top cell-split enrichment, within-carousel ordering |
-| 2026-09-07 | **v4** drafted and bundled: restructure, re-derivation on v1.1.1, Coverage section; upload pending |
+| 2026-09-07 | **v4** drafted and bundled: restructure, re-derivation on v1.1.1, Coverage section; upload pending at that time |
+| 2026-10-24 | **v4 submitted** after coordinate and claim corrections; arXiv receipt 8277182, server PDF checked; announcement pending |
 
 ## Citation
 

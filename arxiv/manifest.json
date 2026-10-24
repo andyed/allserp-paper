@@ -3,7 +3,7 @@
   "analysis_commit": "240c89ba928eb3bc0d5299602c4d2df7490b9f66",
   "baseline_paper_commit": "b2fcc70306ffb885040e2cd01344c16cdedd9e62",
   "target_arxiv": "2605.04949v4",
-  "submission_status": "prepared; arXiv authentication and server-PDF verification pending",
+  "submission_status": "submitted; public announcement pending",
   "pages": 8,
   "figures": 4,
   "archive_sha256": "c7783b2b278442255d0476dd57972d5ab1c4ba80bb4b74c462bb59aed76229c8",
@@ -70,6 +70,20 @@
     "canonical_compile": "XeLaTeX + BibTeX + two XeLaTeX passes",
     "unpacked_compile": "three pdfLaTeX passes; no undefined references; standard locally installed xurl supplied separately because BasicTeX lacks it globally",
     "visual_review": "8-page unpacked PDF and both regenerated figures reviewed; final changed pages rechecked",
-    "remaining": "arXiv server-generated PDF and submission receipt"
+    "remaining": "public announcement of v4",
+    "server_pdf": "All eight rendered pages inspected; four figures, references, corrected values and disclosures present; no missing content observed"
+  },
+  "paper_source_commit": "e8ff2e8a926816f0a6c4201a49725f80bada09d9",
+  "submission": {
+    "receipt": "8277182",
+    "date": "2026-10-24",
+    "status_verified_at_utc": "2026-10-24T15:25:46Z",
+    "observed_status": "Article submitted; replacement of 2605.04949; submitted",
+    "announcement": "pending; no announcement time displayed",
+    "license": "CC BY 4.0",
+    "primary_category": "cs.IR",
+    "server_pdf_sha256": "6d08299cbbfce440fa99979c4146c69fbc928bf43b0dec9d3611c62e08f985b6",
+    "server_pdf_bytes": 5216340,
+    "server_pdf_compiler": "pdfTeX 1.40.28, TeX Live 2025, acmart 2.14"
   }
 }
